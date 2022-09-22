@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Input } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -15,6 +15,7 @@ export default function Home() {
             <Button variant="secondary" size="full">
                 Lanjut
             </Button>
+            <Input size="md" placeholder="Halo"></Input>
         </div>
     );
 }
