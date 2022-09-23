@@ -7,7 +7,7 @@ import {
     Flex,
     Text,
     Heading,
-    Fade,
+    FormControl,
     Image,
     FormLabel,
 } from "@chakra-ui/react";
@@ -68,13 +68,13 @@ export default function Home() {
                     </Box>
 
                     <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column">
-                        <Box>
+                        <FormControl>
                             <FormLabel fontWeight="bold" color="neutral.60">
                                 Email
                             </FormLabel>
                             <Input placeholder="finddy@gmail.com" type="email"></Input>
-                        </Box>
-                        <Box>
+                        </FormControl>
+                        <FormControl>
                             <FormLabel fontWeight="bold" color="neutral.60">
                                 Password
                             </FormLabel>
@@ -93,7 +93,7 @@ export default function Home() {
                                     </Box>
                                 </InputRightElement>
                             </InputGroup>
-                        </Box>
+                        </FormControl>
                     </Flex>
 
                     <Flex gap="16px" flexDir="column" mt="40px" w="100%">

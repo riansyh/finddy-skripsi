@@ -10,10 +10,10 @@ export default function Home() {
 
     const router = useRouter();
 
-    const handleNext = (number = 1) => {
+    const handleNext = (number) => {
         setTimeout(() => {
             setIsTransiting(false);
-            setSlider(slider + number);
+            setSlider(number == -1 ? slider + 1 : number);
         }, 200);
         setIsTransiting(true);
     };
@@ -136,7 +136,7 @@ export default function Home() {
                         </Flex>
                     ) : (
                         <Flex gap="16px" flexDir="column" mt="60px" w="100%">
-                            <Button size="full" variant="primary" onClick={() => handleNext(1)}>
+                            <Button size="full" variant="primary" onClick={() => handleNext(-1)}>
                                 Lanjutkan
                             </Button>
                             <Button size="full" variant="secondary" onClick={() => handleNext(2)}>
