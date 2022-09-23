@@ -58,3 +58,8 @@ export const lineHeights = {
     header: "135%",
     body: "150%",
 };
+
+export const shadows = {
+    card: "0px 2px 10px rgba(0, 0, 0, 0.07)",
+    nav: "0px -5px 15px rgba(0, 0, 0, 0.07)",
+};

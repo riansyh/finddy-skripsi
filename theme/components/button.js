@@ -1,7 +1,8 @@
 export const Button = {
     baseStyle: {
         fontWeight: "bold",
-        p: "12px",
+        px: "12px",
+        py: "12px",
         borderRadius: "8px",
         letterSpacing: ".5px",
     },
@@ -9,6 +10,10 @@ export const Button = {
     sizes: {
         full: {
             w: "100%",
+            h: "46px",
+        },
+        md: {
+            h: "46px",
         },
     },
 

@@ -47,8 +47,25 @@ export default function Home() {
                     alignItems="center"
                     flexDir="column"
                     py="32px"
+                    overflow="hidden"
+                    position="relative"
                 >
-                    <Box w="200px" h="200px" borderRadius="12px" bg="primary.calmblue"></Box>
+                    <Box
+                        position="absolute"
+                        w="668px"
+                        h="668px"
+                        borderRadius="100%"
+                        bg="primary.lightblue"
+                        top="-550px"
+                    ></Box>
+
+                    <Box
+                        w="160px"
+                        h="160px"
+                        borderRadius="12px"
+                        bg="primary.calmblue"
+                        zIndex="2"
+                    ></Box>
 
                     <Box
                         opacity={isTransiting ? "0.1" : "1"}
@@ -100,7 +117,11 @@ export default function Home() {
 
                     {slider == 2 ? (
                         <ButtonGroup variant="outline" spacing="16px" mt="60px" w="100%">
-                            <Button variant="secondary" onClick={() => router.push("/register")}>
+                            <Button
+                                variant="secondary"
+                                width="30%"
+                                onClick={() => router.push("/register")}
+                            >
                                 Registrasi
                             </Button>
                             <Button
@@ -113,7 +134,7 @@ export default function Home() {
                         </ButtonGroup>
                     ) : (
                         <ButtonGroup variant="outline" spacing="16px" mt="60px" w="100%">
-                            <Button variant="secondary" onClick={() => handleNext(2)}>
+                            <Button variant="secondary" width="30%" onClick={() => handleNext(2)}>
                                 Lewati
                             </Button>
                             <Button variant="primary" width="70%" onClick={() => handleNext(1)}>

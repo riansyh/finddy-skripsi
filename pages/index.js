@@ -1,6 +1,6 @@
-import { Box, Button, ButtonGroup, Flex, Text, Heading, Fade } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Text, Heading, Fade, Image } from "@chakra-ui/react";
 import Head from "next/head";
-import Image from "next/image";
+import NextImage from "next/image";
 import { useState } from "react";
 import { onboarding } from "../data/onboard";
 import { useRouter } from "next/router";
@@ -33,7 +33,7 @@ export default function Home() {
                 minW="100vw"
                 justify="center"
                 alignItems="center"
-                bg="primary.white"
+                bg="primary.lightblue"
             >
                 <Flex
                     minH={{ base: "100vh", md: "600px" }}
@@ -47,8 +47,28 @@ export default function Home() {
                     alignItems="center"
                     flexDir="column"
                     py="32px"
+                    overflow="hidden"
+                    position="relative"
                 >
-                    <Box w="200px" h="200px" borderRadius="12px" bg="primary.calmblue"></Box>
+                    <Box
+                        position="absolute"
+                        w="668px"
+                        h="668px"
+                        borderRadius="100%"
+                        bg="#F1F9FF"
+                        top="-550px"
+                    ></Box>
+
+                    <Box
+                        w="160px"
+                        h="160px"
+                        borderRadius="12px"
+                        zIndex="2"
+                        boxShadow="card"
+                        overflow="hidden"
+                    >
+                        <Image src="/images/logo.png" alt="Logo Finddy"></Image>
+                    </Box>
 
                     <Box
                         opacity={isTransiting ? "0.1" : "1"}
@@ -99,27 +119,31 @@ export default function Home() {
                     </Flex>
 
                     {slider == 2 ? (
-                        <ButtonGroup variant="outline" spacing="16px" mt="60px" w="100%">
-                            <Button variant="secondary" onClick={() => router.push("/register")}>
-                                Registrasi
-                            </Button>
+                        <Flex gap="16px" flexDir="column" mt="60px" w="100%">
                             <Button
                                 variant="primary"
-                                width="70%"
+                                size="full"
                                 onClick={() => router.push("/login")}
                             >
                                 Login
                             </Button>
-                        </ButtonGroup>
-                    ) : (
-                        <ButtonGroup variant="outline" spacing="16px" mt="60px" w="100%">
-                            <Button variant="secondary" onClick={() => handleNext(2)}>
-                                Lewati
+                            <Button
+                                variant="secondary"
+                                size="full"
+                                onClick={() => router.push("/register")}
+                            >
+                                Registrasi
                             </Button>
-                            <Button variant="primary" width="70%" onClick={() => handleNext(1)}>
+                        </Flex>
+                    ) : (
+                        <Flex gap="16px" flexDir="column" mt="60px" w="100%">
+                            <Button size="full" variant="primary" onClick={() => handleNext(1)}>
                                 Lanjutkan
                             </Button>
-                        </ButtonGroup>
+                            <Button size="full" variant="secondary" onClick={() => handleNext(2)}>
+                                Lewati
+                            </Button>
+                        </Flex>
                     )}
                 </Flex>
             </Flex>
