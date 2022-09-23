@@ -1,3 +1,24 @@
 * {
     -webkit-tap-highlight-color: transparent;
 }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #d1e6f5;
+    border-radius: 12px;
+    transition: all;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #79b0d8;
+}

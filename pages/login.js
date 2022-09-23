@@ -1,19 +1,29 @@
-import { Box, Button, Input, Flex, Text, Heading, Fade, Image, FormLabel } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Flex,
+    Text,
+    Heading,
+    Fade,
+    Image,
+    FormLabel,
+} from "@chakra-ui/react";
+
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import Head from "next/head";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Home() {
-    const [slider, setSlider] = useState(0);
+    const [isPasswordShowed, setIsPasswordShowed] = useState(false);
 
     const router = useRouter();
 
-    const handleNext = (number = 1) => {
-        setTimeout(() => {
-            setIsTransiting(false);
-            setSlider(slider + number);
-        }, 200);
-        setIsTransiting(true);
+    const showPassword = () => {
+        setIsPasswordShowed(!isPasswordShowed);
     };
 
     return (
@@ -41,7 +51,7 @@ export default function Home() {
                     px="24px"
                     flexDir="column"
                     py="32px"
-                    overflow="hidden"
+                    overflowY="scroll"
                     position="relative"
                 >
                     <Box w="40px" h="40px" borderRadius="12px" zIndex="2" overflow="hidden">
@@ -57,18 +67,32 @@ export default function Home() {
                         </Text>
                     </Box>
 
-                    <Flex alignItems="stretch" gap="20px" mt="24px" flexDir="column">
+                    <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column">
                         <Box>
-                            <FormLabel fontWeight="bold" color="neutral.80">
+                            <FormLabel fontWeight="bold" color="neutral.60">
                                 Email
                             </FormLabel>
                             <Input placeholder="finddy@gmail.com" type="email"></Input>
                         </Box>
                         <Box>
-                            <FormLabel fontWeight="bold" color="neutral.80">
+                            <FormLabel fontWeight="bold" color="neutral.60">
                                 Password
                             </FormLabel>
-                            <Input placeholder="******" type="password"></Input>
+                            <InputGroup>
+                                <Input
+                                    placeholder="******"
+                                    type={isPasswordShowed ? "text" : "password"}
+                                ></Input>
+                                <InputRightElement>
+                                    <Box cursor="pointer">
+                                        {isPasswordShowed ? (
+                                            <FiEye color="#333333" onClick={showPassword} />
+                                        ) : (
+                                            <FiEyeOff color="#333333" onClick={showPassword} />
+                                        )}
+                                    </Box>
+                                </InputRightElement>
+                            </InputGroup>
                         </Box>
                     </Flex>
 
