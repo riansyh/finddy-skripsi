@@ -9,6 +9,7 @@ import {
     Text,
     Heading,
     FormLabel,
+    Checkbox,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 
@@ -23,9 +24,29 @@ export const PreferensiBelajar = ({ saveFunction, prevFunction }) => {
                     Pilih beberapa kriteria berikut yang akan membantu proses pencarian teman
                     belajarmu
                 </Text>
+                <Flex alignItems="stretch" mt="40px" flexDir="column" gap="12px" w="100%">
+                    <Box px="12px" py="8px" borderRadius="8px" boxShadow="card">
+                        <Checkbox spacing="12px" fontSize="p2">
+                            Mencari teman belajar untuk belajar bersama
+                        </Checkbox>
+                    </Box>
+                    <Box px="12px" py="8px" borderRadius="8px" boxShadow="card">
+                        <Checkbox spacing="12px" fontSize="p2">
+                            Mencari teman belajar sebagai mentor
+                        </Checkbox>
+                    </Box>
+                    <Box px="12px" py="8px" borderRadius="8px" boxShadow="card">
+                        <Checkbox spacing="12px" fontSize="p2">
+                            Mencari teman belajar untuk bertanya dan sharing
+                        </Checkbox>
+                    </Box>
+                    <Box px="12px" py="8px" borderRadius="8px" boxShadow="card">
+                        <Checkbox spacing="12px" fontSize="p2">
+                            Mencari teman belajar sebagai teman seperjuangan
+                        </Checkbox>
+                    </Box>
+                </Flex>
             </Box>
-
-            <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column"></Flex>
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
                 <Button variant="primary" size="full" onClick={saveFunction}>

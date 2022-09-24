@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { AiFillCamera } from "react-icons/ai";
 
-export const Data = ({ nextFunction }) => {
+export const Data = ({ nextFunction, changeFunction, formValues }) => {
     return (
         <>
             <Box mt="40px">
@@ -49,25 +49,49 @@ export const Data = ({ nextFunction }) => {
                     <FormLabel fontWeight="bold" color="neutral.60">
                         Username
                     </FormLabel>
-                    <Input placeholder="Rian Febriansyah" type="text"></Input>
+                    <Input
+                        placeholder="Rian Febriansyah"
+                        type="text"
+                        id="username"
+                        value={formValues.username}
+                        onChange={changeFunction}
+                    ></Input>
                 </FormControl>
                 <FormControl>
                     <FormLabel fontWeight="bold" color="neutral.60">
                         Asal Perguruan Tinggi
                     </FormLabel>
-                    <Input placeholder="finddy@gmail.com" type="text"></Input>
+                    <Input
+                        placeholder="Universitas Padjadjaran"
+                        type="text"
+                        id="perguruanTinggi"
+                        value={formValues.perguruanTinggi}
+                        onChange={changeFunction}
+                    ></Input>
                 </FormControl>
                 <FormControl>
                     <FormLabel fontWeight="bold" color="neutral.60">
                         Lokasi
                     </FormLabel>
-                    <Input placeholder="finddy@gmail.com" type="text"></Input>
+                    <Input
+                        placeholder="Sumedang, Jawa Barat"
+                        type="text"
+                        id="lokasi"
+                        value={formValues.lokasi}
+                        onChange={changeFunction}
+                    ></Input>
                 </FormControl>
                 <FormControl>
                     <FormLabel fontWeight="bold" color="neutral.60">
                         Kontak (No. WhatsApp)
                     </FormLabel>
-                    <Input placeholder="finddy@gmail.com" type="text"></Input>
+                    <Input
+                        placeholder="0851xxxxxxxx"
+                        type="tel"
+                        id="kontak"
+                        value={formValues.kontak}
+                        onChange={changeFunction}
+                    ></Input>
                 </FormControl>
             </Flex>
 

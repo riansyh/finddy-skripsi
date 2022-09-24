@@ -11,6 +11,7 @@ import {
     FormLabel,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
+import { BidangCard } from "./BidangCard";
 
 export const BidangMinat = ({ nextFunction, prevFunction }) => {
     return (
@@ -33,11 +34,17 @@ export const BidangMinat = ({ nextFunction, prevFunction }) => {
                 </Flex>
             </Box>
 
-            <Box maxW="200px">
+            <Flex flexDir="column" w="100%" gap="20px" mt="40px">
+                <BidangCard name="Digital Marketing" />
+                <BidangCard name="Digital Marketing" />
+                <BidangCard name="Digital Marketing" />
+            </Flex>
+
+            {/* <Box maxW="200px">
                 <Text textAlign="center" fontSize="p2" color="neutral.20">
                     Belum ada bidang/minat yang dipilih
                 </Text>
-            </Box>
+            </Box> */}
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
                 <Button variant="primary" size="full" onClick={nextFunction}>
