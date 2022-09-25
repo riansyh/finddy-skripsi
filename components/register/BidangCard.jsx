@@ -1,7 +1,12 @@
 import { Box, CloseButton, Flex, Heading, Select, Text } from "@chakra-ui/react";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addBidang, removeBidang, changeBidangSkill } from "./../../feature/register/registerSlice";
 
 export const BidangCard = ({ name, skill }) => {
+    const form = useSelector((state) => state.register);
+    const dispatch = useDispatch();
+
     return (
         <Flex
             flexDir="column"

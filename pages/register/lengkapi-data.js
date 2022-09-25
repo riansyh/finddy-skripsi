@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Data } from "../../components/register/Data";
 import { PreferensiBelajar } from "../../components/register/PreferensiBelajar";
 import { BidangMinat } from "../../components/register/BidangMinat";
+import { dispatch } from "../../app/store";
 
 const initialState = {
     username: "",
@@ -87,7 +88,7 @@ export default function Home() {
                             <BidangMinat
                                 nextFunction={() => handleSlide(1)}
                                 prevFunction={() => handleSlide(-1)}
-                                changeFunction={handleInputChange}
+                                changeFunction={setformValues}
                                 formValues={formValues}
                             />
                         )}

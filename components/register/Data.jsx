@@ -10,11 +10,15 @@ import {
     FormControl,
     Avatar,
     AvatarBadge,
-    Image,
 } from "@chakra-ui/react";
 import { AiFillCamera } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { change } from "./../../feature/register/registerSlice";
 
-export const Data = ({ nextFunction, changeFunction, formValues }) => {
+export const Data = ({ nextFunction }) => {
+    const form = useSelector((state) => state.register);
+    const dispatch = useDispatch();
+
     return (
         <>
             <Box mt="40px">
@@ -53,8 +57,10 @@ export const Data = ({ nextFunction, changeFunction, formValues }) => {
                         placeholder="Rian Febriansyah"
                         type="text"
                         id="username"
-                        value={formValues.username}
-                        onChange={changeFunction}
+                        value={form.username}
+                        onChange={(e) =>
+                            dispatch(change({ name: "username", value: e.target.value }))
+                        }
                     ></Input>
                 </FormControl>
                 <FormControl>
@@ -65,8 +71,10 @@ export const Data = ({ nextFunction, changeFunction, formValues }) => {
                         placeholder="Universitas Padjadjaran"
                         type="text"
                         id="perguruanTinggi"
-                        value={formValues.perguruanTinggi}
-                        onChange={changeFunction}
+                        value={form.perguruanTinggi}
+                        onChange={(e) =>
+                            dispatch(change({ name: "perguruanTinggi", value: e.target.value }))
+                        }
                     ></Input>
                 </FormControl>
                 <FormControl>
@@ -77,8 +85,10 @@ export const Data = ({ nextFunction, changeFunction, formValues }) => {
                         placeholder="Sumedang, Jawa Barat"
                         type="text"
                         id="lokasi"
-                        value={formValues.lokasi}
-                        onChange={changeFunction}
+                        value={form.lokasi}
+                        onChange={(e) =>
+                            dispatch(change({ name: "lokasi", value: e.target.value }))
+                        }
                     ></Input>
                 </FormControl>
                 <FormControl>
@@ -89,8 +99,10 @@ export const Data = ({ nextFunction, changeFunction, formValues }) => {
                         placeholder="0851xxxxxxxx"
                         type="tel"
                         id="kontak"
-                        value={formValues.kontak}
-                        onChange={changeFunction}
+                        value={form.kontak}
+                        onChange={(e) =>
+                            dispatch(change({ name: "kontak", value: e.target.value }))
+                        }
                     ></Input>
                 </FormControl>
             </Flex>
