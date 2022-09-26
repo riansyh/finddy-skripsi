@@ -7,7 +7,7 @@ const initialState = {
     lokasi: "",
     kontak: "",
     bidangMinat: [],
-    pref: [],
+    pref: [0, 0, 0, 0],
 };
 
 const registerSlice = createSlice({
@@ -17,18 +17,25 @@ const registerSlice = createSlice({
         change: (state, action) => {
             state[action.payload.name] = action.payload.value;
         },
+        changePref: (state, action) => {
+            state.pref[action.payload.index] = action.payload.value;
+        },
         addBidang: (state, action) => {
-            state.bidangMinat.push(action.payload);
+            let stop = false;
+            state.bidangMinat.forEach((bidang) => {
+                if (bidang.id == action.payload.id) stop = true;
+            });
+
+            if (!stop) state.bidangMinat.push(action.payload);
         },
         removeBidang: (state, action) => {
-            //butuh id buat ngeremove
             state.bidangMinat = state.bidangMinat.filter((bidang) => bidang.id !== action.payload);
         },
         changeBidangSkill: (state, action) => {
-            state.bidangMinat[action.payload.index].skill = action.payload.index;
+            state.bidangMinat[action.payload.index].skill = action.payload.value;
         },
     },
 });
 
 export default registerSlice.reducer;
-export const { change, addBidang, removeBidang, changeBidangSkill } = registerSlice.actions;
+export const { change, changePref, addBidang, removeBidang, changeBidangSkill } = registerSlice.actions;

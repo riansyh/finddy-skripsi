@@ -8,12 +8,12 @@ import {
     Flex,
     Text,
     Heading,
-    FormLabel,
 } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
 import { BidangCard } from "./BidangCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addBidang, removeBidang, changeBidangSkill } from "./../../feature/register/registerSlice";
+import { addBidang } from "./../../feature/register/registerSlice";
+import useOutsideAlerter from "../../feature/hook/useOutsideAlerter";
 
 const SelectBidang = ({ children, clickHandler }) => {
     return (
@@ -35,14 +35,22 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
     const [searchKey, setSearchKey] = useState("");
     const form = useSelector((state) => state.register);
     const dispatch = useDispatch();
+    const wrapperRef = useRef(null);
+    useOutsideAlerter(wrapperRef, () => setSearchKey(""));
 
-    const handleAddBidang = (bidang) => {
-        dispatch(
-            addBidang({
-                name: bidang,
-                skill: "",
-            })
-        );
+    const handleAddBidang = (bidang, id) => {
+        if (form.bidangMinat.length < 3) {
+            dispatch(
+                addBidang({
+                    id,
+                    name: bidang,
+                    skill: "pemula",
+                })
+            );
+            setSearchKey("");
+        } else {
+            // munculin alert
+        }
     };
 
     return (
@@ -61,6 +69,7 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
                     mt="40px"
                     flexDir="column"
                     position="relative"
+                    ref={wrapperRef}
                 >
                     <InputGroup>
                         <Input
@@ -93,11 +102,19 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
                             borderColor="neutral.10"
                             zIndex="10"
                         >
-                            <SelectBidang clickHandler={() => handleAddBidang("Digital Marketing")}>
+                            <SelectBidang
+                                clickHandler={() => handleAddBidang("Digital Marketing", 1)}
+                            >
                                 Digital Marketing
                             </SelectBidang>
-                            <SelectBidang clickHandler={() => handleAddBidang("UI/UX Design")}>
+                            <SelectBidang clickHandler={() => handleAddBidang("UI/UX Design", 2)}>
                                 UI/UX Design
+                            </SelectBidang>
+                            <SelectBidang clickHandler={() => handleAddBidang("Graphic Design", 3)}>
+                                Graphic Design
+                            </SelectBidang>
+                            <SelectBidang clickHandler={() => handleAddBidang("Programming", 4)}>
+                                Programming
                             </SelectBidang>
                         </Flex>
                     )}
@@ -106,7 +123,13 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
 
             <Flex flexDir="column" w="100%" gap="20px" mt="40px">
                 {form.bidangMinat.map((value, i) => (
-                    <BidangCard key={`bidang-minat-${i}`} name={value.name} />
+                    <BidangCard
+                        key={`bidang-minat-${i}`}
+                        name={value.name}
+                        skill={value.skill}
+                        id={value.id}
+                        index={i}
+                    />
                 ))}
             </Flex>
 

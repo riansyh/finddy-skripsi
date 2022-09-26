@@ -1,10 +1,9 @@
 import { Box, CloseButton, Flex, Heading, Select, Text } from "@chakra-ui/react";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addBidang, removeBidang, changeBidangSkill } from "./../../feature/register/registerSlice";
+import { useDispatch } from "react-redux";
+import { changeBidangSkill, removeBidang } from "./../../feature/register/registerSlice";
 
-export const BidangCard = ({ name, skill }) => {
-    const form = useSelector((state) => state.register);
+export const BidangCard = ({ name, skill, id, index }) => {
     const dispatch = useDispatch();
 
     return (
@@ -22,14 +21,20 @@ export const BidangCard = ({ name, skill }) => {
                     {name}
                 </Heading>
 
-                <CloseButton size="sm"></CloseButton>
+                <CloseButton size="sm" onClick={() => dispatch(removeBidang(id))}></CloseButton>
             </Flex>
 
             <Box width="100%">
                 <Text color="neutral.60" fontSize="p4">
                     Tingkat kemampuan
                 </Text>
-                <Select mt="8px">
+                <Select
+                    mt="8px"
+                    value={skill}
+                    onChange={(e) =>
+                        dispatch(changeBidangSkill({ index: index, value: e.target.value }))
+                    }
+                >
                     <option value="pemula">Pemula</option>
                     <option value="menengah">Menengah</option>
                     <option value="ahli">Ahli</option>
