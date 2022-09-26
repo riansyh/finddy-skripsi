@@ -85,7 +85,12 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
     useOutsideAlerter(wrapperRef, () => setSearchKey(""));
 
     return (
-        <Flex flexDir="column" alignItems="center" justifyContent="space-between" minH="100vh">
+        <Flex
+            flexDir="column"
+            alignItems="center"
+            justifyContent={form.bidangMinat > 0 ? "start" : "space-between"}
+            minH="100vh"
+        >
             <Box mt="40px">
                 <Heading fontWeight="bold" fontSize="h3">
                     Pilih bidang minatmu
@@ -150,7 +155,7 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
                 </Flex>
             </Box>
 
-            <Flex flexDir="column" w="100%" gap="20px" mt="40px">
+            <Flex flexDir="column" w="100%" gap="20px" mt="40px" alignItems="stretch" minH="240px">
                 {form.bidangMinat.map((value, i) => (
                     <BidangCard
                         key={`bidang-minat-${i}`}
@@ -160,13 +165,15 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
                         index={i}
                     />
                 ))}
-            </Flex>
 
-            {/* <Box maxW="200px">
-                <Text textAlign="center" fontSize="p2" color="neutral.20">
-                    Belum ada bidang/minat yang dipilih
-                </Text>
-            </Box> */}
+                {form.bidangMinat.length == 0 && (
+                    <Flex justifyContent="center">
+                        <Text textAlign="center" fontSize="p2" color="neutral.20" maxW="200px">
+                            Belum ada bidang/minat yang dipilih
+                        </Text>
+                    </Flex>
+                )}
+            </Flex>
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
                 <Button variant="primary" size="full" onClick={nextFunction}>
