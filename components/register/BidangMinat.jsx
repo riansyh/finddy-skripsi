@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     Box,
     Button,
@@ -33,10 +33,11 @@ const SelectBidang = ({ children, clickHandler }) => {
 
 export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formValues }) => {
     const [searchKey, setSearchKey] = useState("");
-    const form = useSelector((state) => state.register);
+    const [bidangMinat, setBidangMinat] = useState([]);
+
     const dispatch = useDispatch();
+    const form = useSelector((state) => state.register);
     const wrapperRef = useRef(null);
-    useOutsideAlerter(wrapperRef, () => setSearchKey(""));
 
     const handleAddBidang = (bidang, id) => {
         if (form.bidangMinat.length < 3) {
@@ -52,6 +53,36 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
             // munculin alert
         }
     };
+
+    const removeSelectedBidang = (item) => {
+        let unselected = true;
+        form.bidangMinat.forEach((selectedBidang) => {
+            if (item.id == selectedBidang.id) {
+                unselected = false;
+                console.log(item);
+                console.log(selectedBidang);
+            }
+        });
+        return unselected;
+    };
+
+    useEffect(() => {
+        fetch(`/api/bidangminat`)
+            .then((response) => response.json())
+            .then((result) => {
+                const filteredResult = result.filter((item) =>
+                    item.name.toLowerCase().includes(searchKey.toLowerCase())
+                );
+
+                const removeSelectedResult = filteredResult.filter((item) =>
+                    removeSelectedBidang(item)
+                );
+
+                return setBidangMinat(removeSelectedResult);
+            });
+    }, [searchKey]);
+
+    useOutsideAlerter(wrapperRef, () => setSearchKey(""));
 
     return (
         <Flex flexDir="column" alignItems="center" justifyContent="space-between" minH="100vh">
@@ -102,20 +133,18 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
                             borderColor="neutral.10"
                             zIndex="10"
                         >
-                            <SelectBidang
-                                clickHandler={() => handleAddBidang("Digital Marketing", 1)}
-                            >
-                                Digital Marketing
-                            </SelectBidang>
-                            <SelectBidang clickHandler={() => handleAddBidang("UI/UX Design", 2)}>
-                                UI/UX Design
-                            </SelectBidang>
-                            <SelectBidang clickHandler={() => handleAddBidang("Graphic Design", 3)}>
-                                Graphic Design
-                            </SelectBidang>
-                            <SelectBidang clickHandler={() => handleAddBidang("Programming", 4)}>
-                                Programming
-                            </SelectBidang>
+                            {bidangMinat.length > 0 ? (
+                                bidangMinat.map((bidang, i) => (
+                                    <SelectBidang
+                                        key={i}
+                                        clickHandler={() => handleAddBidang(bidang.name, bidang.id)}
+                                    >
+                                        {bidang.name}
+                                    </SelectBidang>
+                                ))
+                            ) : (
+                                <Text>Masukkan kata kunci lain</Text>
+                            )}
                         </Flex>
                     )}
                 </Flex>

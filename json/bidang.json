@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "name": "UI/UX Desain"
+    },
+    {
+        "id": 2,
+        "name": "Frontend Developer"
+    },
+    {
+        "id": 3,
+        "name": "Backend Developer"
+    },
+    {
+        "id": 4,
+        "name": "Data Science"
+    },
+    {
+        "id": 5,
+        "name": "Manajemen Keuangan"
+    },
+    {
+        "id": 6,
+        "name": "Manajemen"
+    },
+    {
+        "id": 7,
+        "name": "Kimia"
+    },
+    {
+        "id": 8,
+        "name": "Pendidikan Kimia"
+    },
+    {
+        "id": 9,
+        "name": "Digital Marketing"
+    },
+    {
+        "id": 10,
+        "name": "Desain Grafis"
+    },
+    {
+        "id": 11,
+        "name": "Biologi"
+    },
+    {
+        "id": 12,
+        "name": "Jaringan Komputer"
+    },
+    {
+        "id": 13,
+        "name": "Teknologi Pertanian"
+    },
+    {
+        "id": 14,
+        "name": "Musik"
+    },
+    {
+        "id": 15,
+        "name": "Administrasi"
+    },
+    {
+        "id": 16,
+        "name": "Kesehatan"
+    },
+    {
+        "id": 17,
+        "name": "Web Developer"
+    },
+    {
+        "id": 18,
+        "name": "Mobile Developer"
+    },
+    {
+        "id": 19,
+        "name": "Periklanan"
+    },
+    {
+        "id": 20,
+        "name": "Manufaktur dan Industri"
+    },
+    {
+        "id": 21,
+        "name": "Artificial Intelligence"
+    },
+    {
+        "id": 22,
+        "name": "Machine Learning"
+    },
+    {
+        "id": 23,
+        "name": "Animasi"
+    },
+    {
+        "id": 24,
+        "name": "Fotografi"
+    },
+    {
+        "id": 25,
+        "name": "Videografi"
+    },
+    {
+        "id": 26,
+        "name": "DevOps"
+    },
+    {
+        "id": 26,
+        "name": "Cloud Computing"
+    }
+]
