@@ -10,20 +10,76 @@ import {
     FormControl,
     Image,
     FormLabel,
+    useToast,
 } from "@chakra-ui/react";
 
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db, storage } from "../app/firebase";
+import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
+import { useSelector } from "react-redux";
 
 export default function Home() {
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [formValues, setFormValues] = useState({
+        email: "",
+        password: "",
+    });
 
+    useFirebaseAuth();
     const router = useRouter();
+    const toast = useToast();
+    const authUser = useSelector((state) => state.authUser);
+
+    useEffect(() => {
+        if (authUser.uid) router.push("/home");
+    }, [authUser]);
 
     const showPassword = () => {
         setIsPasswordShowed(!isPasswordShowed);
+    };
+
+    const handleSubmit = async () => {
+        if (formValues.email !== "" && formValues.password !== "") {
+            console.log(formValues);
+            setLoading(true);
+
+            try {
+                const res = await signInWithEmailAndPassword(
+                    auth,
+                    formValues.email,
+                    formValues.password
+                );
+
+                toast({
+                    variant: "subtle",
+                    title: "Berhasil login!",
+                    description: "Silakan mulai cari teman belajarmu di sini!",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                });
+
+                setLoading(false);
+                router.push("/home");
+            } catch (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                toast({
+                    variant: "subtle",
+                    title: "Terjadi kesalahan",
+                    description: errorMessage,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
+                setLoading(false);
+            }
+        }
     };
 
     return (
@@ -72,7 +128,18 @@ export default function Home() {
                             <FormLabel fontWeight="bold" color="neutral.60">
                                 Email
                             </FormLabel>
-                            <Input placeholder="finddy@gmail.com" type="email"></Input>
+                            <Input
+                                placeholder="finddy@gmail.com"
+                                type="email"
+                                id="email"
+                                value={formValues.email}
+                                onChange={(e) =>
+                                    setFormValues((prev) => ({
+                                        ...prev,
+                                        [e.target.id]: e.target.value,
+                                    }))
+                                }
+                            ></Input>
                         </FormControl>
                         <FormControl>
                             <FormLabel fontWeight="bold" color="neutral.60">
@@ -82,6 +149,14 @@ export default function Home() {
                                 <Input
                                     placeholder="******"
                                     type={isPasswordShowed ? "text" : "password"}
+                                    id="password"
+                                    value={formValues.password}
+                                    onChange={(e) =>
+                                        setFormValues((prev) => ({
+                                            ...prev,
+                                            [e.target.id]: e.target.value,
+                                        }))
+                                    }
                                 ></Input>
                                 <InputRightElement>
                                     <Box cursor="pointer">
@@ -97,7 +172,12 @@ export default function Home() {
                     </Flex>
 
                     <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                        <Button variant="primary" size="full" onClick={() => router.push("/login")}>
+                        <Button
+                            variant="primary"
+                            size="full"
+                            onClick={handleSubmit}
+                            isLoading={loading}
+                        >
                             Login
                         </Button>
                     </Flex>

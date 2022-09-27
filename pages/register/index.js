@@ -10,20 +10,112 @@ import {
     FormControl,
     Image,
     FormLabel,
+    useToast,
 } from "@chakra-ui/react";
 
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db, storage } from "../../app/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { setDoc, doc } from "firebase/firestore";
+import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { useSelector } from "react-redux";
 
 export default function Home() {
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [formValues, setFormValues] = useState({
+        nama: "",
+        email: "",
+        password: "",
+        passwordConfirmation: "",
+    });
 
+    useFirebaseAuth();
+    const toast = useToast();
     const router = useRouter();
+
+    const authUser = useSelector((state) => state.authUser);
+
+    useEffect(() => {
+        if (authUser.uid) router.push("/home");
+    }, [authUser]);
 
     const showPassword = () => {
         setIsPasswordShowed(!isPasswordShowed);
+    };
+
+    const handleSubmit = async () => {
+        if (
+            formValues.nama !== "" &&
+            formValues.email !== "" &&
+            formValues.password !== "" &&
+            (formValues.passwordConfirmation !== "" && formValues.password) ==
+                formValues.passwordConfirmation
+        ) {
+            console.log(formValues);
+            setLoading(true);
+
+            try {
+                const res = await createUserWithEmailAndPassword(
+                    auth,
+                    formValues.email,
+                    formValues.password
+                );
+                await updateProfile(res.user, {
+                    displayName: formValues.nama,
+                });
+                await setDoc(doc(db, "users", res.user.uid), {
+                    uid: res.user.uid,
+                    name: formValues.nama,
+                    email: formValues.email,
+                    isComplete: false,
+                });
+
+                toast({
+                    variant: "subtle",
+                    title: "Akun berhasil dibuat!",
+                    description: "Silahkan login untuk mulai mencari teman belajar",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                });
+
+                setLoading(false);
+                router.push("/register/lengkapi-data");
+                // UPLOAD IMAGE
+                // const storageRef = ref(storage, formValues.email);
+
+                // const uploadTask = uploadBytesResumable(storageRef, file);
+
+                // uploadTask.on(
+                //     (error) => {
+                //         console.log(error);
+                //     },
+                //     () => {
+                //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                //             console.log("File available at", downloadURL);
+                //         });
+                //     }
+                // );
+                // UPLOAD IMAGE
+            } catch (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                toast({
+                    variant: "subtle",
+                    title: "Terjadi kesalahan",
+                    description: errorMessage,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
+                setLoading(false);
+            }
+        }
     };
 
     return (
@@ -72,13 +164,35 @@ export default function Home() {
                             <FormLabel fontWeight="bold" color="neutral.60">
                                 Nama Lengkap
                             </FormLabel>
-                            <Input placeholder="Rian Febriansyah" type="text"></Input>
+                            <Input
+                                placeholder="Rian Febriansyah"
+                                type="text"
+                                id="nama"
+                                value={formValues.nama}
+                                onChange={(e) =>
+                                    setFormValues((prev) => ({
+                                        ...prev,
+                                        [e.target.id]: e.target.value,
+                                    }))
+                                }
+                            ></Input>
                         </FormControl>
                         <FormControl>
                             <FormLabel fontWeight="bold" color="neutral.60">
                                 Email
                             </FormLabel>
-                            <Input placeholder="finddy@gmail.com" type="email"></Input>
+                            <Input
+                                placeholder="finddy@gmail.com"
+                                type="email"
+                                id="email"
+                                value={formValues.email}
+                                onChange={(e) =>
+                                    setFormValues((prev) => ({
+                                        ...prev,
+                                        [e.target.id]: e.target.value,
+                                    }))
+                                }
+                            ></Input>
                         </FormControl>
                         <FormControl>
                             <FormLabel fontWeight="bold" color="neutral.60">
@@ -88,6 +202,14 @@ export default function Home() {
                                 <Input
                                     placeholder="******"
                                     type={isPasswordShowed ? "text" : "password"}
+                                    id="password"
+                                    value={formValues.password}
+                                    onChange={(e) =>
+                                        setFormValues((prev) => ({
+                                            ...prev,
+                                            [e.target.id]: e.target.value,
+                                        }))
+                                    }
                                 ></Input>
                                 <InputRightElement>
                                     <Box cursor="pointer">
@@ -108,6 +230,14 @@ export default function Home() {
                                 <Input
                                     placeholder="******"
                                     type={isPasswordShowed ? "text" : "password"}
+                                    id="passwordConfirmation"
+                                    value={formValues.passwordConfirmation}
+                                    onChange={(e) =>
+                                        setFormValues((prev) => ({
+                                            ...prev,
+                                            [e.target.id]: e.target.value,
+                                        }))
+                                    }
                                 ></Input>
                                 <InputRightElement>
                                     <Box cursor="pointer">
@@ -123,7 +253,19 @@ export default function Home() {
                     </Flex>
 
                     <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                        <Button variant="primary" size="full" onClick={() => router.push("/login")}>
+                        <Button
+                            variant="primary"
+                            size="full"
+                            onClick={() => handleSubmit()}
+                            isLoading={loading}
+                            isDisabled={
+                                formValues.nama == "" ||
+                                formValues.email == "" ||
+                                formValues.password == "" ||
+                                (formValues.passwordConfirmation == "" || formValues.password) !=
+                                    formValues.passwordConfirmation
+                            }
+                        >
                             Registrasi
                         </Button>
                     </Flex>

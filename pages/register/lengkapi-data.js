@@ -1,16 +1,25 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Data } from "../../components/register/Data";
 import { PreferensiBelajar } from "../../components/register/PreferensiBelajar";
 import { BidangMinat } from "../../components/register/BidangMinat";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 
 export default function Home() {
     const [slider, setSlider] = useState(0);
     const [isTransiting, setIsTransiting] = useState(false);
 
-    const form = useSelector((state) => state.register);
+    const router = useRouter();
+    useFirebaseAuth();
+
+    const authUser = useSelector((state) => state.authUser);
+
+    useEffect(() => {
+        if (authUser.uid == null) router.push("/login");
+    }, [authUser]);
 
     const handleSlide = (number) => {
         setTimeout(() => {

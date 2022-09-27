@@ -3,10 +3,13 @@ import Head from "next/head";
 import { useState } from "react";
 import { onboarding } from "../data/onboard";
 import { useRouter } from "next/router";
+import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
 
-export default function Home() {
+export default function Index() {
     const [slider, setSlider] = useState(0);
     const [isTransiting, setIsTransiting] = useState(false);
+
+    useFirebaseAuth();
 
     const router = useRouter();
 
