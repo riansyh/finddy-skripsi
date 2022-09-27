@@ -10,9 +10,10 @@ import {
     FormControl,
     Avatar,
     AvatarBadge,
+    Tooltip,
 } from "@chakra-ui/react";
 
-import { AiFillCamera } from "react-icons/ai";
+import { AiFillCamera, AiFillInfoCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
 import { storage } from "../../app/firebase";
@@ -135,7 +136,19 @@ export const Data = ({ nextFunction }) => {
 
                 <FormControl>
                     <FormLabel fontWeight="bold" color="neutral.60">
-                        Kontak (No. WhatsApp)
+                        <Flex alignItems="center" gap="4px">
+                            <Text> Kontak (No. WhatsApp)</Text>
+                            <Tooltip
+                                hasArrow
+                                label="Kontak hanya ditampilkan kepada teman belajar yang kamu izinkan saja"
+                                bg="gray.200"
+                                color="black"
+                            >
+                                <span>
+                                    <AiFillInfoCircle color="#FE922F" />
+                                </span>
+                            </Tooltip>
+                        </Flex>
                     </FormLabel>
                     <Input
                         placeholder="0851xxxxxxxx"

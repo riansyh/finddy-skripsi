@@ -40,7 +40,7 @@ export default function Home() {
     const authUser = useSelector((state) => state.authUser);
 
     useEffect(() => {
-        if (authUser.uid && formValues.nama !== "") router.push("/home");
+        if (authUser.uid && formValues.nama === "") router.push("/home");
     }, [authUser]);
 
     const showPassword = () => {
@@ -77,7 +77,7 @@ export default function Home() {
                 toast({
                     variant: "subtle",
                     title: "Akun berhasil dibuat!",
-                    description: "Silahkan login untuk mulai mencari teman belajar",
+                    description: "Silahkan lengkapi datamu terlebih dahulu",
                     status: "success",
                     duration: 3000,
                     isClosable: true,
