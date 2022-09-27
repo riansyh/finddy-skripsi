@@ -4,7 +4,8 @@ const initialState = {
     username: "",
     imgUrl: "",
     perguruanTinggi: "",
-    lokasi: "",
+    kabupaten: "",
+    provinsi: "",
     kontak: "",
     bidangMinat: [],
     pref: [0, 0, 0, 0],
@@ -38,4 +39,5 @@ const registerSlice = createSlice({
 });
 
 export default registerSlice.reducer;
-export const { change, changePref, addBidang, removeBidang, changeBidangSkill } = registerSlice.actions;
+export const { change, changePref, addBidang, removeBidang, changeBidangSkill } =
+    registerSlice.actions;

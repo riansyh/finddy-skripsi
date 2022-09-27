@@ -4,22 +4,13 @@ import { useState } from "react";
 import { Data } from "../../components/register/Data";
 import { PreferensiBelajar } from "../../components/register/PreferensiBelajar";
 import { BidangMinat } from "../../components/register/BidangMinat";
-import { dispatch } from "../../app/store";
-
-const initialState = {
-    username: "",
-    imgUrl: "",
-    perguruanTinggi: "",
-    lokasi: "",
-    kontak: "",
-    bidangMinat: [],
-    pref: [],
-};
+import { useSelector } from "react-redux";
 
 export default function Home() {
     const [slider, setSlider] = useState(0);
     const [isTransiting, setIsTransiting] = useState(false);
-    const [formValues, setformValues] = useState(initialState);
+
+    const form = useSelector((state) => state.register);
 
     const handleSlide = (number) => {
         setTimeout(() => {
@@ -28,13 +19,6 @@ export default function Home() {
             window.scrollTo(0, 0);
         }, 200);
         setIsTransiting(true);
-    };
-
-    const handleInputChange = (e) => {
-        setformValues((prev) => ({
-            ...prev,
-            [e.target.id]: e.target.value,
-        }));
     };
 
     return (
@@ -77,27 +61,17 @@ export default function Home() {
                         transition="ease-in"
                         transitionDuration="150ms"
                     >
-                        {slider == 0 && (
-                            <Data
-                                nextFunction={() => handleSlide(1)}
-                                changeFunction={handleInputChange}
-                                formValues={formValues}
-                            />
-                        )}
+                        {slider == 0 && <Data nextFunction={() => handleSlide(1)} />}
                         {slider == 1 && (
                             <BidangMinat
                                 nextFunction={() => handleSlide(1)}
                                 prevFunction={() => handleSlide(-1)}
-                                changeFunction={setformValues}
-                                formValues={formValues}
                             />
                         )}
                         {slider == 2 && (
                             <PreferensiBelajar
                                 saveFunction={() => handleSlide(1)}
                                 prevFunction={() => handleSlide(-1)}
-                                changeFunction={handleInputChange}
-                                formValues={formValues}
                             />
                         )}
                     </Box>

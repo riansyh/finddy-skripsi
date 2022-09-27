@@ -24,6 +24,7 @@ const SelectBidang = ({ children, clickHandler }) => {
             transition="ease"
             transitionDuration="300ms"
             onClick={clickHandler}
+            cursor="pointer"
             _hover={{ bg: "#f9f9f9" }}
         >
             {children}
@@ -31,7 +32,7 @@ const SelectBidang = ({ children, clickHandler }) => {
     );
 };
 
-export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formValues }) => {
+export const BidangMinat = ({ nextFunction, prevFunction }) => {
     const [searchKey, setSearchKey] = useState("");
     const [bidangMinat, setBidangMinat] = useState([]);
 
@@ -176,7 +177,12 @@ export const BidangMinat = ({ nextFunction, prevFunction, changeFunction, formVa
             </Flex>
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                <Button variant="primary" size="full" onClick={nextFunction}>
+                <Button
+                    variant="primary"
+                    size="full"
+                    onClick={nextFunction}
+                    disabled={form.bidangMinat.length === 0}
+                >
                     Lanjutkan
                 </Button>
                 <Button variant="secondary" size="full" onClick={prevFunction}>

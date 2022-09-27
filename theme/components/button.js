@@ -23,6 +23,9 @@ export const Button = {
             textColor: "#ffffff",
             _hover: {
                 bg: "#1074BA",
+                _disabled: {
+                    bg: "#1074BA",
+                },
             },
         },
         secondary: {
@@ -30,6 +33,9 @@ export const Button = {
             textColor: "primary.calmblue",
             _hover: {
                 bg: "#D5E9F3",
+                _disabled: {
+                    bg: "#D5E9F3",
+                },
             },
         },
     },

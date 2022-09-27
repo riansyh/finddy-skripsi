@@ -77,20 +77,33 @@ export const Data = ({ nextFunction }) => {
                         }
                     ></Input>
                 </FormControl>
-                <FormControl>
-                    <FormLabel fontWeight="bold" color="neutral.60">
-                        Lokasi
-                    </FormLabel>
-                    <Input
-                        placeholder="Sumedang, Jawa Barat"
-                        type="text"
-                        id="lokasi"
-                        value={form.lokasi}
-                        onChange={(e) =>
-                            dispatch(change({ name: "lokasi", value: e.target.value }))
-                        }
-                    ></Input>
-                </FormControl>
+                <Flex gap="8px" w="100%" alignItems="end">
+                    <FormControl>
+                        <FormLabel fontWeight="bold" color="neutral.60">
+                            Lokasi
+                        </FormLabel>
+                        <Input
+                            placeholder="Kabupaten/kota"
+                            type="text"
+                            value={form.kabupaten}
+                            onChange={(e) =>
+                                dispatch(change({ name: "kabupaten", value: e.target.value }))
+                            }
+                        ></Input>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel fontWeight="bold" color="neutral.60"></FormLabel>
+                        <Input
+                            placeholder="Provinsi"
+                            type="text"
+                            value={form.provinsi}
+                            onChange={(e) =>
+                                dispatch(change({ name: "provinsi", value: e.target.value }))
+                            }
+                        ></Input>
+                    </FormControl>
+                </Flex>
+
                 <FormControl>
                     <FormLabel fontWeight="bold" color="neutral.60">
                         Kontak (No. WhatsApp)
@@ -108,7 +121,18 @@ export const Data = ({ nextFunction }) => {
             </Flex>
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                <Button variant="primary" size="full" onClick={nextFunction}>
+                <Button
+                    variant="primary"
+                    size="full"
+                    onClick={nextFunction}
+                    disabled={
+                        form.username === "" ||
+                        form.perguruanTinggi === "" ||
+                        form.kabupaten === "" ||
+                        form.provinsi === "" ||
+                        form.kontak === ""
+                    }
+                >
                     Lanjutkan
                 </Button>
             </Flex>
