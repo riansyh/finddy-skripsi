@@ -22,6 +22,7 @@ import { auth, db } from "../../app/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { useSelector } from "react-redux";
+import { LogoLink } from "../../components/LogoLink";
 
 export default function Home() {
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
@@ -111,27 +112,23 @@ export default function Home() {
             <Flex
                 as="main"
                 minH="100vh"
-                minW="100vw"
+                minW="100%"
                 justify="center"
                 alignItems="center"
                 bg="primary.lightblue"
             >
                 <Flex
                     minH={{ base: "100vh", md: "600px" }}
-                    w="100vw"
-                    maxW={{ md: "500px" }}
-                    maxH={{ md: "400px" }}
-                    borderRadius={{ md: "12px" }}
+                    w="100%"
+                    maxW={{ md: "600px" }}
                     bg="white"
                     px="24px"
                     flexDir="column"
                     py="32px"
-                    overflowY="scroll"
+                    overflowY="auto"
                     position="relative"
                 >
-                    <Box w="40px" h="40px" borderRadius="12px" zIndex="2" overflow="hidden">
-                        <Image src="/images/logo.png" alt="Logo Finddy"></Image>
-                    </Box>
+                    <LogoLink />
 
                     <Box mt="40px">
                         <Heading fontWeight="bold" fontSize="h3">

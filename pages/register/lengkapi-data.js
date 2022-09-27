@@ -42,17 +42,15 @@ export default function Home() {
             <Flex
                 as="main"
                 minH="100vh"
-                minW="100vw"
+                minW="100%"
                 justify="center"
                 alignItems="center"
                 bg="primary.lightblue"
             >
                 <Flex
                     minH={{ base: "100vh", md: "600px" }}
-                    w="100vw"
-                    maxW={{ md: "500px" }}
-                    maxH={{ md: "400px" }}
-                    borderRadius={{ md: "12px" }}
+                    w="100%"
+                    maxW={{ md: "600px" }}                    
                     bg="white"
                     px="24px"
                     flexDir="column"
