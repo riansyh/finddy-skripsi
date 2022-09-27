@@ -19,6 +19,7 @@ export default function Home() {
 
     useEffect(() => {
         if (authUser.uid == null) router.push("/login");
+        if (authUser.isComplete) router.push("/home");
     }, [authUser]);
 
     const handleSlide = (number) => {
@@ -70,7 +71,9 @@ export default function Home() {
                         transition="ease-in"
                         transitionDuration="150ms"
                     >
-                        {slider == 0 && <Data nextFunction={() => handleSlide(1)} />}
+                        {slider == 0 && (
+                            <Data authUser={authUser} nextFunction={() => handleSlide(1)} />
+                        )}
                         {slider == 1 && (
                             <BidangMinat
                                 nextFunction={() => handleSlide(1)}

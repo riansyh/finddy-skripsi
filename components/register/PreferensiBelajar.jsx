@@ -1,11 +1,61 @@
-import React from "react";
-import { Box, Button, Flex, Text, Heading, Checkbox } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Button, Flex, Text, Heading, Checkbox, useToast } from "@chakra-ui/react";
 import { changePref } from "./../../feature/register/registerSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { db } from "../../app/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 
 export const PreferensiBelajar = ({ saveFunction, prevFunction }) => {
+    const [loading, setLoading] = useState(false);
+
     const form = useSelector((state) => state.register);
+    const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
+    const toast = useToast();
+    const router = useRouter();
+
+    const handleSubmit = async () => {
+        setLoading(true);
+
+        try {
+            await updateDoc(doc(db, "users", authUser.uid), {
+                username: form.username,
+                imgUrl: form.imgUrl,
+                perguruanTinggi: form.perguruanTinggi,
+                kabupaten: form.kabupaten,
+                provinsi: form.provinsi,
+                kontak: form.kontak,
+                bidangMinat: form.bidangMinat,
+                pref: form.pref,
+                isComplete: true,
+            });
+
+            toast({
+                variant: "subtle",
+                title: "Akun berhasil diupdate!",
+                description: "Data kamu saat ini sudah lengkap",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+
+            setLoading(false);
+            router.push("/home");
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            toast({
+                variant: "subtle",
+                title: "Terjadi kesalahan",
+                description: errorMessage,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            setLoading(false);
+        }
+    };
 
     return (
         <Flex flexDir="column" alignItems="center" justifyContent="space-between" minH="100vh">
@@ -70,12 +120,7 @@ export const PreferensiBelajar = ({ saveFunction, prevFunction }) => {
             </Box>
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                <Button
-                    variant="primary"
-                    size="full"
-                    onClick={saveFunction}
-                    // disabled={form.pref === 0}
-                >
+                <Button variant="primary" size="full" onClick={handleSubmit} isLoading={loading}>
                     Simpan Data
                 </Button>
                 <Button variant="secondary" size="full" onClick={prevFunction}>

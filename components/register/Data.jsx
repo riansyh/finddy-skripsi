@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Button,
@@ -11,13 +11,37 @@ import {
     Avatar,
     AvatarBadge,
 } from "@chakra-ui/react";
+
 import { AiFillCamera } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
+import { storage } from "../../app/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export const Data = ({ nextFunction }) => {
     const form = useSelector((state) => state.register);
+    const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
+
+    const handleUploadImage = (e) => {
+        if (!e.target.files || e.target.files.length === 0) {
+            return;
+        }
+
+        const storageRef = ref(storage, `profile/${authUser.email}.png`);
+        const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+
+        uploadTask.on(
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                    dispatch(change({ name: "imgUrl", value: downloadURL }));
+                });
+            }
+        );
+    };
 
     return (
         <>
@@ -41,13 +65,18 @@ export const Data = ({ nextFunction }) => {
                         width="fit-content"
                         cursor="pointer"
                     >
-                        <Avatar size="xl">
+                        <Avatar size="xl" src={form.imgUrl != "" ? form.imgUrl : ""}>
                             <AvatarBadge boxSize="1em" borderColor="transparent">
                                 <AiFillCamera />
                             </AvatarBadge>
                         </Avatar>
                     </FormLabel>
-                    <Input type="file" opacity="0" display="none"></Input>
+                    <Input
+                        type="file"
+                        opacity="0"
+                        display="none"
+                        onChange={handleUploadImage}
+                    ></Input>
                 </FormControl>
                 <FormControl>
                     <FormLabel fontWeight="bold" color="neutral.60">

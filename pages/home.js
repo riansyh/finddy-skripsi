@@ -15,6 +15,7 @@ export default function Home() {
 
     useEffect(() => {
         if (authUser.uid == null) router.push("/login");
+        if (!authUser.isComplete) router.push("/register/lengkapi-data");
     }, [authUser]);
 
     return (

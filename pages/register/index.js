@@ -18,8 +18,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db, storage } from "../../app/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { auth, db } from "../../app/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { useSelector } from "react-redux";
@@ -41,7 +40,7 @@ export default function Home() {
     const authUser = useSelector((state) => state.authUser);
 
     useEffect(() => {
-        if (authUser.uid) router.push("/home");
+        if (authUser.uid && formValues.nama !== "") router.push("/home");
     }, [authUser]);
 
     const showPassword = () => {
@@ -86,22 +85,6 @@ export default function Home() {
 
                 setLoading(false);
                 router.push("/register/lengkapi-data");
-                // UPLOAD IMAGE
-                // const storageRef = ref(storage, formValues.email);
-
-                // const uploadTask = uploadBytesResumable(storageRef, file);
-
-                // uploadTask.on(
-                //     (error) => {
-                //         console.log(error);
-                //     },
-                //     () => {
-                //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                //             console.log("File available at", downloadURL);
-                //         });
-                //     }
-                // );
-                // UPLOAD IMAGE
             } catch (error) {
                 const errorCode = error.code;
                 const errorMessage = error.message;
