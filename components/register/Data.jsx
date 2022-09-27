@@ -36,7 +36,7 @@ export const Data = ({ nextFunction }) => {
                 console.log(error);
             },
             () => {
-                getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     dispatch(change({ name: "imgUrl", value: downloadURL }));
                 });
             }
