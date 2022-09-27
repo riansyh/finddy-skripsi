@@ -1,233 +1,154 @@
-import { Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
-import React from "react";
-import { LogoLink } from "../components/LogoLink";
-import { Navbar } from "../components/Navbar";
-
-const Fitur = ({ title, children, img }) => {
-    return (
-        <Flex flexDir="column" alignItems="center" gap="4px" maxW="210px" textAlign="center">
-            <Box w="140px" h="140px" bg="neutral.20" borderRadius="8px"></Box>
-            <Heading as="h3" fontSize="20px" mt="8px">
-                {title}
-            </Heading>
-            <Text color="neutral.60">{children}</Text>
-        </Flex>
-    );
-};
+import { Box, Button, ButtonGroup, Flex, Text, Heading, Fade, Image } from "@chakra-ui/react";
+import Head from "next/head";
+import { useState } from "react";
+import { onboarding } from "../data/onboard";
+import { useRouter } from "next/router";
+import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
 
 export default function Index() {
+    const [slider, setSlider] = useState(0);
+    const [isTransiting, setIsTransiting] = useState(false);
+
+    useFirebaseAuth();
+
+    const router = useRouter();
+
+    const handleNext = (number) => {
+        setTimeout(() => {
+            setIsTransiting(false);
+            setSlider(number == -1 ? slider + 1 : number);
+        }, 200);
+        setIsTransiting(true);
+    };
+
     return (
-        <Box position="relative">
-            <Navbar isLanding />
-            <Flex
-                w="100%"
-                alignItems="center"
-                justifyContent="center"
-                bg="primary.calmblue"
-                py="80px"
-            >
-                <Flex
-                    maxW="1320px"
-                    color="white"
-                    px={{ base: "24px", md: "80px", lg: "120px" }}
-                    w="100%"
-                    textAlign={{ base: "left", md: "center" }}
-                    flexDir="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Heading
-                        maxW="550px"
-                        fontWeight="normal"
-                        fontSize={{ base: "h3", md: "48px" }}
-                        lineHeight={{ md: "64.8px" }}
-                        as="h1"
-                    >
-                        Solusi tepat untuk mencari{" "}
-                        <Box display="inline" fontWeight="bold">
-                            teman belajar
-                        </Box>
-                    </Heading>
-                    <Text mt="12px" opacity="0.7" maxW="550px" fontWeight="normal">
-                        Temukan teman belajar di sekitarmu berdasarkan bidang/minat yang sedang kamu
-                        pelajari
-                    </Text>
-                    <Button mt="40px" variant="secondary" size={{ base: "full", md: "" }}>
-                        Mulai Perjalananku
-                    </Button>
-                </Flex>
-            </Flex>
-
-            <Flex w="100%" alignItems="center" justifyContent="center" mt="120px">
-                <Flex
-                    maxW="1320px"
-                    color="neutral.90"
-                    px={{ base: "24px", md: "80px", lg: "120px" }}
-                    w="100%"
-                    textAlign={{ base: "center", md: "left" }}
-                    flexDir="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Flex
-                        justifyContent="space-between"
-                        w="100%"
-                        alignItems="center"
-                        flexDir={{ base: "column", md: "row" }}
-                        gap="32px"
-                    >
-                        <Box maxW="343px">
-                            <Heading
-                                fontSize={{ base: "h4", md: "h3" }}
-                                lineHeight={{ md: "47.8px" }}
-                                as="h2"
-                            >
-                                Fitur yang memudahkanmu
-                            </Heading>
-                            <Text mt="12px" opacity="0.7" maxW="550px" fontWeight="normal">
-                                Finddy mempermudah kamu untuk mencari teman belajar yang sesuai
-                                dengan bidang/minat
-                            </Text>
-                        </Box>
-                        <Flex
-                            gap={{ base: "40px", md: "24px" }}
-                            flexDir={{ base: "column", md: "row" }}
-                        >
-                            <Fitur title="Cari teman">
-                                Cari berdasarkan lokasi dan bidang/minat
-                            </Fitur>
-                            <Fitur title="Motivasi Harian">
-                                Dapatkan motivasi belajar setiap hari
-                            </Fitur>
-                            <Fitur title="Hubungi Teman">Kirim pesan dan mulai belajar</Fitur>
-                        </Flex>
-                    </Flex>
-                </Flex>
-            </Flex>
-
-            <Flex w="100%" alignItems="center" justifyContent="center" mt="120px">
-                <Flex
-                    maxW="1320px"
-                    color="neutral.90"
-                    px={{ base: "24px", md: "80px", lg: "120px" }}
-                    w="100%"
-                    textAlign={{ base: "center", md: "left" }}
-                    flexDir="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Heading
-                        fontSize={{ base: "h4", md: "h3" }}
-                        lineHeight={{ md: "47.8px" }}
-                        as="h2"
-                    >
-                        Kenapa harus Finddy?
-                    </Heading>
-
-                    <Flex
-                        gap={{ base: "40px", md: "24px" }}
-                        mt="40px"
-                        justifyContent="space-between"
-                        w="100%"
-                        flexDir={{ base: "column", md: "row" }}
-                        alignItems="center"
-                    >
-                        <Fitur title="Cari teman">Cari berdasarkan lokasi dan bidang/minat</Fitur>
-                        <Fitur title="Motivasi Harian">Dapatkan motivasi belajar setiap hari</Fitur>
-                        <Fitur title="Hubungi Teman">Kirim pesan dan mulai belajar</Fitur>
-                    </Flex>
-                </Flex>
-            </Flex>
+        <div>
+            <Head>
+                <title>Finddy | Onboarding</title>
+                <meta name="description" content="" />
+                <link rel="icon" href="/logo.svg" />
+            </Head>
 
             <Flex
-                w="100%"
+                as="main"
+                minH="100vh"
+                minW="100vw"
+                justify="center"
                 alignItems="center"
-                justifyContent="center"
-                mt="120px"
                 bg="primary.lightblue"
-                py="36px"
             >
                 <Flex
-                    maxW="1320px"
-                    color="neutral.90"
-                    px={{ base: "24px", md: "80px", lg: "120px" }}
-                    w="100%"
-                    textAlign={{ base: "center", md: "left" }}
-                    flexDir="column"
-                    justifyContent="center"
+                    minH={{ base: "100vh", md: "600px" }}
+                    w="100vw"
+                    maxW={{ md: "500px" }}
+                    maxH={{ md: "400px" }}
+                    borderRadius={{ md: "12px" }}
+                    bg="white"
+                    px="24px"
+                    justify="center"
                     alignItems="center"
-                >
-                    <Text maxW="550px" fontWeight="normal" color="primary.calmblue">
-                        Belajar dengan Kami
-                    </Text>
-                    <Heading
-                        fontSize={{ base: "h4", md: "h2" }}
-                        as="h2"
-                        maxW="774px"
-                        textAlign="center"
-                        mt="16px"
-                    >
-                        Tingkatkan semangat belajarmu dengan teman belajar!
-                    </Heading>
-
-                    <Text mt="12px" opacity="0.7" maxW="550px" fontWeight="normal" color="black">
-                        Tunggu apa lagi, mulai daftar dan temukan teman belajarmu di sini
-                    </Text>
-
-                    <Button variant="primary" mt="24px">
-                        Registrasi Sekarang
-                    </Button>
-                </Flex>
-            </Flex>
-
-            <Flex
-                w="100%"
-                alignItems="center"
-                justifyContent="center"
-                mt="120px"
-                pt="24px"
-                pb="40px"
-                as="footer"
-            >
-                <Flex
-                    maxW="1320px"
-                    color="neutral.90"
-                    px={{ base: "24px", md: "80px", lg: "120px" }}
-                    w="100%"
-                    textAlign={{ base: "center", md: "left" }}
                     flexDir="column"
-                    justifyContent="center"
-                    alignItems="center"
+                    py="32px"
+                    overflow="hidden"
+                    position="relative"
                 >
-                    <Flex
-                        justifyContent="space-between"
-                        w="100%"
-                        alignItems="center"
-                        flexDir={{ base: "column", md: "row" }}
-                        gap="40px"
+                    <Box
+                        position="absolute"
+                        w="668px"
+                        h="668px"
+                        borderRadius="100%"
+                        bg="#F1F9FF"
+                        top="-550px"
+                    ></Box>
+
+                    <Box
+                        w="160px"
+                        h="160px"
+                        borderRadius="12px"
+                        zIndex="2"
+                        boxShadow="card"
+                        overflow="hidden"
                     >
-                        <Flex gap="40px" alignItems="center">
-                            <NextLink href="/register" passHref>
-                                <Link w="fit-content">
-                                    <Image
-                                        src="./images/logotype.svg"
-                                        alt="Finddy logo"
-                                        h="40px"
-                                    ></Image>
-                                </Link>
-                            </NextLink>
-                            <NextLink href="/register" passHref>
-                                <Link w="fit-content">Registrasi</Link>
-                            </NextLink>
-                            <NextLink href="/login" passHref>
-                                <Link w="fit-content">Login</Link>
-                            </NextLink>
-                        </Flex>
-                        <Text>© Finddy 2022</Text>
+                        <Image src="/images/logo.png" alt="Logo Finddy"></Image>
+                    </Box>
+
+                    <Box
+                        opacity={isTransiting ? "0.1" : "1"}
+                        transition="ease-in"
+                        transitionDuration="150ms"
+                    >
+                        <Heading
+                            fontSize="h5"
+                            fontWeight="normal"
+                            letterSpacing="1.2px"
+                            textAlign="center"
+                            color="neutral.80"
+                            mt="32px"
+                        >
+                            {onboarding[slider].title}
+                        </Heading>
+
+                        <Text fontSize="p2" color="neutral.80" mt="24px">
+                            {onboarding[slider].desc}
+                        </Text>
+                    </Box>
+
+                    <Flex alignItems="center" justify="center" gap="16px" mt="24px">
+                        <Box
+                            borderRadius="100px"
+                            h="8px"
+                            w="8px"
+                            bg={slider == 0 ? "primary.calmblue" : "neutral.20"}
+                        >
+                            {" "}
+                        </Box>
+                        <Box
+                            borderRadius="100px"
+                            h="8px"
+                            w="8px"
+                            bg={slider == 1 ? "primary.calmblue" : "neutral.20"}
+                        >
+                            {" "}
+                        </Box>
+                        <Box
+                            borderRadius="100px"
+                            h="8px"
+                            w="8px"
+                            bg={slider == 2 ? "primary.calmblue" : "neutral.20"}
+                        >
+                            {" "}
+                        </Box>
                     </Flex>
+
+                    {slider == 2 ? (
+                        <Flex gap="16px" flexDir="column" mt="60px" w="100%">
+                            <Button
+                                variant="primary"
+                                size="full"
+                                onClick={() => router.push("/login")}
+                            >
+                                Login
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                size="full"
+                                onClick={() => router.push("/register")}
+                            >
+                                Registrasi
+                            </Button>
+                        </Flex>
+                    ) : (
+                        <Flex gap="16px" flexDir="column" mt="60px" w="100%">
+                            <Button size="full" variant="primary" onClick={() => handleNext(-1)}>
+                                Lanjutkan
+                            </Button>
+                            <Button size="full" variant="secondary" onClick={() => handleNext(2)}>
+                                Lewati
+                            </Button>
+                        </Flex>
+                    )}
                 </Flex>
             </Flex>
-        </Box>
+        </div>
     );
 }
