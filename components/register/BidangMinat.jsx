@@ -90,9 +90,9 @@ export const BidangMinat = ({ nextFunction, prevFunction }) => {
             flexDir="column"
             alignItems="center"
             justifyContent={form.bidangMinat > 0 ? "start" : "space-between"}
-            minH="100vh"
+            minH="100vh"            
         >
-            <Box mt="40px">
+            <Box mt="40px" w="100%">
                 <Heading fontWeight="bold" fontSize="h3">
                     Pilih bidang minatmu
                 </Heading>

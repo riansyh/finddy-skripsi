@@ -7,6 +7,7 @@ import { BidangMinat } from "../../components/register/BidangMinat";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { LogoLink } from "../../components/LogoLink";
 
 export default function Home() {
     const [slider, setSlider] = useState(0);
@@ -50,7 +51,7 @@ export default function Home() {
                 <Flex
                     minH={{ base: "100vh", md: "600px" }}
                     w="100%"
-                    maxW={{ md: "600px" }}                    
+                    maxW={{ md: "600px" }}
                     bg="white"
                     px="24px"
                     flexDir="column"
@@ -63,6 +64,8 @@ export default function Home() {
                         <Box h="8px" w="100%" bg={slider >= 1 ? "#87BDE3" : "#E6E6E6"}></Box>
                         <Box h="8px" w="100%" bg={slider >= 2 ? "#87BDE3" : "#E6E6E6"}></Box>
                     </Flex>
+
+                    <LogoLink />
 
                     <Box
                         opacity={isTransiting ? "0.1" : "1"}
