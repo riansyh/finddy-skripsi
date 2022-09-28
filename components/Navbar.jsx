@@ -1,20 +1,12 @@
 import { Avatar, Box, Button, Flex, Link, Text, useDisclosure } from "@chakra-ui/react";
-import {
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-} from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 import { auth } from "../app/firebase";
 import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
 import { LogoLink } from "./LogoLink";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu, FiUser } from "react-icons/fi";
 
 export const Navbar = ({ isLanding }) => {
     useFirebaseAuth();
@@ -46,7 +38,7 @@ export const Navbar = ({ isLanding }) => {
                         <LogoLink />
 
                         {authUser.uid && isLanding && (
-                            <Flex gap="24px" display={{ base: "none", md: "none" }}>
+                            <Flex gap="24px" display={{ base: "none", md: "flex" }}>
                                 <NextLink href="/register" passHref>
                                     <Link w="fit-content" h="fit-content" opacity="0.8">
                                         Beranda
@@ -67,7 +59,15 @@ export const Navbar = ({ isLanding }) => {
                     </Flex>
 
                     {authUser.uid ? (
-                        <Flex gap="8px" display={{ base: "none", md: "flex" }}>
+                        <Flex gap="24px" display={{ base: "none", md: "flex" }} alignItems="center">
+                            <Flex alignItems="center" gap="4px">
+                                <NextLink href="/profile" passHref>
+                                    <Link>
+                                        <FiUser color="#fff" />
+                                    </Link>
+                                </NextLink>
+                                <Text color="white">Halo, {authUser.name}</Text>
+                            </Flex>
                             <Button variant="primary" onClick={() => auth.signOut()}>
                                 Logout
                             </Button>
@@ -80,7 +80,7 @@ export const Navbar = ({ isLanding }) => {
                                 </Link>
                             </NextLink>
                             <NextLink href="/login" passHref>
-                                <Link>
+                                <Link underline="none">
                                     <Button variant="secondary">Login</Button>
                                 </Link>
                             </NextLink>
