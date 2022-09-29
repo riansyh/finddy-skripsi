@@ -1,4 +1,14 @@
-import { Avatar, Box, Button, Flex, Link, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Button,
+    CloseButton,
+    Flex,
+    Link,
+    Text,
+    useDisclosure,
+    useToast,
+} from "@chakra-ui/react";
 import { Drawer, DrawerBody, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { useEffect } from "react";
@@ -16,10 +26,6 @@ export const Navbar = ({ isLanding, heroHeight }) => {
     const authUser = useSelector((state) => state.authUser);
     const toast = useToast();
     const scrollPosition = useScrollPosition();
-
-    useEffect(() => {
-        console.log(scrollPosition);
-    }, [scrollPosition]);
 
     return (
         <Flex
@@ -45,8 +51,12 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                     <Flex gap="32px" alignItems="center" color="white">
                         <LogoLink />
 
-                        {authUser.uid && isLanding && (
-                            <Flex gap="24px" display={{ base: "none", md: "flex" }} color={scrollPosition > heroHeight ? "neutral.80" : "white"}>
+                        {authUser.uid && (
+                            <Flex
+                                gap="24px"
+                                display={{ base: "none", md: "flex" }}
+                                color={scrollPosition > heroHeight ? "neutral.80" : "white"}
+                            >
                                 <NextLink href="/register" passHref>
                                     <Link w="fit-content" h="fit-content" opacity="0.8">
                                         Beranda
@@ -68,7 +78,11 @@ export const Navbar = ({ isLanding, heroHeight }) => {
 
                     {authUser.uid ? (
                         <Flex gap="24px" display={{ base: "none", md: "flex" }} alignItems="center">
-                            <Flex alignItems="center" gap="4px" color={scrollPosition > heroHeight ? "#333" : "#fff"}>
+                            <Flex
+                                alignItems="center"
+                                gap="4px"
+                                color={scrollPosition > heroHeight ? "#333" : "#fff"}
+                            >
                                 <NextLink href="/profile" passHref>
                                     <Link>
                                         <FiUser />
@@ -131,10 +145,17 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                                                 w="52px"
                                                 src={authUser.data ? authUser.data.imgUrl : ""}
                                             ></Avatar>
-                                            <Box>
-                                                <Text size="h7" color="neutra.80" fontWeight="bold">
-                                                    {authUser.name}
-                                                </Text>
+                                            <Box w="100%">
+                                                <Flex w="100%" justifyContent="space-between">
+                                                    <Text
+                                                        size="h7"
+                                                        color="neutra.80"
+                                                        fontWeight="bold"
+                                                    >
+                                                        {authUser.name}
+                                                    </Text>
+                                                    <CloseButton size="sm" onClick={onClose} />
+                                                </Flex>
                                                 <NextLink href="/login" passHref>
                                                     <Link color="primary.orange">
                                                         <Text size="12px">Halaman profil</Text>
