@@ -1,12 +1,26 @@
-import { Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Button,
+    Flex,
+    Grid,
+    GridItem,
+    Heading,
+    Image,
+    Link,
+    Text,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
+import { EmptyStates } from "../components/EmptyStates";
 import { LogoLink } from "../components/LogoLink";
 import { Menubar } from "../components/Menubar";
 import { Motivations } from "../components/Motivations";
 import { Navbar } from "../components/Navbar";
+import { FiMapPin } from "react-icons/fi";
+import { FriendCard } from "../components/friend/FriendCard";
 
 const Fitur = ({ title, children, img, isCenter, isFeature }) => {
     return (
@@ -100,6 +114,51 @@ export default function Index() {
                         alignItems="center"
                     >
                         <Motivations></Motivations>
+                    </Flex>
+                </Flex>
+
+                <Flex w="100%" alignItems="center" justifyContent="center" mt="32px">
+                    <Flex
+                        maxW="1320px"
+                        color="neutral.90"
+                        px={{ base: "24px", md: "80px", lg: "120px" }}
+                        w="100%"
+                        textAlign={{ base: "center", md: "left" }}
+                        flexDir="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Flex w="100%" justifyContent="space-between">
+                            <Heading as="h2" fontSize="h6">
+                                Teman belajar
+                            </Heading>
+                            <NextLink href="/daftar-teman" passHref>
+                                <Link color="primary.orange">
+                                    <Text fontSize="p3">Lihat semua</Text>
+                                </Link>
+                            </NextLink>
+                        </Flex>
+
+                        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} w="100%" rowGap="12px" columnGap="16px" mt="24px">
+                            <GridItem w="100%">
+                                <FriendCard />
+                            </GridItem>
+                            <GridItem w="100%">
+                                <FriendCard />
+                            </GridItem>
+                            <GridItem w="100%">
+                                <FriendCard />
+                            </GridItem>
+                        </Grid>
+
+                        {false && (
+                            <EmptyStates
+                                text="Kamu belum memiliki satupun teman belajar tersimpan"
+                                btnText="Cari teman sekarang"
+                                btnHref="/search"
+                                isHaveButton
+                            />
+                        )}
                     </Flex>
                 </Flex>
             </Box>
