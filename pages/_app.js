@@ -1,5 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import "/styles/globals.css";
+import "/styles/carousel.css";
 import "@fontsource/plus-jakarta-sans";
 import theme from "../theme";
 import { Provider } from "react-redux";

@@ -2,8 +2,10 @@ import { Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react"
 import Head from "next/head";
 import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import { Carousel } from "react-responsive-carousel";
 import { LogoLink } from "../components/LogoLink";
 import { Menubar } from "../components/Menubar";
+import { Motivations } from "../components/Motivations";
 import { Navbar } from "../components/Navbar";
 
 const Fitur = ({ title, children, img, isCenter, isFeature }) => {
@@ -47,7 +49,7 @@ export default function Index() {
                 <link rel="icon" href="/logo.svg" />
             </Head>
 
-            <Box position="relative">
+            <Box position="relative" pb="100px">
                 <Navbar heroHeight={heroHeight} />
                 <Flex
                     w="100%"
@@ -56,6 +58,7 @@ export default function Index() {
                     bg="primary.calmblue"
                     py="80px"
                     ref={ref}
+                    pb="140px"
                 >
                     <Flex
                         maxW="1320px"
@@ -65,7 +68,7 @@ export default function Index() {
                         textAlign={{ base: "left", md: "center" }}
                         flexDir="column"
                         justifyContent="center"
-                        alignItems="center"
+                        alignItems={{ base: "start", md: "center" }}
                     >
                         <Heading
                             maxW="550px"
@@ -85,7 +88,7 @@ export default function Index() {
                     </Flex>
                 </Flex>
 
-                <Flex w="100%" alignItems="center" justifyContent="center" mt="120px">
+                <Flex w="100%" alignItems="center" justifyContent="center" mt="-100px">
                     <Flex
                         maxW="1320px"
                         color="neutral.90"
@@ -95,7 +98,9 @@ export default function Index() {
                         flexDir="column"
                         justifyContent="center"
                         alignItems="center"
-                    ></Flex>
+                    >
+                        <Motivations></Motivations>
+                    </Flex>
                 </Flex>
             </Box>
 
