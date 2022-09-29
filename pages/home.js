@@ -70,9 +70,9 @@ export default function Index() {
                     alignItems="center"
                     justifyContent="center"
                     bg="primary.calmblue"
-                    py="80px"
+                    py={{base: "40px", md:"60px"}}
                     ref={ref}
-                    pb="140px"
+                    pb={{base: "140px", md:"140px"}}
                 >
                     <Flex
                         maxW="1320px"

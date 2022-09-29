@@ -57,7 +57,7 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                                 display={{ base: "none", md: "flex" }}
                                 color={scrollPosition > heroHeight ? "neutral.80" : "white"}
                             >
-                                <NextLink href="/register" passHref>
+                                <NextLink href="/home" passHref>
                                     <Link w="fit-content" h="fit-content" opacity="0.8">
                                         Beranda
                                     </Link>
@@ -166,7 +166,7 @@ export const Navbar = ({ isLanding, heroHeight }) => {
 
                                         {isLanding && (
                                             <Flex gap="24px" flexDir="column" mb="32px">
-                                                <NextLink href="/register" passHref>
+                                                <NextLink href="/home" passHref>
                                                     <Link w="fit-content" h="fit-content">
                                                         Beranda
                                                     </Link>
