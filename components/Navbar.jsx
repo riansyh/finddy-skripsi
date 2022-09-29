@@ -1,29 +1,37 @@
-import { Avatar, Box, Button, Flex, Link, Text, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Link, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import { Drawer, DrawerBody, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { auth } from "../app/firebase";
 import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
 import { LogoLink } from "./LogoLink";
 import { FiMenu, FiUser } from "react-icons/fi";
+import useScrollPosition from "../feature/hook/useScrollPosition";
 
-export const Navbar = ({ isLanding }) => {
+export const Navbar = ({ isLanding, heroHeight }) => {
     useFirebaseAuth();
     const btnRef = React.useRef();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const authUser = useSelector((state) => state.authUser);
+    const toast = useToast();
+    const scrollPosition = useScrollPosition();
+
+    useEffect(() => {
+        console.log(scrollPosition);
+    }, [scrollPosition]);
 
     return (
         <Flex
             w="100%"
             alignItems="center"
             justifyContent="center"
-            bg="primary.calmblue"
+            bg={scrollPosition > heroHeight ? "white" : "primary.calmblue"}
             as="header"
             position="sticky"
             top="0"
             zIndex="100"
+            boxShadow={scrollPosition > heroHeight ? "card" : ""}
         >
             <Box maxW="1320px" px={{ base: "24px", md: "80px", lg: "120px" }} w="100%">
                 <Flex
@@ -38,7 +46,7 @@ export const Navbar = ({ isLanding }) => {
                         <LogoLink />
 
                         {authUser.uid && isLanding && (
-                            <Flex gap="24px" display={{ base: "none", md: "flex" }}>
+                            <Flex gap="24px" display={{ base: "none", md: "flex" }} color={scrollPosition > heroHeight ? "neutral.80" : "white"}>
                                 <NextLink href="/register" passHref>
                                     <Link w="fit-content" h="fit-content" opacity="0.8">
                                         Beranda
@@ -60,27 +68,40 @@ export const Navbar = ({ isLanding }) => {
 
                     {authUser.uid ? (
                         <Flex gap="24px" display={{ base: "none", md: "flex" }} alignItems="center">
-                            <Flex alignItems="center" gap="4px">
+                            <Flex alignItems="center" gap="4px" color={scrollPosition > heroHeight ? "#333" : "#fff"}>
                                 <NextLink href="/profile" passHref>
                                     <Link>
-                                        <FiUser color="#fff" />
+                                        <FiUser />
                                     </Link>
                                 </NextLink>
-                                <Text color="white">Halo, {authUser.name}</Text>
+                                <Text>Halo, {authUser.name}</Text>
                             </Flex>
-                            <Button variant="primary" onClick={() => auth.signOut()}>
+                            <Button
+                                variant={scrollPosition > heroHeight ? "secondary" : "primary"}
+                                onClick={() => {
+                                    auth.signOut();
+                                    onClose();
+                                    toast({
+                                        position: "top",
+                                        title: "Berhasil logout!",
+                                        status: "success",
+                                        duration: 3000,
+                                        isClosable: true,
+                                    });
+                                }}
+                            >
                                 Logout
                             </Button>
                         </Flex>
                     ) : (
                         <Flex gap="8px" display={{ base: "none", md: "flex" }}>
                             <NextLink href="/register" passHref>
-                                <Link>
+                                <Link _hover={{ textDecoration: "none" }}>
                                     <Button variant="primary">Registrasi</Button>
                                 </Link>
                             </NextLink>
                             <NextLink href="/login" passHref>
-                                <Link underline="none">
+                                <Link _hover={{ textDecoration: "none" }}>
                                     <Button variant="secondary">Login</Button>
                                 </Link>
                             </NextLink>
@@ -93,7 +114,10 @@ export const Navbar = ({ isLanding }) => {
                         display={{ base: "block", md: "none" }}
                         cursor="pointer"
                     >
-                        <FiMenu size="32px" color="#ffffff" />
+                        <FiMenu
+                            size="32px"
+                            color={scrollPosition > heroHeight ? "#222222" : "#fff"}
+                        />
                     </Box>
                     <Drawer placement="top" onClose={onClose} isOpen={isOpen}>
                         <DrawerOverlay />
@@ -101,7 +125,7 @@ export const Navbar = ({ isLanding }) => {
                             <DrawerBody px={{ base: "24px", md: "80px", lg: "120px" }} py="40px">
                                 {authUser.uid ? (
                                     <Flex flexDir="column" gap="8px">
-                                        <Flex p="12px" gap="12px" alignItems="center" mb="24px">
+                                        <Flex gap="12px" alignItems="center" mb="24px">
                                             <Avatar
                                                 h="52px"
                                                 w="52px"
@@ -142,7 +166,16 @@ export const Navbar = ({ isLanding }) => {
                                         <Button
                                             variant="secondary"
                                             size="full"
-                                            onClick={() => auth.signOut()}
+                                            onClick={() => {
+                                                auth.signOut();
+                                                toast({
+                                                    position: "top",
+                                                    title: "Berhasil logout!",
+                                                    status: "success",
+                                                    duration: 3000,
+                                                    isClosable: true,
+                                                });
+                                            }}
                                         >
                                             Logout
                                         </Button>

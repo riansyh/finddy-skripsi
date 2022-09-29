@@ -13,6 +13,18 @@ import {
     Tooltip,
 } from "@chakra-ui/react";
 
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverAnchor,
+} from "@chakra-ui/react";
+
 import { AiFillCamera, AiFillInfoCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
@@ -138,16 +150,20 @@ export const Data = ({ nextFunction }) => {
                     <FormLabel fontWeight="bold" color="neutral.60">
                         <Flex alignItems="center" gap="4px">
                             <Text> Kontak (No. WhatsApp)</Text>
-                            <Tooltip
-                                hasArrow
-                                label="Kontak hanya ditampilkan kepada teman belajar yang kamu izinkan saja"
-                                bg="gray.200"
-                                color="black"
-                            >
-                                <span>
-                                    <AiFillInfoCircle color="#FE922F" />
-                                </span>
-                            </Tooltip>
+                            <Popover>
+                                <PopoverTrigger>
+                                    <button>
+                                        <AiFillInfoCircle color="#FE922F" />
+                                    </button>
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                    <PopoverArrow />
+                                    <PopoverBody fontWeight="normal" fontSize="14px">
+                                        Kontak hanya ditampilkan kepada teman belajar yang kamu
+                                        izinkan saja
+                                    </PopoverBody>
+                                </PopoverContent>
+                            </Popover>
                         </Flex>
                     </FormLabel>
                     <Input

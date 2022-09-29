@@ -77,6 +77,7 @@ export default function Home() {
 
                 toast({
                     variant: "subtle",
+                    position: "top",
                     title: "Akun berhasil dibuat!",
                     description: "Silahkan lengkapi datamu terlebih dahulu",
                     status: "success",
@@ -91,6 +92,7 @@ export default function Home() {
                 const errorMessage = error.message;
                 toast({
                     variant: "subtle",
+                    position: "top",
                     title: "Terjadi kesalahan",
                     description: errorMessage,
                     status: "error",

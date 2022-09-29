@@ -33,6 +33,7 @@ export const PreferensiBelajar = ({ saveFunction, prevFunction }) => {
 
             toast({
                 variant: "subtle",
+                position: "top",
                 title: "Akun berhasil diupdate!",
                 description: "Data kamu saat ini sudah lengkap",
                 status: "success",
@@ -47,6 +48,7 @@ export const PreferensiBelajar = ({ saveFunction, prevFunction }) => {
             const errorMessage = error.message;
             toast({
                 variant: "subtle",
+                position: "top",
                 title: "Terjadi kesalahan",
                 description: errorMessage,
                 status: "error",

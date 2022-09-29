@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LogoLink } from "../components/LogoLink";
 import { Navbar } from "../components/Navbar";
 
@@ -31,6 +31,13 @@ const Fitur = ({ title, children, img, isCenter, isFeature }) => {
 };
 
 export default function Index() {
+    const [heroHeight, setHeroHeight] = useState(0);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        setHeroHeight(ref.current.clientHeight);
+    }, []);
+
     return (
         <>
             <Head>
@@ -39,13 +46,14 @@ export default function Index() {
                 <link rel="icon" href="/logo.svg" />
             </Head>
             <Box position="relative">
-                <Navbar isLanding />
+                <Navbar isLanding heroHeight={heroHeight} />
                 <Flex
                     w="100%"
                     alignItems="center"
                     justifyContent="center"
                     bg="primary.calmblue"
                     py="80px"
+                    ref={ref}
                 >
                     <Flex
                         maxW="1320px"
