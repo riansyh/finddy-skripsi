@@ -1,59 +1,29 @@
-import {
-    Avatar,
-    Box,
-    Button,
-    Flex,
-    Grid,
-    GridItem,
-    Heading,
-    Image,
-    Link,
-    Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { Carousel } from "react-responsive-carousel";
 import { EmptyStates } from "../components/EmptyStates";
-import { LogoLink } from "../components/LogoLink";
 import { Menubar } from "../components/Menubar";
 import { Motivations } from "../components/Motivations";
 import { Navbar } from "../components/Navbar";
-import { FiMapPin } from "react-icons/fi";
 import { FriendCard } from "../components/friend/FriendCard";
-
-const Fitur = ({ title, children, img, isCenter, isFeature }) => {
-    return (
-        <Flex
-            flexDir="column"
-            alignItems="center"
-            gap="4px"
-            maxW="210px"
-            textAlign="center"
-            mb={isCenter ? { md: "40px" } : ""}
-            alignSelf={isFeature ? "end" : ""}
-        >
-            <Box w="140px" h="140px">
-                <Image src={`./images/${img}`} alt={`illustration-${img}`}></Image>
-            </Box>
-            {isFeature && (
-                <Heading as="h3" fontSize="20px" mt="8px">
-                    {title}
-                </Heading>
-            )}
-
-            <Text color="neutral.60">{children}</Text>
-        </Flex>
-    );
-};
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function Index() {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
+    const authUser = useSelector((state) => state.authUser);
+    const router = useRouter();
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
     }, []);
+
+    useEffect(() => {
+        if (authUser.uid == null) router.push("/login");
+        if (!authUser.isComplete) router.push("/register/lengkapi-data");
+    }, [authUser]);
 
     return (
         <>
@@ -64,15 +34,15 @@ export default function Index() {
             </Head>
 
             <Box position="relative" pb="100px">
-                <Navbar heroHeight={heroHeight} />
+                <Navbar isHome heroHeight={heroHeight} />
                 <Flex
                     w="100%"
                     alignItems="center"
                     justifyContent="center"
                     bg="primary.calmblue"
-                    py={{base: "40px", md:"60px"}}
+                    py={{ base: "40px", md: "60px" }}
                     ref={ref}
-                    pb={{base: "140px", md:"140px"}}
+                    pb={{ base: "140px", md: "140px" }}
                 >
                     <Flex
                         maxW="1320px"
@@ -139,7 +109,13 @@ export default function Index() {
                             </NextLink>
                         </Flex>
 
-                        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} w="100%" rowGap="12px" columnGap="16px" mt="24px">
+                        <Grid
+                            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+                            w="100%"
+                            rowGap="12px"
+                            columnGap="16px"
+                            mt="24px"
+                        >
                             <GridItem w="100%">
                                 <FriendCard />
                             </GridItem>

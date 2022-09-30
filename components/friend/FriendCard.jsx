@@ -15,6 +15,7 @@ export const FriendCard = () => {
                     borderRadius="12px"
                     boxShadow="card"
                     w="100%"
+                    bg="white"
                     _hover={{ bg: "primary.white" }}
                     transitionDuration="500ms"
                     transition="ease"

@@ -46,7 +46,7 @@ export default function Index() {
                 <link rel="icon" href="/logo.svg" />
             </Head>
             <Box position="relative">
-                <Navbar isLanding heroHeight={heroHeight} />
+                <Navbar isLanding isHome heroHeight={heroHeight} />
                 <Flex
                     w="100%"
                     alignItems="center"

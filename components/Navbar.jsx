@@ -10,29 +10,39 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { Drawer, DrawerBody, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
+import React from "react";
 import NextLink from "next/link";
-import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { auth } from "../app/firebase";
 import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
 import { LogoLink } from "./LogoLink";
 import { FiMenu, FiUser } from "react-icons/fi";
 import useScrollPosition from "../feature/hook/useScrollPosition";
+import { useRouter } from "next/router";
 
-export const Navbar = ({ isLanding, heroHeight }) => {
+export const Navbar = ({ isLanding, heroHeight, isHome }) => {
     useFirebaseAuth();
-    const btnRef = React.useRef();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const authUser = useSelector((state) => state.authUser);
+    const btnRef = React.useRef();
     const toast = useToast();
+    const router = useRouter();
     const scrollPosition = useScrollPosition();
+    const authUser = useSelector((state) => state.authUser);
 
     return (
         <Flex
             w="100%"
             alignItems="center"
             justifyContent="center"
-            bg={scrollPosition > heroHeight ? "white" : "primary.calmblue"}
+            bg={
+                isHome
+                    ? scrollPosition > heroHeight
+                        ? "white"
+                        : "primary.calmblue"
+                    : scrollPosition > 20
+                    ? "white"
+                    : "transparent"
+            }
             as="header"
             position="sticky"
             top="0"
@@ -55,20 +65,34 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                             <Flex
                                 gap="24px"
                                 display={{ base: "none", md: "flex" }}
-                                color={scrollPosition > heroHeight ? "neutral.80" : "white"}
+                                color={
+                                    scrollPosition > heroHeight || !isHome ? "neutral.80" : "white"
+                                }
                             >
                                 <NextLink href="/home" passHref>
-                                    <Link w="fit-content" h="fit-content" opacity="0.8">
+                                    <Link
+                                        w="fit-content"
+                                        h="fit-content"
+                                        opacity={router.pathname == "/home" ? "1" : "0.7"}
+                                    >
                                         Beranda
                                     </Link>
                                 </NextLink>
-                                <NextLink href="/register" passHref>
-                                    <Link w="fit-content" h="fit-content" opacity="0.8">
+                                <NextLink href="/search" passHref>
+                                    <Link
+                                        w="fit-content"
+                                        h="fit-content"
+                                        opacity={router.pathname == "/search" ? "1" : "0.7"}
+                                    >
                                         Cari teman
                                     </Link>
                                 </NextLink>
-                                <NextLink href="/register" passHref>
-                                    <Link w="fit-content" h="fit-content" opacity="0.8">
+                                <NextLink href="/chat" passHref>
+                                    <Link
+                                        w="fit-content"
+                                        h="fit-content"
+                                        opacity={router.pathname == "/chat" ? "1" : "0.7"}
+                                    >
                                         Pesan
                                     </Link>
                                 </NextLink>
@@ -81,7 +105,7 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                             <Flex
                                 alignItems="center"
                                 gap="4px"
-                                color={scrollPosition > heroHeight ? "#333" : "#fff"}
+                                color={scrollPosition > heroHeight || !isHome ? "#333" : "#fff"}
                             >
                                 <NextLink href="/profile" passHref>
                                     <Link>
@@ -91,7 +115,9 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                                 <Text>Halo, {authUser.name}</Text>
                             </Flex>
                             <Button
-                                variant={scrollPosition > heroHeight ? "secondary" : "primary"}
+                                variant={
+                                    scrollPosition > heroHeight || !isHome ? "secondary" : "primary"
+                                }
                                 onClick={() => {
                                     auth.signOut();
                                     onClose();
@@ -102,6 +128,7 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                                         duration: 3000,
                                         isClosable: true,
                                     });
+                                    router.push("/login");
                                 }}
                             >
                                 Logout
@@ -130,7 +157,7 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                     >
                         <FiMenu
                             size="32px"
-                            color={scrollPosition > heroHeight ? "#222222" : "#fff"}
+                            color={scrollPosition > heroHeight || !isHome ? "#222222" : "#fff"}
                         />
                     </Box>
                     <Drawer placement="top" onClose={onClose} isOpen={isOpen}>
@@ -171,12 +198,12 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                                                         Beranda
                                                     </Link>
                                                 </NextLink>
-                                                <NextLink href="/register" passHref>
+                                                <NextLink href="/searc" passHref>
                                                     <Link w="fit-content" h="fit-content">
                                                         Cari teman
                                                     </Link>
                                                 </NextLink>
-                                                <NextLink href="/register" passHref>
+                                                <NextLink href="/chat" passHref>
                                                     <Link w="fit-content" h="fit-content">
                                                         Pesan
                                                     </Link>
@@ -196,6 +223,7 @@ export const Navbar = ({ isLanding, heroHeight }) => {
                                                     duration: 3000,
                                                     isClosable: true,
                                                 });
+                                                router.push("/login");
                                             }}
                                         >
                                             Logout
