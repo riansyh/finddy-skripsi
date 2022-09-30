@@ -21,6 +21,7 @@ import { FriendCard } from "../components/friend/FriendCard";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
+import { BidangOption } from "../components/BidangOption";
 
 export default function Search() {
     const [heroHeight, setHeroHeight] = useState(0);
@@ -85,21 +86,28 @@ export default function Search() {
                         <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal">
                             Cari berdasarkan bidang/minat, kemampuan, dan lokasi
                         </Text>
-                        <InputGroup bg="white" mt="24px">
+                        <InputGroup bg="white" mt="40px">
                             <Input
                                 placeholder="Cari berdasarkan nama/username"
                                 type="text"
                                 value={searchKey}
+                                outline="none"
+                                borderColor="transparent"
+                                boxShadow="card"
                                 onChange={(e) => {
                                     setSearchKey(e.target.value);
                                 }}
                             ></Input>
                             <InputRightElement>
-                                <FiSearch color="#666666" />
+                                <FiSearch color="#107CC7" />
                             </InputRightElement>
                         </InputGroup>
 
-                        <Flex w="100%" flexDir="column" gap="4px">
+                        <Flex
+                            w="100%"
+                            flexDir={{ base: "column", md: "row" }}
+                            gap={{ base: "4px", md: "16px" }}
+                        >
                             <Box mt="12px">
                                 <Flex
                                     gap="4px"
@@ -110,11 +118,23 @@ export default function Search() {
                                     <FiBook />
                                     <Text>Bidang/minat</Text>
                                 </Flex>
-                                <Flex>Bidang bidang</Flex>
+                                <Flex
+                                    mt="4px"
+                                    gap="8px"
+                                    maxW="100%"
+                                    overflowX="auto"
+                                    className="no-scroll"
+                                >
+                                    <BidangOption isActive>UI/UX Design</BidangOption>
+                                    <BidangOption>Frontend Dev.</BidangOption>
+                                    <BidangOption>Web Dev.</BidangOption>
+                                    <BidangOption>Web Dev.</BidangOption>
+                                    <BidangOption>Web Dev.</BidangOption>
+                                </Flex>
                             </Box>
 
                             <Flex gap="16px">
-                                <Box mt="12px">
+                                <Box mt="12px" w={{ base: "100%", md: "auto" }}>
                                     <Flex
                                         gap="4px"
                                         fontSize="p4"
@@ -125,14 +145,21 @@ export default function Search() {
                                         <Text>Kemampuan</Text>
                                     </Flex>
                                     <Flex>
-                                        <Select size="md" bg="white" mt="2px">
+                                        <Select
+                                            size="sm"
+                                            bg="white"
+                                            mt="4px"
+                                            borderColor="neutral.60"
+                                            color="neutral.60"
+                                            w={{ base: "100%", md: "auto" }}
+                                        >
                                             <option value="pemula">Pemula</option>
                                             <option value="menengah">Menengah</option>
                                             <option value="ahli">Ahli</option>
                                         </Select>
                                     </Flex>
                                 </Box>
-                                <Box mt="12px">
+                                <Box mt="12px" w={{ base: "100%", md: "auto" }}>
                                     <Flex
                                         gap="4px"
                                         fontSize="p4"
@@ -143,10 +170,16 @@ export default function Search() {
                                         <Text>Lokasi</Text>
                                     </Flex>
                                     <Flex>
-                                        <Select size="md" bg="white" mt="2px">
-                                            <option value="pemula">Pemula</option>
-                                            <option value="menengah">Menengah</option>
-                                            <option value="ahli">Ahli</option>
+                                        <Select
+                                            size="sm"
+                                            bg="white"
+                                            mt="4px"
+                                            borderColor="neutral.60"
+                                            color="neutral.60"
+                                            w={{ base: "100%", md: "auto" }}
+                                        >
+                                            <option value="pemula">Semua lokasi</option>
+                                            <option value="menengah">Lokasiku</option>
                                         </Select>
                                     </Flex>
                                 </Box>
@@ -168,7 +201,7 @@ export default function Search() {
                     ></Flex>
                 </Flex>
 
-                <Flex w="100%" alignItems="center" justifyContent="center" mt="32px">
+                <Flex w="100%" alignItems="center" justifyContent="center" mt="24px">
                     <Flex
                         maxW="1320px"
                         color="neutral.90"
