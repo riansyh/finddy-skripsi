@@ -149,8 +149,7 @@ export default function Search() {
                                             size="sm"
                                             bg="white"
                                             mt="4px"
-                                            borderColor="neutral.60"
-                                            color="neutral.60"
+                                            borderColor="neutral.20"
                                             w={{ base: "100%", md: "auto" }}
                                         >
                                             <option value="pemula">Pemula</option>
@@ -174,8 +173,7 @@ export default function Search() {
                                             size="sm"
                                             bg="white"
                                             mt="4px"
-                                            borderColor="neutral.60"
-                                            color="neutral.60"
+                                            borderColor="neutral.20"
                                             w={{ base: "100%", md: "auto" }}
                                         >
                                             <option value="pemula">Semua lokasi</option>
@@ -212,7 +210,8 @@ export default function Search() {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <Flex w="100%" justifyContent="center">
+                        <Flex w="100%" justifyContent="center" alignItems="center" gap="4px">
+                            <FiSearch color="#666" />
                             <Text fontSize="h6" color="neutral.40">
                                 Hasil pencarian
                             </Text>
