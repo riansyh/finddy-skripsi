@@ -211,7 +211,7 @@ export default function Search() {
                         alignItems="center"
                     >
                         <Flex w="100%" justifyContent="center" alignItems="center" gap="4px">
-                            <FiSearch color="#666" />
+                            <FiSearch color="#999" />
                             <Text fontSize="h6" color="neutral.40">
                                 Hasil pencarian
                             </Text>
