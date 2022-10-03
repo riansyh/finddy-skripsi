@@ -1,7 +1,8 @@
-import { Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { LogoLink } from "../components/LogoLink";
 import { Navbar } from "../components/Navbar";
 
@@ -32,6 +33,7 @@ const Fitur = ({ title, children, img, isCenter, isFeature }) => {
 
 export default function Index() {
     const [heroHeight, setHeroHeight] = useState(0);
+    const authUser = useSelector((state) => state.authUser);
     const ref = useRef(null);
 
     useEffect(() => {
@@ -86,6 +88,26 @@ export default function Index() {
                         </Button>
                     </Flex>
                 </Flex>
+
+                {authUser.uid && !authUser.isComplete && (
+                    <Box mt="24px" px={{ base: "24px", md: "80px", lg: "120px" }} maxW="1320px">
+                        <Alert status="warning" variant="left-accent">
+                            <AlertIcon />
+                            Kamu belum melengkapi data! Untuk bisa menikmati fitur aplikasi ini
+                            silakan lengkapi{" "}
+                            <Box
+                                display="inline"
+                                ml="4px"
+                                fontWeight="bold"
+                                textDecoration="underline"
+                            >
+                                <NextLink href="/register/lengkapi-data" passHref>
+                                    <Link>di sini</Link>
+                                </NextLink>
+                            </Box>
+                        </Alert>
+                    </Box>
+                )}
 
                 <Flex w="100%" alignItems="center" justifyContent="center" mt="120px">
                     <Flex

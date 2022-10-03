@@ -7,7 +7,7 @@ import { BidangPill } from "./BidangPill";
 
 export const FriendCard = () => {
     return (
-        <NextLink href="/" passHref>
+        <NextLink href="/user" passHref>
             <Link _hover={{ textDecor: "none" }}>
                 <Flex
                     gap="12px"
@@ -38,8 +38,8 @@ export const FriendCard = () => {
                         </Flex>
                         <Flex gap="4px" mt="4px">
                             <BidangPill color="accent.sky" name="UI/UX Designer" />
-                            <BidangPill color="accent.grass" name="UI/UX Designer" />
-                            <BidangPill color="accent.sunshine" name="UI/UX Designer" />
+                            <BidangPill color="accent.grass" name="Web Developer" />
+                            {/* <BidangPill color="accent.sunshine" name="UI/UX Designer" /> */}
                         </Flex>
                     </Flex>
                 </Flex>
