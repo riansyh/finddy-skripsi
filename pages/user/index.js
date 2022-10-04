@@ -4,32 +4,23 @@ import {
     Button,
     Flex,
     Heading,
-    Input,
-    InputGroup,
-    InputRightElement,
     Link,
     ListItem,
     OrderedList,
     Text,
     Textarea,
     useDisclosure,
-} from "@chakra-ui/react";
-
-import {
     Modal,
     ModalOverlay,
     ModalContent,
-    ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
 import NextLink from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Menubar } from "../../components/Menubar";
-
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus } from "react-icons/fi";
@@ -73,13 +64,7 @@ const BidangMinat = ({ children, skill }) => {
 };
 
 export default function User() {
-    const [heroHeight, setHeroHeight] = useState(0);
     const { isOpen, onOpen, onClose } = useDisclosure();
-
-    const ref = useRef(null);
-    const authUser = useSelector((state) => state.authUser);
-    const router = useRouter();
-    const [searchKey, setSearchKey] = useState("");
 
     return (
         <>

@@ -7,12 +7,10 @@ import {
     Input,
     InputGroup,
     InputRightElement,
-    Link,
     Select,
     Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { EmptyStates } from "../components/EmptyStates";
 import { Menubar } from "../components/Menubar";

@@ -3,33 +3,8 @@ import Head from "next/head";
 import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { LogoLink } from "../components/LogoLink";
+import { Feature } from "../components/Feature";
 import { Navbar } from "../components/Navbar";
-
-const Fitur = ({ title, children, img, isCenter, isFeature }) => {
-    return (
-        <Flex
-            flexDir="column"
-            alignItems="center"
-            gap="4px"
-            maxW="210px"
-            textAlign="center"
-            mb={isCenter ? { md: "40px" } : ""}
-            alignSelf={isFeature ? "end" : ""}
-        >
-            <Box w="140px" h="140px">
-                <Image src={`./images/${img}`} alt={`illustration-${img}`}></Image>
-            </Box>
-            {isFeature && (
-                <Heading as="h3" fontSize="20px" mt="8px">
-                    {title}
-                </Heading>
-            )}
-
-            <Text color="neutral.60">{children}</Text>
-        </Flex>
-    );
-};
 
 export default function Index() {
     const [heroHeight, setHeroHeight] = useState(0);
@@ -144,15 +119,20 @@ export default function Index() {
                                 gap={{ base: "40px", md: "24px" }}
                                 flexDir={{ base: "column", md: "row" }}
                             >
-                                <Fitur title="Cari teman" img="fitur-1.svg" isFeature>
+                                <Feature title="Cari teman" img="fitur-1.svg" isFeature>
                                     Cari berdasarkan lokasi dan bidang/minat
-                                </Fitur>
-                                <Fitur title="Motivasi Harian" img="fitur-2.svg" isCenter isFeature>
+                                </Feature>
+                                <Feature
+                                    title="Motivasi Harian"
+                                    img="fitur-2.svg"
+                                    isCenter
+                                    isFeature
+                                >
                                     Dapatkan motivasi belajar setiap hari
-                                </Fitur>
-                                <Fitur title="Hubungi Teman" img="fitur-3.svg" isFeature>
+                                </Feature>
+                                <Feature title="Hubungi Teman" img="fitur-3.svg" isFeature>
                                     Kirim pesan dan mulai belajar
-                                </Fitur>
+                                </Feature>
                             </Flex>
                         </Flex>
                     </Flex>
@@ -185,13 +165,15 @@ export default function Index() {
                             flexDir={{ base: "column", md: "row" }}
                             alignItems="center"
                         >
-                            <Fitur img="reason-1.svg">
+                            <Feature img="reason-1.svg">
                                 Membantumu ketika belajar secara mandiri
-                            </Fitur>
-                            <Fitur img="reason-2.svg">Jalin koneksi dengan berbagai pengguna</Fitur>
-                            <Fitur img="reason-3.svg">
+                            </Feature>
+                            <Feature img="reason-2.svg">
+                                Jalin koneksi dengan berbagai pengguna
+                            </Feature>
+                            <Feature img="reason-3.svg">
                                 Tampilan yang sederhana dan mudah digunakan
-                            </Fitur>
+                            </Feature>
                         </Flex>
                     </Flex>
                 </Flex>
