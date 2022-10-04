@@ -198,7 +198,7 @@ export const Navbar = ({ isLanding, heroHeight, isHome }) => {
                                                         Beranda
                                                     </Link>
                                                 </NextLink>
-                                                <NextLink href="/searc" passHref>
+                                                <NextLink href="/search" passHref>
                                                     <Link w="fit-content" h="fit-content">
                                                         Cari teman
                                                     </Link>
