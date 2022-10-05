@@ -1,12 +1,15 @@
-import { Avatar, Box, Button, CloseButton, Flex, Link, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, CloseButton, Flex, Link, Text, useToast } from "@chakra-ui/react";
 import { Drawer, DrawerBody, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
 import React from "react";
 import NextLink from "next/link";
 import { useSelector } from "react-redux";
 import { auth } from "../app/firebase";
+import { useRouter } from "next/router";
 
 export const DrawerMenu = ({ onClose, isOpen, isLanding }) => {
     const authUser = useSelector((state) => state.authUser);
+    const toast = useToast();
+    const router = useRouter();
 
     return (
         <Drawer placement="top" onClose={onClose} isOpen={isOpen}>

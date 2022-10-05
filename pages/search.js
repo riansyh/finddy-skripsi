@@ -86,6 +86,7 @@ export default function Search() {
                         <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal">
                             Cari berdasarkan bidang/minat, kemampuan, dan lokasi
                         </Text>
+                        
                         <InputGroup bg="white" mt="40px">
                             <Input
                                 placeholder="Cari berdasarkan nama/username"
