@@ -7,10 +7,13 @@ import { login, logout } from "../authUser/authUserSlice";
 
 export default function useFirebaseAuth() {
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
 
     const authStateChanged = async (authState) => {
+        setLoading(true);
         if (!authState) {
             dispatch(logout());
+            setLoading(false);
             return;
         }
 
@@ -24,6 +27,7 @@ export default function useFirebaseAuth() {
             console.log("No such document!");
         }
 
+        setLoading(false);
         dispatch(
             login({
                 uid: authState.uid,
@@ -39,4 +43,6 @@ export default function useFirebaseAuth() {
         const unsubscribe = onAuthStateChanged(auth, authStateChanged);
         return () => unsubscribe();
     }, []);
+
+    return { loading };
 }

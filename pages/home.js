@@ -21,8 +21,11 @@ export default function Index() {
     }, []);
 
     useEffect(() => {
-        if (authUser.uid == null) router.push("/login");
-        if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        if (!authUser) {
+            router.push("/login");
+        } else {
+            if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        }
     }, [authUser]);
 
     return (

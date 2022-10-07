@@ -36,8 +36,11 @@ export default function Search() {
     }, []);
 
     useEffect(() => {
-        if (authUser.uid == null) router.push("/login");
-        if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        if (!authUser) {
+            router.push("/login");
+        } else {
+            if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        }
     }, [authUser]);
 
     useEffect(() => {
@@ -86,8 +89,8 @@ export default function Search() {
                         <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal">
                             Cari berdasarkan bidang/minat, kemampuan, dan lokasi
                         </Text>
-                        
-                        <InputGroup bg="white" mt="40px">
+
+                        <InputGroup bg="white" mt="40px" borderRadius="4px">
                             <Input
                                 placeholder="Cari berdasarkan nama/username"
                                 type="text"

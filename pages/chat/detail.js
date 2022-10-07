@@ -23,6 +23,7 @@ import { BidangOption } from "../../components/BidangOption";
 import { UserCard } from "../../components/chat/UserCard";
 import { Chatbar } from "../../components/chat/Chatbar";
 import { ChatInfo } from "../../components/chat/ChatInfo";
+import { BubbleChat } from "../../components/chat/BubbleChat";
 
 export default function Detail() {
     const [heroHeight, setHeroHeight] = useState(0);
@@ -54,29 +55,16 @@ export default function Detail() {
                         color="neutral.90"
                         px={{ base: "24px", md: "80px", lg: "120px" }}
                         w="100%"
-                        textAlign={{ base: "center", md: "left" }}
                         flexDir="column"
-                        justifyContent="center"
-                        alignItems="center"
                         bg="#F1F9FF"
                         py="20px"
+                        gap="16px"
+                        overflowY="auto"
                     >
-                        <Grid
-                            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
-                            w="100%"
-                            rowGap="12px"
-                            columnGap="16px"
-                        >
-                            <GridItem w="100%">
-                                <UserCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <UserCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <UserCard />
-                            </GridItem>
-                        </Grid>
+                        <BubbleChat time="12.00">Haloo</BubbleChat>
+                        <BubbleChat type="friend" time="12.00">
+                            Haloo
+                        </BubbleChat>
 
                         {false && (
                             <EmptyStates

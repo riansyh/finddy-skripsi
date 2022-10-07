@@ -9,9 +9,8 @@ export const Chatbar = () => {
 
     return (
         <Flex
-            display={{ base: "flex", md: "none" }}
             position="fixed"
-            h="67px"
+            h="60px"
             bg="white"
             zIndex="100"
             boxShadow="nav"
@@ -19,12 +18,12 @@ export const Chatbar = () => {
             alignItems="center"
             w="100%"
             py="12px"
-            px="8px"
+            px={{ base: "8px", md: "80px", lg: "120px" }}
             gap="12px"
             justifyContent="space-between"
         >
-            <Input borderRadius="40px" fontSize="12px"></Input>
-            <Button variant="primary" borderRadius="80px">
+            <Input borderRadius="40px" fontSize="12px" py="10px" h="max-content"></Input>
+            <Button variant="primary" borderRadius="80px" height="auto">
                 <FiSend />
             </Button>
         </Flex>
