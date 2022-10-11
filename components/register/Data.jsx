@@ -36,24 +36,26 @@ export const Data = ({ nextFunction }) => {
     const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
 
-    const handleUploadImage = (e) => {
-        if (!e.target.files || e.target.files.length === 0) {
-            return;
-        }
-
-        const storageRef = ref(storage, `profile/${authUser.email}.png`);
-        const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
-
-        uploadTask.on(
-            (error) => {
-                console.log(error);
-            },
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    dispatch(change({ name: "imgUrl", value: downloadURL }));
-                });
+    const handleUploadImage = async (e) => {
+        try {
+            if (!e.target.files || e.target.files.length === 0) {
+                return;
             }
-        );
+
+            const storageRef = await ref(storage, `profile/${authUser.email}.png`);
+            const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+
+            uploadTask.on(
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        dispatch(change({ name: "imgUrl", value: downloadURL }));
+                    });
+                }
+            );
+        } catch (error) {}
     };
 
     return (

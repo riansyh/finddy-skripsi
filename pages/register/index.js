@@ -75,6 +75,8 @@ export default function Home() {
                     isComplete: false,
                 });
 
+                await setDoc(doc(db, "userChats", res.user.uid), {});
+
                 toast({
                     variant: "subtle",
                     position: "top",

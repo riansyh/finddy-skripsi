@@ -24,19 +24,13 @@ import { UserCard } from "../../components/chat/UserCard";
 import { Chatbar } from "../../components/chat/Chatbar";
 import { ChatInfo } from "../../components/chat/ChatInfo";
 import { BubbleChat } from "../../components/chat/BubbleChat";
+import { onSnapshot } from "firebase/firestore";
 
 export default function Detail() {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
-
-    const [searchKey, setSearchKey] = useState("");
-
-    // useEffect(() => {
-    //     if (authUser.uid == null) router.push("/login");
-    //     if (!authUser.isComplete) router.push("/register/lengkapi-data");
-    // }, [authUser]);
 
     return (
         <>

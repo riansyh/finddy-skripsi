@@ -5,16 +5,16 @@ import { FiMapPin } from "react-icons/fi";
 import { FaBookmark } from "react-icons/fa";
 import { BidangPill } from "./BidangPill";
 
-export const FriendCard = () => {
+export const FriendCard = ({ href, onClick, chat }) => {
     return (
-        <NextLink href="/user" passHref>
+        <NextLink href="/user" passHref onClick={onClick}>
             <Link _hover={{ textDecor: "none" }}>
                 <Flex
                     gap="12px"
                     p="12px"
                     alignItems="center"
                     borderRadius="12px"
-                    boxShadow="card"
+                    boxShadow={chat ? "" : "card"}
                     w="100%"
                     bg="white"
                     _hover={{ bg: "primary.white" }}

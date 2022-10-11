@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Flex,
     Grid,
     GridItem,
@@ -7,8 +8,10 @@ import {
     Input,
     InputGroup,
     InputRightElement,
+    Link,
     Select,
     Text,
+    useDisclosure,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,14 +24,33 @@ import { useRouter } from "next/router";
 import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
 import { BidangOption } from "../../components/BidangOption";
 import { UserCard } from "../../components/chat/UserCard";
+import { FaPlus } from "react-icons/fa";
+import NextLink from "next/link";
+import { FriendList } from "../../components/chat/FriendList";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../app/firebase";
 
 export default function Chat() {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [searchKey, setSearchKey] = useState("");
+    const [chats, setChats] = useState([]);
+
+    useEffect(() => {
+        const unsub = onSnapshot(doc(db, "userChats", authUser.uid), (doc) => {
+            console.log("Current data: ", doc.data());
+            setChats(doc.data());
+        });
+
+        return () => {
+            unsub();
+        };
+    }, [authUser.uid]);
+
+    // Object.entries(chats)
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
@@ -116,10 +138,10 @@ export default function Chat() {
                             </GridItem>
                         </Grid>
 
-                        {false && (
+                        {true && (
                             <EmptyStates
-                                text="Kamu belum memiliki satupun teman belajar tersimpan"
-                                btnText="Cari teman sekarang"
+                                text="Kamu belum memiliki satupun pesan"
+                                btnText="Kirim pesan sekarang"
                                 btnHref="/search"
                                 isHaveButton
                             />
@@ -127,8 +149,13 @@ export default function Chat() {
                     </Flex>
                 </Flex>
             </Box>
-
+            <Box position="fixed" bottom={{ base: "94px", md: "24px" }} right="24px">
+                <Button borderRadius="100px" variant="primary" w="52px" h="52px" onClick={onOpen}>
+                    <FaPlus />
+                </Button>
+            </Box>
             <Menubar />
+            <FriendList isOpen={isOpen} onClose={onClose} />
         </>
     );
 }
