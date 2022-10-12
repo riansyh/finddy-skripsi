@@ -116,6 +116,7 @@ export const BidangMinat = ({ nextFunction, prevFunction }) => {
                             onChange={(e) => {
                                 setSearchKey(e.target.value);
                             }}
+                            isDisabled={form.bidangMinat.length > 2}
                         ></Input>
                         <InputRightElement>
                             <FiSearch color="#333333" />

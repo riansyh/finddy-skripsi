@@ -1,12 +1,20 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import dayjs from "dayjs";
+import React, { useEffect, useRef } from "react";
+import { showMessageTime } from "../../feature/showMessageTime";
 
-export const BubbleChat = ({ type = "mine", children, time }) => {
+export const BubbleChat = ({ isMyChat, children, time }) => {
+    const ref = useRef();
+
+    useEffect(() => {
+        ref.current?.scrollIntoView({ behavior: "smooth" });
+    }, [children]);
+
     return (
-        <Flex flexDir="column" alignItems={type == "mine" ? "flex-end" : "flex-start"}>
+        <Flex flexDir="column" alignItems={isMyChat ? "flex-end" : "flex-start"} ref={ref}>
             <Box
                 color="#333"
-                bg={type == "mine" ? "accent.grass" : "primary.lightblue"}
+                bg={isMyChat ? "accent.grass" : "#E5EBEE"}
                 fontSize="12px"
                 minW="100px"
                 borderRadius="4px"
@@ -17,8 +25,8 @@ export const BubbleChat = ({ type = "mine", children, time }) => {
             >
                 {children}
             </Box>
-            <Text color="#7E7E7E" mt="4px" fontSize="8px">
-                {time}
+            <Text color="#7E7E7E" mt="2px" fontSize="8px">
+                {showMessageTime(time, true)}
             </Text>
         </Flex>
     );

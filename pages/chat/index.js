@@ -36,18 +36,21 @@ export default function Chat() {
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
     const [chats, setChats] = useState([]);
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "userChats", authUser.uid), (doc) => {
-            console.log("Current data: ", doc.data());
-            setChats(doc.data());
-        });
+        const getChats = () => {
+            const unsub = onSnapshot(doc(db, "userChats", authUser.uid), (doc) => {
+                console.log("Current data: ", Object.entries(doc.data()));
+                setChats(doc.data());
+            });
 
-        return () => {
-            unsub();
+            return () => {
+                unsub();
+            };
         };
+
+        authUser.uid && getChats();
     }, [authUser.uid]);
 
     // Object.entries(chats)
@@ -127,18 +130,19 @@ export default function Chat() {
                             rowGap="12px"
                             columnGap="16px"
                         >
-                            <GridItem w="100%">
-                                <UserCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <UserCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <UserCard />
-                            </GridItem>
+                            {Object.entries(chats)
+                                .sort((a, b) => b[1].date - a[1].date)
+                                ?.map((chat) => (
+                                    <GridItem w="100%" key={chat[0]}>
+                                        <UserCard
+                                            href={`chat/${chat[0]}/${chat[1].userInfo?.uid}`}
+                                            chat={chat[1]}
+                                        />
+                                    </GridItem>
+                                ))}
                         </Grid>
 
-                        {true && (
+                        {!chats && (
                             <EmptyStates
                                 text="Kamu belum memiliki satupun pesan"
                                 btnText="Kirim pesan sekarang"

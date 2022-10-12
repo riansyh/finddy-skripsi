@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal,
     ModalOverlay,
@@ -11,46 +11,85 @@ import {
     Input,
 } from "@chakra-ui/react";
 import { FriendCard } from "../friend/FriendCard";
-import { doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    serverTimestamp,
+    setDoc,
+    updateDoc,
+    where,
+} from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "../../app/firebase";
+import { useRouter } from "next/router";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 export const FriendList = ({ onClose, isOpen }) => {
     const authUser = useSelector((state) => state.authUser);
+    const router = useRouter();
+    const [users, setUsers] = useState(null);
 
-    const handleUserSelect = async ({ user }) => {
+    useEffect(() => {
+        const showUser = async () => {
+            const querySnapshot = await getDocs(collection(db, "users"));
+
+            let users = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (authUser.uid && data.uid != authUser.uid && data.isComplete) users.push(data);
+            });
+
+            setUsers(users);
+        };
+
+        showUser();
+    }, [authUser]);
+
+    const handleUserSelect = async (user) => {
         // check apakah user grup sudah ada, kalo belum buat grup chat dan kalo ada langsung redirect ke url terkait
         const combineId =
             authUser.uid > user.uid ? authUser.uid + user.uid : user.uid + authUser.uid;
         try {
             const res = await getDoc(doc(db, "chats", combineId));
 
+            console.log(user, authUser);
+
             if (!res.exists()) {
                 //create chat collections
-                await setDoc(doc, (db, "chats", combineId), { messages: [] });
+                await setDoc(doc(db, "chats", combineId), { messages: [] });
 
                 // create user chats
-                await updateDoc(doc, (db, "userChats", authUser.uid), {
+                await updateDoc(doc(db, "userChats", authUser.uid), {
                     [combineId + ".userInfo"]: {
                         uid: user.uid,
-                        displayName: user.displayName,
+                        name: user.name,
                         imgUrl: user.imgUrl,
-                        bidang: user.data.bidangMinat,
+                        bidang: user.bidangMinat,
                     },
                     [combineId + ".date"]: serverTimestamp(),
                 });
 
-                await updateDoc(doc, (db, "userChats", user.uid), {
+                await updateDoc(doc(db, "userChats", user.uid), {
                     [combineId + ".userInfo"]: {
                         uid: authUser.uid,
-                        displayName: authUser.displayName,
-                        imgUrl: authUser.imgUrl,
+                        name: authUser.name,
+                        imgUrl: authUser.data.imgUrl,
                         bidang: authUser.data.bidangMinat,
                     },
                     [combineId + ".date"]: serverTimestamp(),
                 });
+
+                console.log("beres euy");
+                router.push(`/chat/${combineId}/${user.uid}`);
+            } else {
+                router.push("/chat/detail");
             }
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -63,11 +102,14 @@ export const FriendList = ({ onClose, isOpen }) => {
                     <Input type="text" placeholder="Cari teman" mb="12px" />
                     <Flex flexDir="column" gap="8px">
                         {/* ngefetch dari list teman tersimpan dan belum meiliki pesan */}
-                        <FriendCard chat />
-                        <FriendCard chat />
-                        <FriendCard chat />
-                        <FriendCard chat />
-                        <FriendCard chat />
+                        {users?.map((user, index) => (
+                            <FriendCard
+                                key={`friend-${index}`}
+                                chat
+                                user={user}
+                                onClick={() => handleUserSelect(user)}
+                            />
+                        ))}
                     </Flex>
                 </ModalBody>
             </ModalContent>

@@ -5,7 +5,7 @@ import "@fontsource/plus-jakarta-sans";
 import theme from "../theme";
 import { Provider } from "react-redux";
 import store from "../app/store";
-import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
+import NextNProgress from "nextjs-progressbar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../app/firebase";
 
@@ -24,6 +24,7 @@ function MyApp({ Component, pageProps }) {
     return (
         <Provider store={store}>
             <ChakraProvider theme={theme}>
+                <NextNProgress />
                 <Component {...pageProps} />
             </ChakraProvider>
         </Provider>

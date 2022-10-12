@@ -5,7 +5,7 @@ import { BidangPill } from "../friend/BidangPill";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-export const ChatInfo = () => {
+export const ChatInfo = ({ user }) => {
     return (
         <Flex
             w="100%"
@@ -35,7 +35,7 @@ export const ChatInfo = () => {
                         color="neutral.80"
                         w="100%"
                     >
-                        <NextLink href="/chat" passHref>
+                        <NextLink href={`/chat`} passHref>
                             <Link>
                                 <Button bg="transparent" p="0">
                                     <FiChevronLeft />
@@ -44,14 +44,25 @@ export const ChatInfo = () => {
                         </NextLink>
 
                         <Flex alignItems="center" flexDir="column" gap="4px">
-                            <NextLink href="/user" passHref>
+                            <NextLink href={`/user/${user.uid}`} passHref>
                                 <Link>
-                                    <Text>Rian Febriansyah</Text>
+                                    <Text>{user.name}</Text>
                                 </Link>
                             </NextLink>
                             <Flex gap="4px">
-                                <BidangPill color="accent.grass" name="UI/UX" />
-                                <BidangPill color="accent.sky" name="Web Dev." />
+                                {user.bidangMinat?.map((bidang, index) => (
+                                    <BidangPill
+                                        key={`bidang${index}`}
+                                        color={
+                                            index == 0
+                                                ? "accent.sky"
+                                                : index == 1
+                                                ? "accent.grass"
+                                                : "accent.sunshine"
+                                        }
+                                        name={bidang.name}
+                                    />
+                                ))}
                             </Flex>
                         </Flex>
 
@@ -61,7 +72,7 @@ export const ChatInfo = () => {
                             </MenuButton>
                             <MenuList>
                                 <MenuItem _focus={{ bg: "transparent" }}>
-                                    <NextLink href="/user" passHref>
+                                    <NextLink href={`/user/${user.uid}`} passHref>
                                         <Link>Lihat profil</Link>
                                     </NextLink>
                                 </MenuItem>

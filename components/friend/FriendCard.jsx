@@ -5,11 +5,12 @@ import { FiMapPin } from "react-icons/fi";
 import { FaBookmark } from "react-icons/fa";
 import { BidangPill } from "./BidangPill";
 
-export const FriendCard = ({ href, onClick, chat }) => {
+export const FriendCard = ({ href = "#", onClick, chat, user }) => {
     return (
-        <NextLink href="/user" passHref onClick={onClick}>
+        <NextLink href={href} passHref>
             <Link _hover={{ textDecor: "none" }}>
                 <Flex
+                    onClick={onClick}
                     gap="12px"
                     p="12px"
                     alignItems="center"
@@ -23,23 +24,32 @@ export const FriendCard = ({ href, onClick, chat }) => {
                     transitionProperty="all"
                     cursor="pointer"
                 >
-                    <Avatar showBorder borderColor="primary.calmblue" />
+                    <Avatar showBorder borderColor="primary.calmblue" src={user.imgUrl} />
                     <Flex flexDir="column" alignItems="left" w="100%">
                         <Flex justifyContent="space-between" alignItems="center">
                             <Text fontWeight="bold" fontSize="h7" textAlign="left">
-                                Rian Febriansyah
+                                {user.name}
                             </Text>
-                            {/* tambah kondisi udah disimpan atau belum */}
-                            <FaBookmark color="#107CC7" size="12px" />
+                            {false && <FaBookmark color="#107CC7" size="12px" />}
                         </Flex>
                         <Flex gap="4px" alignItems="center" color="neutral.60">
                             <FiMapPin size="12px" />
-                            <Text fontSize="p4">Majalengka</Text>
+                            <Text fontSize="p4">{user.kabupaten}</Text>
                         </Flex>
                         <Flex gap="4px" mt="4px">
-                            <BidangPill color="accent.sky" name="UI/UX Designer" />
-                            <BidangPill color="accent.grass" name="Web Developer" />
-                            {/* <BidangPill color="accent.sunshine" name="UI/UX Designer" /> */}
+                            {user.bidangMinat?.map((bidang, index) => (
+                                <BidangPill
+                                    key={`bidang${index}`}
+                                    color={
+                                        index == 0
+                                            ? "accent.sky"
+                                            : index == 1
+                                            ? "accent.grass"
+                                            : "accent.sunshine"
+                                    }
+                                    name={bidang.name}
+                                />
+                            ))}
                         </Flex>
                     </Flex>
                 </Flex>

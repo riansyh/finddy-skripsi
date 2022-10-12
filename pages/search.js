@@ -22,26 +22,51 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
 import { BidangOption } from "../components/BidangOption";
+import { collection, doc, getDocs } from "firebase/firestore";
+import { db } from "../app/firebase";
 
 export default function Search() {
     const [heroHeight, setHeroHeight] = useState(0);
+    const [users, setUsers] = useState([]);
+    const [searchKey, setSearchKey] = useState("");
+    const [filters, setFilters] = useState({
+        bidang: "",
+        kemampuan: "pemula",
+        lokasi: "",
+    });
+
     const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
-
-    const [searchKey, setSearchKey] = useState("");
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
     }, []);
 
     useEffect(() => {
-        if (!authUser) {
-            router.push("/login");
-        } else {
-            if (!authUser.isComplete) router.push("/register/lengkapi-data");
-        }
+        const showUser = async () => {
+            const querySnapshot = await getDocs(collection(db, "users"));
+
+            let users = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (authUser.uid && data.uid != authUser.uid && data.isComplete) users.push(data);
+            });
+
+            setUsers(users);
+        };
+
+        showUser();
+        setFilters((val) => ({ ...val, bidang: authUser.data?.bidangMinat[0].name }));
     }, [authUser]);
+
+    // useEffect(() => {
+    //     if (!authUser) {
+    //         router.push("/login");
+    //     } else {
+    //         if (!authUser.isComplete) router.push("/register/lengkapi-data");
+    //     }
+    // }, [authUser]);
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
@@ -129,11 +154,20 @@ export default function Search() {
                                     overflowX="auto"
                                     className="no-scroll"
                                 >
-                                    <BidangOption isActive>UI/UX Design</BidangOption>
-                                    <BidangOption>Frontend Dev.</BidangOption>
-                                    <BidangOption>Web Dev.</BidangOption>
-                                    <BidangOption>Web Dev.</BidangOption>
-                                    <BidangOption>Web Dev.</BidangOption>
+                                    {authUser.data?.bidangMinat.map((bidang, index) => (
+                                        <BidangOption
+                                            key={`bidang-${index}`}
+                                            isActive={filters.bidang == bidang.name}
+                                            onClick={() => {
+                                                setFilters((val) => ({
+                                                    ...val,
+                                                    bidang: bidang.name,
+                                                }));
+                                            }}
+                                        >
+                                            {bidang.name}
+                                        </BidangOption>
+                                    ))}
                                 </Flex>
                             </Box>
 
@@ -155,6 +189,13 @@ export default function Search() {
                                             mt="4px"
                                             borderColor="neutral.20"
                                             w={{ base: "100%", md: "auto" }}
+                                            value={filters.kemampuan}
+                                            onChange={(e) =>
+                                                setFilters((prev) => ({
+                                                    ...prev,
+                                                    kemampuan: e.target.value,
+                                                }))
+                                            }
                                         >
                                             <option value="pemula">Pemula</option>
                                             <option value="menengah">Menengah</option>
@@ -179,6 +220,13 @@ export default function Search() {
                                             mt="4px"
                                             borderColor="neutral.20"
                                             w={{ base: "100%", md: "auto" }}
+                                            value={filters.lokasi}
+                                            onChange={(e) =>
+                                                setFilters((prev) => ({
+                                                    ...prev,
+                                                    lokasi: e.target.value,
+                                                }))
+                                            }
                                         >
                                             <option value="pemula">Semua lokasi</option>
                                             <option value="menengah">Lokasiku</option>
@@ -226,17 +274,11 @@ export default function Search() {
                             w="100%"
                             rowGap="12px"
                             columnGap="16px"
-                            mt="24px"
+                            mt="8px"
                         >
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
+                            {users?.map((user, index) => (
+                                <FriendCard key={`friend-${index}`} chat user={user} href={`/user/${user.uid}`} />
+                            ))}
                         </Grid>
 
                         {false && (

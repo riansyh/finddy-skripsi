@@ -1,13 +1,15 @@
 import { Avatar, Flex, Link, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import NextLink from "next/link";
 import React from "react";
-import { FiMapPin } from "react-icons/fi";
-import { FaBookmark } from "react-icons/fa";
+import { showMessageTime } from "../../feature/showMessageTime";
 import { BidangPill } from "../friend/BidangPill";
 
-export const UserCard = () => {
+export const UserCard = ({ chat, href = "#" }) => {
+    const { date, userInfo } = chat;
+
     return (
-        <NextLink href="/chat/detail" passHref>
+        <NextLink href={href} passHref>
             <Link _hover={{ textDecor: "none" }}>
                 <Flex
                     gap="12px"
@@ -23,22 +25,42 @@ export const UserCard = () => {
                     transitionProperty="all"
                     cursor="pointer"
                 >
-                    <Avatar showBorder borderColor="primary.calmblue" />
+                    <Avatar showBorder borderColor="primary.calmblue" src={userInfo.imgUrl} />
                     <Flex flexDir="column" alignItems="left" w="100%">
                         <Flex justifyContent="space-between" alignItems="center">
                             <Text fontWeight="bold" fontSize="h7" textAlign="left">
-                                Rian Febriansyah
+                                {userInfo?.name}
                             </Text>
-                            <Text fontSize="10px">13/02/2022</Text>
+                            <Text fontSize="10px">{date && showMessageTime(date.toDate())}</Text>
                         </Flex>
-                        <Flex gap="4px" mt="4px">
-                            <BidangPill color="accent.sky" name="UI/UX Designer" />
-                            <BidangPill color="accent.grass" name="Web Developer" />
-                            {/* <BidangPill color="accent.sunshine" name="UI/UX Designer" /> */}
+                        {/* <Flex gap="4px" mt="4px">
+                            {userInfo?.bidang.map((bidang, index) => (
+                                <BidangPill
+                                    key={`bidang${index}`}
+                                    color={
+                                        index == 0
+                                            ? "accent.sky"
+                                            : index == 1
+                                            ? "accent.grass"
+                                            : "accent.sunshine"
+                                    }
+                                    name={bidang.name}
+                                />
+                            ))}
+                        </Flex> */}
+                        <Flex justifyContent="space-between" alignItems="center">
+                            <Text
+                                color="neutral.60"
+                                mt="8px"
+                                fontSize={{ base: "14px", md: "14px" }}
+                                textAlign="left"
+                                w="100%"
+                                maxW={{ base: "75vw", md: "422px" }}
+                                noOfLines="2"
+                            >
+                                {chat.lastMessage?.text}
+                            </Text>
                         </Flex>
-                        <Text mt="12px" fontSize={{ base: "10px", md: "12px" }} textAlign="left">
-                            Lorem ipsum dolor amet sit esta mana sidu dolor amet sit esta mana sidu
-                        </Text>
                     </Flex>
                 </Flex>
             </Link>

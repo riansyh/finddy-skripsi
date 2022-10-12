@@ -119,7 +119,7 @@ export default function Index() {
                             columnGap="16px"
                             mt="24px"
                         >
-                            <GridItem w="100%">
+                            {/* <GridItem w="100%">
                                 <FriendCard />
                             </GridItem>
                             <GridItem w="100%">
@@ -127,7 +127,7 @@ export default function Index() {
                             </GridItem>
                             <GridItem w="100%">
                                 <FriendCard />
-                            </GridItem>
+                            </GridItem> */}
                         </Grid>
 
                         {false && (
