@@ -142,12 +142,11 @@ export default function Chat() {
                                 ))}
                         </Grid>
 
-                        {!chats && (
+                        {Object.entries(chats).length == 0 && (
                             <EmptyStates
                                 text="Kamu belum memiliki satupun pesan"
                                 btnText="Kirim pesan sekarang"
                                 btnHref="/search"
-                                isHaveButton
                             />
                         )}
                     </Flex>

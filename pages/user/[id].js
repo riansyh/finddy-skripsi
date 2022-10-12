@@ -232,7 +232,7 @@ export default function User({ userData }) {
                 </Flex>
             </Box>
 
-            <Menubar />
+            <Menubar isUserDetail />
 
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />

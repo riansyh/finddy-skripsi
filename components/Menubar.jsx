@@ -3,7 +3,8 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 
-const NavItem = ({ href = "", icon, text, isActive }) => {
+const NavItem = ({ href = "", icon, text, isActive, isUserDetail }) => {
+    const baseImgUrl = isUserDetail ? "./../images/icon/" : "./images/icon/";
     return (
         <NextLink href={href} passHref>
             <Link _hover={{ textDecor: "none", color: "primary.calmblue" }}>
@@ -14,8 +15,8 @@ const NavItem = ({ href = "", icon, text, isActive }) => {
                         alt={`icon-${icon}`}
                         src={
                             isActive
-                                ? `./images/icon/${icon}-active.svg`
-                                : `./images/icon/${icon}.svg`
+                                ? `${baseImgUrl}${icon}-active.svg`
+                                : `${baseImgUrl}${icon}.svg`
                         }
                     ></Image>
                     <Text
@@ -31,7 +32,7 @@ const NavItem = ({ href = "", icon, text, isActive }) => {
     );
 };
 
-export const Menubar = () => {
+export const Menubar = ({ isUserDetail }) => {
     const router = useRouter();
 
     return (
@@ -49,18 +50,26 @@ export const Menubar = () => {
             justifyContent="space-between"
         >
             <NavItem
+                isUserDetail
                 href="/home"
                 icon="home"
                 text="Beranda"
                 isActive={router.pathname == "/home"}
             />
             <NavItem
+                isUserDetail
                 href="/search"
                 icon="search"
                 text="Cari Teman"
                 isActive={router.pathname == "/search"}
             />
-            <NavItem href="/chat" icon="chat" text="Pesan" isActive={router.pathname == "/chat"} />
+            <NavItem
+                isUserDetail
+                href="/chat"
+                icon="chat"
+                text="Pesan"
+                isActive={router.pathname == "/chat"}
+            />
         </Flex>
     );
 };
