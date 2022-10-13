@@ -26,6 +26,7 @@ import { ChatInfo } from "../../components/chat/ChatInfo";
 import { BubbleChat } from "../../components/chat/BubbleChat";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../app/firebase";
+import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 
 export default function Detail({ chats, userData, chatId, userId }) {
     const [heroHeight, setHeroHeight] = useState(0);
@@ -33,6 +34,8 @@ export default function Detail({ chats, userData, chatId, userId }) {
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
     const [messages, setMessages] = useState([]);
+
+    useFirebaseAuth();
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chats", chatId), (doc) => {

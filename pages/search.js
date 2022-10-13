@@ -279,7 +279,6 @@ export default function Search() {
                             {users?.map((user, index) => (
                                 <FriendCard
                                     key={`friend-${index}`}
-                                    chat
                                     user={user}
                                     href={`/user/${user.uid}`}
                                 />
