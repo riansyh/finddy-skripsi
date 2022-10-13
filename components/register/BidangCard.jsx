@@ -35,9 +35,9 @@ export const BidangCard = ({ name, skill, id, index }) => {
                         dispatch(changeBidangSkill({ index: index, value: e.target.value }))
                     }
                 >
-                    <option value="pemula">Pemula</option>
-                    <option value="menengah">Menengah</option>
-                    <option value="ahli">Ahli</option>
+                    <option value="Pemula">Pemula</option>
+                    <option value="Menengah">Menengah</option>
+                    <option value="Ahli">Ahli</option>
                 </Select>
             </Box>
         </Flex>

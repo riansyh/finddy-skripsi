@@ -23,21 +23,30 @@ import React, { useRef, useState } from "react";
 import { Menubar } from "../../components/Menubar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus } from "react-icons/fi";
+import {
+    FiMessageCircle,
+    FiChevronLeft,
+    FiMapPin,
+    FiPlus,
+    FiEdit2,
+    FiEdit,
+    FiEdit3,
+} from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
+import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 
-export default function User({ userData }) {
+export default function Profile() {
+    useFirebaseAuth();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
 
     return (
         <>
             <Head>
-                <title>Finddy | Teman Belajar</title>
+                <title>Finddy | Profilku</title>
                 <meta name="description" content="" />
                 <link rel="icon" href="/logo.svg" />
             </Head>
@@ -78,54 +87,44 @@ export default function User({ userData }) {
                             borderColor="primary.calmblue"
                             w="100px"
                             h="100px"
-                            src={userData.imgUrl}
+                            src={authUser.data?.imgUrl}
                         />
                         <Heading as="h1" mt="4px" fontSize="h5">
-                            {userData.name}
+                            {authUser.name}
                         </Heading>
                         <Text mt="4px" fontSize="p4" color="neutral.60">
-                            @{userData.username}
+                            @{authUser.data?.username}
                         </Text>
                         <Flex gap="4px" alignItems="center">
                             <IoMdSchool color="#666" />
                             <Text mt="4px" fontSize="p4" color="neutral.60">
-                                {userData.perguruanTinggi}
+                                {authUser.data?.perguruanTinggi}
                             </Text>
                         </Flex>
                         <Flex gap="8px" alignItems="center" mt="32px" w="100%">
-                            <Button variant="primary" px="24px" size="full">
-                                <Box display={{ base: "none", sm: "block" }}>
-                                    <FiPlus />
-                                </Box>
-
-                                <Text ml="6px">Simpan Teman</Text>
-                            </Button>
-                            <Button variant="primary" flexShrink="0">
-                                <FiMessageCircle />
-                                <Text display={{ base: "none", md: "block" }} ml="6px">
-                                    Kirim pesan
-                                </Text>
-                            </Button>
                             <Button
                                 variant="primary"
-                                bg="primary.orange"
-                                _hover={{ bg: "#F37F15" }}
-                                flexShrink="0"
-                                onClick={onOpen}
+                                size="full"
+                                onClick={() => router.push("/profile/edit")}
                             >
-                                <AiOutlineWarning />
-                                <Text display={{ base: "none", md: "block" }} ml="6px">
-                                    Laporkan
-                                </Text>
+                                <FiEdit2 />
+                                <Text ml="6px">Edit Profil</Text>
                             </Button>
                         </Flex>
 
                         <Flex gap="8px" alignItems="start" w="100%" mt="40px" flexDir="column">
-                            <Heading as="h2" fontSize="h6" color="neutral.80">
-                                Bidang/minat
-                            </Heading>
+                            <Flex w="100%" justifyContent="space-between" alignItems="center">
+                                <Heading as="h2" fontSize="h6" color="neutral.80">
+                                    Bidang/minat
+                                </Heading>
+                                <NextLink href="/profile/edit-bidang">
+                                    <Link>
+                                        <FiEdit color="#374151" size="16px" />
+                                    </Link>
+                                </NextLink>
+                            </Flex>
                             <Flex flexDir="column" gap="12px" w="100%">
-                                {userData.bidangMinat?.map((bidang, index) => (
+                                {authUser.data?.bidangMinat?.map((bidang, index) => (
                                     <BidangCard key={`bidangMinat-${index}`} skill={bidang.skill}>
                                         {bidang.name}
                                     </BidangCard>
@@ -133,9 +132,11 @@ export default function User({ userData }) {
                             </Flex>
                         </Flex>
                         <Flex gap="8px" alignItems="start" w="100%" mt="24px" flexDir="column">
-                            <Heading as="h2" fontSize="h6" color="neutral.80">
-                                Lokasi
-                            </Heading>
+                            <Flex w="100%" justifyContent="space-between" alignItems="center">
+                                <Heading as="h2" fontSize="h6" color="neutral.80">
+                                    Lokasi
+                                </Heading>
+                            </Flex>
                             <Box
                                 p="12px"
                                 boxShadow="card"
@@ -152,18 +153,25 @@ export default function User({ userData }) {
                                         fontWeight="bold"
                                         textAlign="left"
                                     >
-                                        {userData.kabupaten}
+                                        {authUser.data?.kabupaten}
                                     </Text>
                                 </Flex>
                                 <Text fontSize="p4" color="neutral.80" textAlign="left" mt="6px">
-                                    {userData.provinsi}
+                                    {authUser.data?.provinsi}
                                 </Text>
                             </Box>
                         </Flex>
                         <Flex gap="8px" alignItems="start" w="100%" mt="24px" flexDir="column">
-                            <Heading as="h2" fontSize="h6" color="neutral.80">
-                                Saya sedang mencari
-                            </Heading>
+                            <Flex w="100%" justifyContent="space-between" alignItems="center">
+                                <Heading as="h2" fontSize="h6" color="neutral.80">
+                                    Preferensi teman belajar
+                                </Heading>
+                                <NextLink href="/profile/edit-preferensi">
+                                    <Link>
+                                        <FiEdit color="#374151" size="16px" />
+                                    </Link>
+                                </NextLink>
+                            </Flex>
                             <Box
                                 p="12px"
                                 boxShadow="card"
@@ -176,16 +184,16 @@ export default function User({ userData }) {
                                 lineHeight="28.1px"
                             >
                                 <OrderedList>
-                                    {userData.pref[0] && (
+                                    {authUser.data?.pref[0] && (
                                         <ListItem>Teman belajar untuk sharing</ListItem>
                                     )}
-                                    {userData.pref[1] && (
+                                    {authUser.data?.pref[1] && (
                                         <ListItem>Teman belajar untuk menjadi mentor</ListItem>
                                     )}
-                                    {userData.pref[2] && (
+                                    {authUser.data?.pref[2] && (
                                         <ListItem>Teman belajar untuk belajar bersama</ListItem>
                                     )}
-                                    {userData.pref[3] && (
+                                    {authUser.data?.pref[3] && (
                                         <ListItem>
                                             Teman belajar untuk menjadi teman seperjuangan
                                         </ListItem>
@@ -197,7 +205,7 @@ export default function User({ userData }) {
                 </Flex>
             </Box>
 
-            <Menubar isUserDetail />
+            <Menubar />
 
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
@@ -236,24 +244,4 @@ export default function User({ userData }) {
             </Modal>
         </>
     );
-}
-
-export async function getServerSideProps(context) {
-    const { id } = context.query;
-
-    const docRef = doc(db, "users", id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-    }
-
-    return {
-        props: {
-            userData: docSnap.data(),
-        },
-    };
 }

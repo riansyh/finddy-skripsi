@@ -31,7 +31,7 @@ export const DrawerMenu = ({ onClose, isOpen, isLanding }) => {
                                         </Text>
                                         <CloseButton size="sm" onClick={onClose} />
                                     </Flex>
-                                    <NextLink href="/login" passHref>
+                                    <NextLink href="/profile" passHref>
                                         <Link color="primary.orange">
                                             <Text size="12px">Halaman profil</Text>
                                         </Link>

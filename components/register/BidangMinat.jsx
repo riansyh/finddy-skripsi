@@ -14,23 +14,7 @@ import { BidangCard } from "./BidangCard";
 import { useDispatch, useSelector } from "react-redux";
 import { addBidang } from "./../../feature/register/registerSlice";
 import useOutsideAlerter from "../../feature/hook/useOutsideAlerter";
-
-const SelectBidang = ({ children, clickHandler }) => {
-    return (
-        <Box
-            borderRadius="4px"
-            px="8px"
-            py="4px"
-            transition="ease"
-            transitionDuration="300ms"
-            onClick={clickHandler}
-            cursor="pointer"
-            _hover={{ bg: "#f9f9f9" }}
-        >
-            {children}
-        </Box>
-    );
-};
+import { SelectBidang } from "./SelectBidang";
 
 export const BidangMinat = ({ nextFunction, prevFunction }) => {
     const [searchKey, setSearchKey] = useState("");
@@ -46,7 +30,7 @@ export const BidangMinat = ({ nextFunction, prevFunction }) => {
                 addBidang({
                     id,
                     name: bidang,
-                    skill: "pemula",
+                    skill: "Pemula",
                 })
             );
             setSearchKey("");
@@ -89,7 +73,7 @@ export const BidangMinat = ({ nextFunction, prevFunction }) => {
         <Flex
             flexDir="column"
             alignItems="center"
-            justifyContent={form.bidangMinat > 0 ? "start" : "space-between"}
+            justifyContent={form.bidangMinat > 0 ? "space-between" : "start"}
             minH="100vh"
         >
             <Box mt="40px" w="100%">

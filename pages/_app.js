@@ -8,6 +8,7 @@ import store from "../app/store";
 import NextNProgress from "nextjs-progressbar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../app/firebase";
+import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
 
 function MyApp({ Component, pageProps }) {
     const [user, loading, error] = useAuthState(auth);

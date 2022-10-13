@@ -93,18 +93,20 @@ export const Navbar = ({ isLanding, heroHeight, isHome }) => {
 
                     {authUser.uid ? (
                         <Flex gap="24px" display={{ base: "none", md: "flex" }} alignItems="center">
-                            <Flex
-                                alignItems="center"
-                                gap="4px"
-                                color={scrollPosition > heroHeight || !isHome ? "#333" : "#fff"}
-                            >
-                                <NextLink href="/profile" passHref>
-                                    <Link>
+                            <NextLink href="/profile" passHref>
+                                <Link>
+                                    <Flex
+                                        alignItems="center"
+                                        gap="4px"
+                                        color={
+                                            scrollPosition > heroHeight || !isHome ? "#333" : "#fff"
+                                        }
+                                    >
                                         <FiUser />
-                                    </Link>
-                                </NextLink>
-                                <Text>Halo, {authUser.name}</Text>
-                            </Flex>
+                                        <Text>Halo, {authUser.name}</Text>
+                                    </Flex>
+                                </Link>
+                            </NextLink>
                             <Button
                                 variant={
                                     scrollPosition > heroHeight || !isHome ? "secondary" : "primary"

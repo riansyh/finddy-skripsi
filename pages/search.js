@@ -90,7 +90,7 @@ export default function Search() {
                     py={{ base: "40px", md: "60px" }}
                     ref={ref}
                     pb={{ base: "24px", md: "24px" }}
-                    pt={{ base: "120px", md: "140px" }}
+                    pt={{ base: "80px", md: "140px" }}
                 >
                     <Flex
                         maxW="1320px"
@@ -105,17 +105,17 @@ export default function Search() {
                         <Heading
                             maxW="550px"
                             fontWeight="bold"
-                            fontSize={{ base: "h3", md: "48px" }}
+                            fontSize={{ base: "h4", md: "48px" }}
                             lineHeight={{ md: "64.8px" }}
                             as="h1"
                         >
                             Cari teman belajar
                         </Heading>
-                        <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal">
+                        <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal" fontSize="p3">
                             Cari berdasarkan bidang/minat, kemampuan, dan lokasi
                         </Text>
 
-                        <InputGroup bg="white" mt="40px" borderRadius="4px">
+                        <InputGroup bg="white" mt="24px" borderRadius="4px">
                             <Input
                                 placeholder="Cari berdasarkan nama/username"
                                 type="text"
@@ -277,7 +277,12 @@ export default function Search() {
                             mt="8px"
                         >
                             {users?.map((user, index) => (
-                                <FriendCard key={`friend-${index}`} chat user={user} href={`/user/${user.uid}`} />
+                                <FriendCard
+                                    key={`friend-${index}`}
+                                    chat
+                                    user={user}
+                                    href={`/user/${user.uid}`}
+                                />
                             ))}
                         </Grid>
 

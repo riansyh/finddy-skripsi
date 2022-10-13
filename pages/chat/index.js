@@ -86,7 +86,7 @@ export default function Chat() {
                     py={{ base: "40px", md: "60px" }}
                     ref={ref}
                     pb={{ base: "24px", md: "24px" }}
-                    pt={{ base: "120px", md: "140px" }}
+                    pt={{ base: "80px", md: "140px" }}
                 >
                     <Flex
                         maxW="1320px"
@@ -101,13 +101,13 @@ export default function Chat() {
                         <Heading
                             maxW="550px"
                             fontWeight="bold"
-                            fontSize={{ base: "h3", md: "48px" }}
+                            fontSize={{ base: "h4", md: "48px" }}
                             lineHeight={{ md: "64.8px" }}
                             as="h1"
                         >
                             Pesan
                         </Heading>
-                        <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal">
+                        <Text mt="4px" opacity="0.7" maxW="550px" fontWeight="normal" fontSize="p3">
                             Tempat berdiskusi dan berbagi dengan teman belajar
                         </Text>
                     </Flex>
