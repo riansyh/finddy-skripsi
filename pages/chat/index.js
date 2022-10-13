@@ -86,7 +86,7 @@ export default function Chat() {
                     py={{ base: "40px", md: "60px" }}
                     ref={ref}
                     pb={{ base: "24px", md: "24px" }}
-                    pt={{ base: "80px", md: "140px" }}
+                    pt={{ base: "100px", md: "140px" }}
                 >
                     <Flex
                         maxW="1320px"

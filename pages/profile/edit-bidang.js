@@ -230,15 +230,19 @@ export default function User() {
                                     </Flex>
                                 )}
                             </Flex>
-                        </Flex>
 
-                        <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                            <Button variant="primary" size="full">
-                                Simpan perubahan
-                            </Button>
-                            <Button variant="secondary" size="full" onClick={() => router.back()}>
-                                Batalkan
-                            </Button>
+                            <Flex gap="16px" flexDir="column" mt="40px" w="100%">
+                                <Button variant="primary" size="full">
+                                    Simpan perubahan
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    size="full"
+                                    onClick={() => router.back()}
+                                >
+                                    Batalkan
+                                </Button>
+                            </Flex>
                         </Flex>
                     </Box>
                 </Flex>
