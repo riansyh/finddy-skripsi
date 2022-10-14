@@ -10,8 +10,8 @@ import {
     FormControl,
     Avatar,
     AvatarBadge,
-    Tooltip,
     Link,
+    useToast,
 } from "@chakra-ui/react";
 
 import {
@@ -25,19 +25,22 @@ import {
 import { AiFillCamera, AiFillInfoCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
-import { storage } from "../../app/firebase";
+import { db, storage } from "../../app/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Head from "next/head";
 import { FiChevronLeft } from "react-icons/fi";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { doc, updateDoc } from "firebase/firestore";
 
 export default function User() {
     const form = useSelector((state) => state.register);
     const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const toast = useToast();
 
     useFirebaseAuth();
 
@@ -72,6 +75,46 @@ export default function User() {
         } catch (error) {}
     };
 
+    const handleSubmit = async () => {
+        setLoading(true);
+        try {
+            await updateDoc(doc(db, "users", authUser.uid), {
+                username: form.username,
+                imgUrl: form.imgUrl,
+                perguruanTinggi: form.perguruanTinggi,
+                kabupaten: form.kabupaten,
+                provinsi: form.provinsi,
+                kontak: form.kontak,
+            });
+
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Akun berhasil diupdate!",
+                description: "Data kamu saat ini sudah lengkap",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+
+            setLoading(false);
+            router.push("/profile");
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Terjadi kesalahan",
+                description: errorMessage,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            setLoading(false);
+        }
+    };
+
     return (
         <>
             <Head>
@@ -97,6 +140,7 @@ export default function User() {
                     py="32px"
                     overflowY="auto"
                     position="relative"
+                    maxW={{ md: "600px" }}
                 >
                     <Box transition="ease-in" transitionDuration="150ms">
                         <Box>
@@ -269,6 +313,8 @@ export default function User() {
                                     form.provinsi === "" ||
                                     form.kontak === ""
                                 }
+                                onClick={handleSubmit}
+                                isLoading={loading}
                             >
                                 Simpan perubahan
                             </Button>

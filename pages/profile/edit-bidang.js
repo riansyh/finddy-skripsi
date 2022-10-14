@@ -8,23 +8,26 @@ import {
     Heading,
     InputGroup,
     InputRightElement,
+    useToast,
 } from "@chakra-ui/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addBidang, change, removeBidang } from "../../feature/register/registerSlice";
-
+import { addBidang } from "../../feature/register/registerSlice";
 import Head from "next/head";
 import { FiChevronLeft, FiSearch } from "react-icons/fi";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import useOutsideAlerter from "../../feature/hook/useOutsideAlerter";
 import { BidangCard } from "../../components/register/BidangCard";
 import { SelectBidang } from "../../components/register/SelectBidang";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../app/firebase";
 
 export default function User() {
     const [searchKey, setSearchKey] = useState("");
     const [bidangMinat, setBidangMinat] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const toast = useToast();
 
     const form = useSelector((state) => state.register);
     const authUser = useSelector((state) => state.authUser);
@@ -74,6 +77,41 @@ export default function User() {
         return unselected;
     };
 
+    const handleSubmit = async () => {
+        setLoading(true);
+        try {
+            await updateDoc(doc(db, "users", authUser.uid), {
+                bidangMinat: form.bidangMinat,
+            });
+
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Berhasil",
+                description: "Bidang/minat belajar berhasil diperbarui!",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+
+            setLoading(false);
+            router.push("/profile");
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Terjadi kesalahan",
+                description: errorMessage,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetch(`/api/bidangminat`)
             .then((response) => response.json())
@@ -117,6 +155,7 @@ export default function User() {
                     py="32px"
                     overflowY="auto"
                     position="relative"
+                    maxW={{ md: "600px" }}
                 >
                     <Box transition="ease-in" transitionDuration="150ms">
                         <Box>
@@ -232,7 +271,12 @@ export default function User() {
                             </Flex>
 
                             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                                <Button variant="primary" size="full">
+                                <Button
+                                    variant="primary"
+                                    size="full"
+                                    onClick={handleSubmit}
+                                    isLoading={loading}
+                                >
                                     Simpan perubahan
                                 </Button>
                                 <Button
