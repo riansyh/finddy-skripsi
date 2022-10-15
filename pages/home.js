@@ -24,7 +24,7 @@ export default function Index() {
         if (!authUser) {
             router.push("/login");
         } else {
-            if (!authUser.isComplete) router.push("/register/lengkapi-data");
+            if (!authUser?.isComplete) router.push("/register/lengkapi-data");
         }
     }, [authUser]);
 

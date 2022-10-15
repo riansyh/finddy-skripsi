@@ -44,6 +44,14 @@ export default function Search() {
     }, []);
 
     useEffect(() => {
+        if (!authUser) {
+            router.push("/login");
+        } else {
+            if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        }
+    }, [authUser]);
+
+    useEffect(() => {
         const showUser = async () => {
             const querySnapshot = await getDocs(collection(db, "users"));
 
@@ -56,17 +64,11 @@ export default function Search() {
             setUsers(users);
         };
 
-        showUser();
-        setFilters((val) => ({ ...val, bidang: authUser.data?.bidangMinat[0].name }));
+        if (authUser?.isComplete) {
+            showUser();
+            setFilters((val) => ({ ...val, bidang: authUser.data?.bidangMinat[0].name }));
+        }
     }, [authUser]);
-
-    // useEffect(() => {
-    //     if (!authUser) {
-    //         router.push("/login");
-    //     } else {
-    //         if (!authUser.isComplete) router.push("/register/lengkapi-data");
-    //     }
-    // }, [authUser]);
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
@@ -154,7 +156,7 @@ export default function Search() {
                                     overflowX="auto"
                                     className="no-scroll"
                                 >
-                                    {authUser.data?.bidangMinat.map((bidang, index) => (
+                                    {authUser.data?.bidangMinat?.map((bidang, index) => (
                                         <BidangOption
                                             key={`bidang-${index}`}
                                             isActive={filters.bidang == bidang.name}

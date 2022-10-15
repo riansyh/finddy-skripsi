@@ -59,10 +59,13 @@ export default function Chat() {
         setHeroHeight(ref.current.clientHeight);
     }, []);
 
-    // useEffect(() => {
-    //     if (authUser.uid == null) router.push("/login");
-    //     if (!authUser.isComplete) router.push("/register/lengkapi-data");
-    // }, [authUser]);
+    useEffect(() => {
+        if (!authUser) {
+            router.push("/login");
+        } else {
+            if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        }
+    }, [authUser]);
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
