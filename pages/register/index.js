@@ -73,6 +73,7 @@ export default function Home() {
                     name: formValues.nama,
                     email: formValues.email,
                     isComplete: false,
+                    friends: [],
                 });
 
                 await setDoc(doc(db, "userChats", res.user.uid), {});

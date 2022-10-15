@@ -7,10 +7,12 @@ import {
     Input,
     InputGroup,
     InputRightElement,
+    Link,
     Select,
     Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
+import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { EmptyStates } from "../components/EmptyStates";
 import { Menubar } from "../components/Menubar";
@@ -20,24 +22,53 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
 import { BidangOption } from "../components/BidangOption";
+import { collection, doc, getDocs } from "firebase/firestore";
+import { db } from "../app/firebase";
+import useGetFriend from "../feature/hook/useGetFriends";
 
-export default function DaftarTeman() {
+export default function Search() {
     const [heroHeight, setHeroHeight] = useState(0);
+    const [users, setUsers] = useState([]);
+    const [searchKey, setSearchKey] = useState("");
+    const [filters, setFilters] = useState({
+        bidang: "",
+        kemampuan: "pemula",
+        lokasi: "",
+    });
+
     const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
-
-    const [searchKey, setSearchKey] = useState("");
+    const friends = useGetFriend();
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
     }, []);
 
+    // useEffect(() => {
+    //     if (!authUser) {
+    //         router.push("/login");
+    //     } else {
+    //         if (!authUser.isComplete) router.push("/register/lengkapi-data");
+    //     }
+    // }, [authUser]);
+
     useEffect(() => {
-        if (!authUser) {
-            router.push("/login");
-        } else {
-            if (!authUser.isComplete) router.push("/register/lengkapi-data");
+        const showUser = async () => {
+            const querySnapshot = await getDocs(collection(db, "users"));
+
+            let users = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (authUser.uid && data.uid != authUser.uid && data.isComplete) users.push(data);
+            });
+
+            setUsers(users);
+        };
+
+        if (authUser?.isComplete) {
+            showUser();
+            setFilters((val) => ({ ...val, bidang: authUser.data?.bidangMinat[0].name }));
         }
     }, [authUser]);
 
@@ -48,7 +79,7 @@ export default function DaftarTeman() {
     return (
         <>
             <Head>
-                <title>Finddy | Teman belajar tersimpan</title>
+                <title>Finddy | Teman Belajar Tersimpan</title>
                 <meta name="description" content="" />
                 <link rel="icon" href="/logo.svg" />
             </Head>
@@ -63,7 +94,7 @@ export default function DaftarTeman() {
                     py={{ base: "40px", md: "60px" }}
                     ref={ref}
                     pb={{ base: "24px", md: "24px" }}
-                    pt={{ base: "120px", md: "140px" }}
+                    pt={{ base: "100px", md: "140px" }}
                 >
                     <Flex
                         maxW="1320px"
@@ -78,14 +109,14 @@ export default function DaftarTeman() {
                         <Heading
                             maxW="550px"
                             fontWeight="bold"
-                            fontSize={{ base: "h3", md: "48px" }}
+                            fontSize={{ base: "h4", md: "48px" }}
                             lineHeight={{ md: "64.8px" }}
                             as="h1"
                         >
                             Teman belajar tersimpan
                         </Heading>
 
-                        <InputGroup bg="white" mt="40px" borderRadius="4px">
+                        <InputGroup bg="white" mt="24px" borderRadius="4px">
                             <Input
                                 placeholder="Cari berdasarkan nama/username"
                                 type="text"
@@ -124,11 +155,20 @@ export default function DaftarTeman() {
                                     overflowX="auto"
                                     className="no-scroll"
                                 >
-                                    <BidangOption isActive>UI/UX Design</BidangOption>
-                                    <BidangOption>Frontend Dev.</BidangOption>
-                                    <BidangOption>Web Dev.</BidangOption>
-                                    <BidangOption>Web Dev.</BidangOption>
-                                    <BidangOption>Web Dev.</BidangOption>
+                                    {authUser.data?.bidangMinat?.map((bidang, index) => (
+                                        <BidangOption
+                                            key={`bidang-${index}`}
+                                            isActive={filters.bidang == bidang.name}
+                                            onClick={() => {
+                                                setFilters((val) => ({
+                                                    ...val,
+                                                    bidang: bidang.name,
+                                                }));
+                                            }}
+                                        >
+                                            {bidang.name}
+                                        </BidangOption>
+                                    ))}
                                 </Flex>
                             </Box>
 
@@ -150,6 +190,13 @@ export default function DaftarTeman() {
                                             mt="4px"
                                             borderColor="neutral.20"
                                             w={{ base: "100%", md: "auto" }}
+                                            value={filters.kemampuan}
+                                            onChange={(e) =>
+                                                setFilters((prev) => ({
+                                                    ...prev,
+                                                    kemampuan: e.target.value,
+                                                }))
+                                            }
                                         >
                                             <option value="pemula">Pemula</option>
                                             <option value="menengah">Menengah</option>
@@ -174,6 +221,13 @@ export default function DaftarTeman() {
                                             mt="4px"
                                             borderColor="neutral.20"
                                             w={{ base: "100%", md: "auto" }}
+                                            value={filters.lokasi}
+                                            onChange={(e) =>
+                                                setFilters((prev) => ({
+                                                    ...prev,
+                                                    lokasi: e.target.value,
+                                                }))
+                                            }
                                         >
                                             <option value="pemula">Semua lokasi</option>
                                             <option value="menengah">Lokasiku</option>
@@ -198,7 +252,7 @@ export default function DaftarTeman() {
                     ></Flex>
                 </Flex>
 
-                <Flex w="100%" alignItems="center" justifyContent="center">
+                <Flex w="100%" alignItems="center" justifyContent="center" mt="24px">
                     <Flex
                         maxW="1320px"
                         color="neutral.90"
@@ -214,17 +268,15 @@ export default function DaftarTeman() {
                             w="100%"
                             rowGap="12px"
                             columnGap="16px"
-                            mt="24px"
+                            mt="8px"
                         >
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
+                            {friends?.map((user, index) => (
+                                <FriendCard
+                                    key={`friend-${index}`}
+                                    user={user}
+                                    href={`/user/${user.uid}`}
+                                />
+                            ))}
                         </Grid>
 
                         {false && (

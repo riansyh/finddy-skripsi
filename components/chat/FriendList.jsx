@@ -9,6 +9,7 @@ import {
     ModalCloseButton,
     Flex,
     Input,
+    Text,
 } from "@chakra-ui/react";
 import { FriendCard } from "../friend/FriendCard";
 import {
@@ -26,10 +27,12 @@ import { useSelector } from "react-redux";
 import { db } from "../../app/firebase";
 import { useRouter } from "next/router";
 import { useCollection } from "react-firebase-hooks/firestore";
+import useGetFriend from "../../feature/hook/useGetFriends";
 
 export const FriendList = ({ onClose, isOpen }) => {
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
+    const friends = useGetFriend();
     const [users, setUsers] = useState(null);
 
     useEffect(() => {
@@ -102,7 +105,7 @@ export const FriendList = ({ onClose, isOpen }) => {
                     <Input type="text" placeholder="Cari teman" mb="12px" />
                     <Flex flexDir="column" gap="8px">
                         {/* ngefetch dari list teman tersimpan dan belum meiliki pesan */}
-                        {users?.map((user, index) => (
+                        {friends?.map((user, index) => (
                             <FriendCard
                                 key={`friend-${index}`}
                                 chat
@@ -110,6 +113,11 @@ export const FriendList = ({ onClose, isOpen }) => {
                                 onClick={() => handleUserSelect(user)}
                             />
                         ))}
+                        {!friends && (
+                            <Text textAlign="center" color="neutral.40" py="24px">
+                                Kamu belum memiliki teman tersimpan
+                            </Text>
+                        )}
                     </Flex>
                 </ModalBody>
             </ModalContent>

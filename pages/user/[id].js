@@ -15,6 +15,7 @@ import {
     ModalContent,
     ModalFooter,
     ModalBody,
+    useToast,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
@@ -23,16 +24,50 @@ import React, { useRef, useState } from "react";
 import { Menubar } from "../../components/Menubar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus } from "react-icons/fi";
+import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus, FiCheck } from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
-import { doc, getDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
 
 export default function User({ userData }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
+    const [isSaved, setIsSaved] = useState(authUser?.data.friends.includes(userData.uid));
+    const [isLoading, setIsLoading] = useState(false);
+    const toast = useToast();
+
+    const saveFriend = async () => {
+        setIsLoading(true);
+        try {
+            await updateDoc(doc(db, "users", authUser?.uid), {
+                friends: arrayUnion(userData.uid),
+            });
+
+            setIsSaved(true);
+            setIsLoading(false);
+
+            toast({
+                position: "top",
+                title: "Berhasil menyimpan teman!",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error) {
+            console.log(error);
+            toast({
+                position: "top",
+                title: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
@@ -93,19 +128,28 @@ export default function User({ userData }) {
                             </Text>
                         </Flex>
                         <Flex gap="8px" alignItems="center" mt="32px" w="100%">
-                            <Button variant="primary" px="24px" size="full">
+                            <Button
+                                variant="primary"
+                                px="24px"
+                                size="full"
+                                isLoading={isLoading}
+                                onClick={saveFriend}
+                                isDisabled={isSaved}
+                            >
                                 <Box display={{ base: "none", sm: "block" }}>
-                                    <FiPlus />
+                                    {isSaved ? <FiCheck /> : <FiPlus />}
                                 </Box>
 
-                                <Text ml="6px">Simpan Teman</Text>
+                                <Text ml="6px">{isSaved ? "Teman disimpan" : "Simpan Teman"}</Text>
                             </Button>
-                            <Button variant="primary" flexShrink="0">
-                                <FiMessageCircle />
-                                <Text display={{ base: "none", md: "block" }} ml="6px">
-                                    Kirim pesan
-                                </Text>
-                            </Button>
+                            {isSaved && (
+                                <Button variant="primary" flexShrink="0">
+                                    <FiMessageCircle />
+                                    <Text display={{ base: "none", md: "block" }} ml="6px">
+                                        Kirim pesan
+                                    </Text>
+                                </Button>
+                            )}
                             <Button
                                 variant="primary"
                                 bg="primary.orange"

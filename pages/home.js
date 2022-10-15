@@ -9,12 +9,16 @@ import { Navbar } from "../components/Navbar";
 import { FriendCard } from "../components/friend/FriendCard";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import useGetFriend from "../feature/hook/useGetFriends";
 
 export default function Index() {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
+    const friends = useGetFriend();
+
+    console.log(friends);
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
@@ -119,18 +123,14 @@ export default function Index() {
                             columnGap="16px"
                             mt="24px"
                         >
-                            {/* <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem>
-                            <GridItem w="100%">
-                                <FriendCard />
-                            </GridItem> */}
+                            {friends?.map((friend, index) => (
+                                <GridItem key={friend.uid} w="100%">
+                                    <FriendCard user={friend} href={`/user/${friend.uid}`} />
+                                </GridItem>
+                            ))}
                         </Grid>
 
-                        {false && (
+                        {authUser.data?.friends.length == 0 && (
                             <EmptyStates
                                 text="Kamu belum memiliki satupun teman belajar tersimpan"
                                 btnText="Cari teman sekarang"

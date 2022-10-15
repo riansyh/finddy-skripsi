@@ -1,11 +1,15 @@
 import { Avatar, Flex, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FiMapPin } from "react-icons/fi";
 import { FaBookmark } from "react-icons/fa";
 import { BidangPill } from "./BidangPill";
+import { useSelector } from "react-redux";
 
 export const FriendCard = ({ href = "#", onClick, chat, user }) => {
+    const authUser = useSelector((state) => state.authUser);
+    const [isSaved, setIsSaved] = useState(authUser?.data.friends.includes(user.uid));
+
     return (
         <NextLink href={href} passHref>
             <Link _hover={{ textDecor: "none" }}>
@@ -30,7 +34,7 @@ export const FriendCard = ({ href = "#", onClick, chat, user }) => {
                             <Text fontWeight="bold" fontSize="h7" textAlign="left">
                                 {user.name}
                             </Text>
-                            {false && <FaBookmark color="#107CC7" size="12px" />}
+                            {isSaved && <FaBookmark color="#107CC7" size="12px" />}
                         </Flex>
                         <Flex gap="4px" alignItems="center" color="neutral.60">
                             <FiMapPin size="12px" />
