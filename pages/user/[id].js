@@ -30,14 +30,17 @@ import { AiOutlineWarning } from "react-icons/ai";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
+import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 
 export default function User({ userData }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenUnsave, onOpen: onOpenUnsave, onClose: onCloseUnsave } = useDisclosure();
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
-    const [isSaved, setIsSaved] = useState(authUser?.data.friends.includes(userData.uid));
+    const [isSaved, setIsSaved] = useState(authUser.data?.friends.includes(userData.uid));
     const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
+    useFirebaseAuth();
 
     const saveFriend = async () => {
         setIsLoading(true);
@@ -52,6 +55,39 @@ export default function User({ userData }) {
             toast({
                 position: "top",
                 title: "Berhasil menyimpan teman!",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error) {
+            console.log(error);
+            toast({
+                position: "top",
+                title: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            setIsLoading(false);
+        }
+    };
+
+    const unsaveFriend = async () => {
+        onCloseUnsave();
+        setIsLoading(true);
+        try {
+            const removedFriendList = authUser.data?.friends.filter((item) => item != userData.uid);
+            console.log(removedFriendList);
+            await updateDoc(doc(db, "users", authUser?.uid), {
+                friends: removedFriendList,
+            });
+
+            setIsSaved(false);
+            setIsLoading(false);
+
+            toast({
+                position: "top",
+                title: "Berhasil menghapus teman!",
                 status: "success",
                 duration: 3000,
                 isClosable: true,
@@ -133,8 +169,8 @@ export default function User({ userData }) {
                                 px="24px"
                                 size="full"
                                 isLoading={isLoading}
-                                onClick={saveFriend}
-                                isDisabled={isSaved}
+                                onClick={isSaved ? onOpenUnsave : saveFriend}
+                                opacity={isSaved ? "0.4" : "1"}
                             >
                                 <Box display={{ base: "none", sm: "block" }}>
                                     {isSaved ? <FiCheck /> : <FiPlus />}
@@ -274,6 +310,37 @@ export default function User({ userData }) {
                         </Button>
                         <Button variant="secondary" size="full" onClick={onClose}>
                             Batalkan
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal onClose={onCloseUnsave} isOpen={isOpenUnsave} isCentered>
+                <ModalOverlay />
+                <ModalContent mx="24px" py="24px">
+                    <ModalBody>
+                        <Flex alignItems="center" flexDir="column">
+                            <AiOutlineWarning size="60px" color="#FE922F" />
+                            <Heading as="h2" fontSize="p1">
+                                Hapus teman belajar
+                            </Heading>
+                            <Text mt="20px" fontSize="p3" textAlign="center">
+                                Apakah kamu yakin akan menghapus {userData.name} dari teman belajar
+                                tersimpanmu?
+                            </Text>
+                        </Flex>
+                    </ModalBody>
+                    <ModalFooter alignItems="center" justifyContent="center" gap="8px">
+                        <Button variant="secondary" size="full" onClick={onCloseUnsave}>
+                            Batalkan
+                        </Button>
+                        <Button
+                            variant="primary"
+                            bg="state.error"
+                            size="full"
+                            onClick={unsaveFriend}
+                        >
+                            Ya
                         </Button>
                     </ModalFooter>
                 </ModalContent>

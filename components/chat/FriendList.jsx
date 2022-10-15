@@ -113,7 +113,7 @@ export const FriendList = ({ onClose, isOpen }) => {
                                 onClick={() => handleUserSelect(user)}
                             />
                         ))}
-                        {!friends && (
+                        {friends.length == 0 && (
                             <Text textAlign="center" color="neutral.40" py="24px">
                                 Kamu belum memiliki teman tersimpan
                             </Text>
