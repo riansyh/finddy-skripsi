@@ -15,6 +15,8 @@ export const Chatbar = ({ authUser, chatId, userId }) => {
 
     const handleSend = async (e) => {
         e.preventDefault();
+        if (text == "" || text == " ") return;
+
         if (img) {
             const storageRef = await ref(storage, uuid);
             const uploadTask = uploadBytesResumable(storageRef, img);
