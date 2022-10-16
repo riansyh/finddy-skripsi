@@ -1,17 +1,16 @@
-import { Box, Button, Flex, Heading, Image, Input, Link, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, useToast } from "@chakra-ui/react";
 import { arrayUnion, doc, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import { ref } from "firebase/storage";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { FiSend } from "react-icons/fi";
 import { v4 as uuid } from "uuid";
 import { db, storage } from "../../app/firebase";
 
 export const Chatbar = ({ authUser, chatId, userId }) => {
-    const router = useRouter();
     const [text, setText] = useState("");
     const [img, setImg] = useState("");
+
+    const toast = useToast();
 
     const handleSend = async (e) => {
         e.preventDefault();
@@ -24,6 +23,15 @@ export const Chatbar = ({ authUser, chatId, userId }) => {
             uploadTask.on(
                 (error) => {
                     console.log(error);
+                    toast({
+                        variant: "subtle",
+                        position: "top",
+                        title: "Terjadi kesalahan",
+                        description: "Silahkan coba lagi",
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                    });
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {

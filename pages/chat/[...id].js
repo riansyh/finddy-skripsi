@@ -1,26 +1,7 @@
-import {
-    Box,
-    Flex,
-    Grid,
-    GridItem,
-    Heading,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Select,
-    Text,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Head from "next/head";
-import React, { useEffect, useRef, useState } from "react";
-import { EmptyStates } from "../../components/EmptyStates";
-import { Menubar } from "../../components/Menubar";
-import { Navbar } from "../../components/Navbar";
-import { FriendCard } from "../../components/friend/FriendCard";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
-import { BidangOption } from "../../components/BidangOption";
-import { UserCard } from "../../components/chat/UserCard";
 import { Chatbar } from "../../components/chat/Chatbar";
 import { ChatInfo } from "../../components/chat/ChatInfo";
 import { BubbleChat } from "../../components/chat/BubbleChat";
@@ -29,10 +10,7 @@ import { db } from "../../app/firebase";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 
 export default function Detail({ chats, userData, chatId, userId }) {
-    const [heroHeight, setHeroHeight] = useState(0);
-    const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
-    const router = useRouter();
     const [messages, setMessages] = useState([]);
 
     useFirebaseAuth();
@@ -56,7 +34,7 @@ export default function Detail({ chats, userData, chatId, userId }) {
             </Head>
 
             <Box position="relative">
-                <ChatInfo user={userData} />
+                <ChatInfo user={userData} chatId={chatId} userId={userId} />
 
                 <Flex w="100%" alignItems="start" justifyContent="center" bg="#F1F9FF" minH="80vh">
                     <Flex
@@ -76,6 +54,9 @@ export default function Detail({ chats, userData, chatId, userId }) {
                                 key={`message-${index}`}
                                 time={message.date.toDate()}
                                 isMyChat={message.senderId == authUser.uid}
+                                user={userData}
+                                chatId={chatId}
+                                userId={userId}
                             >
                                 {message.text}
                             </BubbleChat>

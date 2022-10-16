@@ -44,8 +44,6 @@ export const BidangMinat = ({ nextFunction, prevFunction }) => {
         form.bidangMinat.forEach((selectedBidang) => {
             if (item.id == selectedBidang.id) {
                 unselected = false;
-                console.log(item);
-                console.log(selectedBidang);
             }
         });
         return unselected;

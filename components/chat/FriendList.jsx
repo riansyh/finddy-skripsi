@@ -4,12 +4,12 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
     Flex,
     Input,
     Text,
+    useToast,
 } from "@chakra-ui/react";
 import { FriendCard } from "../friend/FriendCard";
 import {
@@ -17,16 +17,13 @@ import {
     doc,
     getDoc,
     getDocs,
-    query,
     serverTimestamp,
     setDoc,
     updateDoc,
-    where,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "../../app/firebase";
 import { useRouter } from "next/router";
-import { useCollection } from "react-firebase-hooks/firestore";
 import useGetFriend from "../../feature/hook/useGetFriends";
 
 export const FriendList = ({ onClose, isOpen }) => {
@@ -34,6 +31,7 @@ export const FriendList = ({ onClose, isOpen }) => {
     const router = useRouter();
     const friends = useGetFriend();
     const [users, setUsers] = useState(null);
+    const toast = useToast();
 
     useEffect(() => {
         const showUser = async () => {
@@ -52,19 +50,14 @@ export const FriendList = ({ onClose, isOpen }) => {
     }, [authUser]);
 
     const handleUserSelect = async (user) => {
-        // check apakah user grup sudah ada, kalo belum buat grup chat dan kalo ada langsung redirect ke url terkait
         const combineId =
             authUser.uid > user.uid ? authUser.uid + user.uid : user.uid + authUser.uid;
         try {
             const res = await getDoc(doc(db, "chats", combineId));
 
-            console.log(user, authUser);
-
             if (!res.exists()) {
-                //create chat collections
                 await setDoc(doc(db, "chats", combineId), { messages: [] });
 
-                // create user chats
                 await updateDoc(doc(db, "userChats", authUser.uid), {
                     [combineId + ".userInfo"]: {
                         uid: user.uid,
@@ -85,13 +78,20 @@ export const FriendList = ({ onClose, isOpen }) => {
                     [combineId + ".date"]: serverTimestamp(),
                 });
 
-                console.log("beres euy");
                 router.push(`/chat/${combineId}/${user.uid}`);
             } else {
                 router.push("/chat/detail");
             }
         } catch (error) {
-            console.log(error);
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Terjadi kesalahan",
+                description: "Silahkan coba lagi",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
         }
     };
 

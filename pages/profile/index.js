@@ -15,33 +15,42 @@ import {
     ModalContent,
     ModalFooter,
     ModalBody,
+    useToast,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
 import NextLink from "next/link";
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Menubar } from "../../components/Menubar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import {
-    FiMessageCircle,
-    FiChevronLeft,
-    FiMapPin,
-    FiPlus,
-    FiEdit2,
-    FiEdit,
-    FiEdit3,
-} from "react-icons/fi";
+import { FiChevronLeft, FiMapPin, FiEdit2, FiEdit, FiLogOut } from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
 import { BidangCard } from "../../components/profile/BidangCard";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { auth } from "../../app/firebase";
+import { signOut } from "firebase/auth";
 
 export default function Profile() {
     useFirebaseAuth();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
+    const toast = useToast();
+
+    const handleSignOut = () => {
+        auth.signOut();
+
+        toast({
+            position: "top",
+            title: "Berhasil logout!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+        });
+        router.push("/login");
+    };
 
     return (
         <>
@@ -200,6 +209,20 @@ export default function Profile() {
                                     )}
                                 </OrderedList>
                             </Box>
+                        </Flex>
+                        <Flex
+                            gap="8px"
+                            alignItems="center"
+                            w="100%"
+                            mt="24px"
+                            as="button"
+                            color="state.error"
+                            onClick={handleSignOut}
+                        >
+                            <FiLogOut />
+                            <Text fontSize="h6" fontWeight="bold">
+                                Logout
+                            </Text>
                         </Flex>
                     </Flex>
                 </Flex>

@@ -61,7 +61,15 @@ export default function User() {
             );
             setSearchKey("");
         } else {
-            // munculin alert
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Terjadi kesalahan",
+                description: "Silahkan coba lagi",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
         }
     };
 
@@ -70,8 +78,6 @@ export default function User() {
         form.bidangMinat.forEach((selectedBidang) => {
             if (item.id == selectedBidang.id) {
                 unselected = false;
-                console.log(item);
-                console.log(selectedBidang);
             }
         });
         return unselected;

@@ -25,7 +25,6 @@ const useGetFriend = () => {
     }, [authUser]);
 
     useEffect(() => {
-        console.log(users);
         const filteredUsers = users?.filter((user) => {
             return authUser?.data?.friends?.some((friendUid) => {
                 return friendUid === user.uid;

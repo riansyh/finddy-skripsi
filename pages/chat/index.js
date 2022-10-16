@@ -41,7 +41,6 @@ export default function Chat() {
     useEffect(() => {
         const getChats = () => {
             const unsub = onSnapshot(doc(db, "userChats", authUser.uid), (doc) => {
-                console.log("Current data: ", Object.entries(doc.data()));
                 setChats(doc.data());
             });
 

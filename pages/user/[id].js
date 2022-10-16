@@ -77,7 +77,6 @@ export default function User({ userData }) {
         setIsLoading(true);
         try {
             const removedFriendList = authUser.data?.friends.filter((item) => item != userData.uid);
-            console.log(removedFriendList);
             await updateDoc(doc(db, "users", authUser?.uid), {
                 friends: removedFriendList,
             });
@@ -354,13 +353,6 @@ export async function getServerSideProps(context) {
 
     const docRef = doc(db, "users", id);
     const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-    }
 
     return {
         props: {

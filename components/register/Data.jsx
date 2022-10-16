@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     Box,
     Button,
@@ -10,7 +10,7 @@ import {
     FormControl,
     Avatar,
     AvatarBadge,
-    Tooltip,
+    useToast,
 } from "@chakra-ui/react";
 
 import {
@@ -35,6 +35,7 @@ export const Data = ({ nextFunction }) => {
     const form = useSelector((state) => state.register);
     const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const handleUploadImage = async (e) => {
         try {
@@ -47,7 +48,15 @@ export const Data = ({ nextFunction }) => {
 
             uploadTask.on(
                 (error) => {
-                    console.log(error);
+                    toast({
+                        variant: "subtle",
+                        position: "top",
+                        title: "Terjadi kesalahan",
+                        description: "Silahkan coba lagi",
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                    });
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -98,7 +107,7 @@ export const Data = ({ nextFunction }) => {
                         Username
                     </FormLabel>
                     <Input
-                        placeholder="Rian Febriansyah"
+                        placeholder="Masukkan username yang kamu inginkan"
                         type="text"
                         id="username"
                         value={form.username}
@@ -124,7 +133,7 @@ export const Data = ({ nextFunction }) => {
                 <Flex gap="8px" w="100%" alignItems="end">
                     <FormControl>
                         <FormLabel fontWeight="bold" color="neutral.60">
-                            Lokasi
+                            Domisili tempat tinggal
                         </FormLabel>
                         <Input
                             placeholder="Kabupaten/kota"

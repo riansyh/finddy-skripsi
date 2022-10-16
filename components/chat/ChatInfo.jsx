@@ -4,8 +4,20 @@ import { FiChevronLeft, FiMoreVertical } from "react-icons/fi";
 import { BidangPill } from "../friend/BidangPill";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useSelector } from "react-redux";
+import { sendMessage } from "../../feature/sendMessage";
 
-export const ChatInfo = ({ user }) => {
+export const ChatInfo = ({ user, chatId, userId }) => {
+    const authUser = useSelector((state) => state.authUser);
+
+    const handleRequestContact = async () => {
+        await sendMessage("Halo, boleh minta kontaknya ga?", chatId, authUser, userId);
+    };
+
+    const handleSendContact = async () => {
+        await sendMessage(`Ini kontaknya ya ${user.kontak}`, chatId, authUser, userId);
+    };
+
     return (
         <Flex
             w="100%"
@@ -76,8 +88,18 @@ export const ChatInfo = ({ user }) => {
                                         <Link>Lihat profil</Link>
                                     </NextLink>
                                 </MenuItem>
-                                <MenuItem _focus={{ bg: "transparent" }}>Minta kontak</MenuItem>
-                                <MenuItem _focus={{ bg: "transparent" }}>Kirim kontak</MenuItem>
+                                <MenuItem
+                                    _focus={{ bg: "transparent" }}
+                                    onClick={handleRequestContact}
+                                >
+                                    Minta kontak
+                                </MenuItem>
+                                <MenuItem
+                                    _focus={{ bg: "transparent" }}
+                                    onClick={handleSendContact}
+                                >
+                                    Kirim kontak
+                                </MenuItem>
                             </MenuList>
                         </Menu>
                     </Flex>

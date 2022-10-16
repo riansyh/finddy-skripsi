@@ -1,6 +1,5 @@
-import { Box, Button, Flex, Link, Text, useDisclosure, useToast } from "@chakra-ui/react";
-
 import React from "react";
+import { Box, Button, Flex, Link, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useSelector } from "react-redux";
 import { auth } from "../app/firebase";

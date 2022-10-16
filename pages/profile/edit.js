@@ -65,6 +65,15 @@ export default function User() {
             uploadTask.on(
                 (error) => {
                     console.log(error);
+                    toast({
+                        variant: "subtle",
+                        position: "top",
+                        title: "Terjadi kesalahan",
+                        description: "Silahkan coba lagi",
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                    });
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -290,7 +299,7 @@ export default function User() {
                                     }
                                 ></Input>
                             </FormControl>
-                            <NextLink href="/" passHref>
+                            <NextLink href="/profile/ubah-password" passHref>
                                 <Link
                                     fontSize="h6"
                                     fontWeight="bold"

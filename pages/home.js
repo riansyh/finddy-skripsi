@@ -18,8 +18,6 @@ export default function Index() {
     const router = useRouter();
     const friends = useGetFriend();
 
-    console.log(friends);
-
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
     }, []);

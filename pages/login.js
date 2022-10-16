@@ -46,7 +46,6 @@ export default function Home() {
 
     const handleSubmit = async () => {
         if (formValues.email !== "" && formValues.password !== "") {
-            console.log(formValues);
             setLoading(true);
 
             try {
