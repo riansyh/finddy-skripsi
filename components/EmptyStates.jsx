@@ -11,7 +11,7 @@ export const EmptyStates = ({ text, children, isHaveButton, btnText, btnHref }) 
                 alt="empty state illustration"
                 src="./images/empty.svg"
             ></Image>
-            <Text color="neutral.40" mb="8px">
+            <Text color="neutral.40" mb="8px" textAlign="center">
                 {text}
             </Text>
             {isHaveButton && (

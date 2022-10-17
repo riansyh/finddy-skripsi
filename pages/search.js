@@ -1,5 +1,6 @@
 import {
     Box,
+    filter,
     Flex,
     Grid,
     GridItem,
@@ -28,10 +29,11 @@ import { db } from "../app/firebase";
 export default function Search() {
     const [heroHeight, setHeroHeight] = useState(0);
     const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchKey, setSearchKey] = useState("");
     const [filters, setFilters] = useState({
         bidang: "",
-        kemampuan: "pemula",
+        kemampuan: "",
         lokasi: "",
     });
 
@@ -40,11 +42,7 @@ export default function Search() {
     const router = useRouter();
 
     useEffect(() => {
-        setHeroHeight(ref.current.clientHeight);
-    }, []);
-
-    useEffect(() => {
-        if (!authUser) {
+        if (!authUser?.data) {
             router.push("/login");
         } else {
             if (!authUser.isComplete) router.push("/register/lengkapi-data");
@@ -73,6 +71,42 @@ export default function Search() {
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
     }, []);
+
+    useEffect(() => {
+        setFilteredUsers(
+            users
+                .filter((user) => {
+                    return user.bidangMinat.some((bidang) => bidang.name == filters.bidang);
+                })
+                .filter((user) => {
+                    return user.bidangMinat.some((bidang) =>
+                        filters.kemampuan != "" ? bidang.skill == filters.kemampuan : true
+                    );
+                })
+                .filter((user) =>
+                    user.lokasi == "lokasiku" ? user.kabupaten == authUser.kabupaten : true
+                )
+        );
+    }, [filters.bidang, filters.kemampuan, filters.lokasi]);
+
+    useEffect(() => {
+        if (searchKey != "")
+            setFilteredUsers(
+                users
+                    .filter((user) => {
+                        return user.bidangMinat.some((bidang) => bidang.name == filters.bidang);
+                    })
+                    .filter((user) => {
+                        return user.bidangMinat.some((bidang) =>
+                            filters.kemampuan != "" ? bidang.skill == filters.kemampuan : true
+                        );
+                    })
+                    .filter((user) =>
+                        user.lokasi == "lokasiku" ? user.kabupaten == authUser.kabupaten : true
+                    )
+                    .filter((user) => user.name.toLowerCase().includes(searchKey.toLowerCase()))
+            );
+    }, [searchKey]);
 
     return (
         <>
@@ -199,9 +233,10 @@ export default function Search() {
                                                 }))
                                             }
                                         >
-                                            <option value="pemula">Pemula</option>
-                                            <option value="menengah">Menengah</option>
-                                            <option value="ahli">Ahli</option>
+                                            <option value="">Semua</option>
+                                            <option value="Pemula">Pemula</option>
+                                            <option value="Menengah">Menengah</option>
+                                            <option value="Ahli">Ahli</option>
                                         </Select>
                                     </Flex>
                                 </Box>
@@ -230,8 +265,8 @@ export default function Search() {
                                                 }))
                                             }
                                         >
-                                            <option value="pemula">Semua lokasi</option>
-                                            <option value="menengah">Lokasiku</option>
+                                            <option value="">Semua lokasi</option>
+                                            <option value="lokasiku">Lokasiku</option>
                                         </Select>
                                     </Flex>
                                 </Box>
@@ -264,12 +299,14 @@ export default function Search() {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <Flex w="100%" justifyContent="center" alignItems="center" gap="4px">
-                            <FiSearch color="#999" />
-                            <Text fontSize="h6" color="neutral.40">
-                                Hasil pencarian
-                            </Text>
-                        </Flex>
+                        {searchKey && (
+                            <Flex w="100%" justifyContent="center" alignItems="center" gap="4px">
+                                <FiSearch color="#999" />
+                                <Text fontSize="h6" color="neutral.40">
+                                    Hasil pencarian untuk &quot;{searchKey}&quot;
+                                </Text>
+                            </Flex>
+                        )}
 
                         <Grid
                             templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
@@ -278,7 +315,7 @@ export default function Search() {
                             columnGap="16px"
                             mt="8px"
                         >
-                            {users?.map((user, index) => (
+                            {filteredUsers?.map((user, index) => (
                                 <FriendCard
                                     key={`friend-${index}`}
                                     user={user}
@@ -287,13 +324,8 @@ export default function Search() {
                             ))}
                         </Grid>
 
-                        {false && (
-                            <EmptyStates
-                                text="Kamu belum memiliki satupun teman belajar tersimpan"
-                                btnText="Cari teman sekarang"
-                                btnHref="/search"
-                                isHaveButton
-                            />
+                        {filteredUsers.length == 0 && (
+                            <EmptyStates text="Tidak ada teman belajar dengan kriteria yang kamu cari, silahkan cari dengan kriteria lain" />
                         )}
                     </Flex>
                 </Flex>

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 export const FriendCard = ({ href = "#", onClick, chat, user }) => {
     const authUser = useSelector((state) => state.authUser);
-    const [isSaved, setIsSaved] = useState(authUser?.data.friends.includes(user.uid));
+    const [isSaved, setIsSaved] = useState(authUser?.data?.friends.includes(user.uid));
 
     return (
         <NextLink href={href} passHref>
