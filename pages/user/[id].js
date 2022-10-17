@@ -4,7 +4,6 @@ import {
     Button,
     Flex,
     Heading,
-    Link,
     ListItem,
     OrderedList,
     Text,
@@ -19,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 
 import Head from "next/head";
-import NextLink from "next/link";
 import React, { useRef, useState } from "react";
 import { Menubar } from "../../components/Menubar";
 import { useSelector } from "react-redux";
@@ -27,18 +25,21 @@ import { useRouter } from "next/router";
 import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus, FiCheck } from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { v4 as uuid } from "uuid";
 
 export default function User({ userData }) {
+    const [isSaved, setIsSaved] = useState(authUser?.data?.friends.includes(userData.uid));
+    const [isLoading, setIsLoading] = useState(false);
+    const [reason, setReason] = useState("");
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenUnsave, onOpen: onOpenUnsave, onClose: onCloseUnsave } = useDisclosure();
     const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
-    const [isSaved, setIsSaved] = useState(authUser.data?.friends.includes(userData.uid));
-    const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
     useFirebaseAuth();
 
@@ -102,6 +103,38 @@ export default function User({ userData }) {
             });
             setIsLoading(false);
         }
+    };
+
+    const reportuser = async (user, reason) => {
+        try {
+            await addDoc(collection(db, "reports"), {
+                uid: uuid(),
+                user: authUser,
+                reportedUser: user,
+                reason: reason,
+            });
+
+            toast({
+                position: "top",
+                title: "Berhasil",
+                description: "Pengguna berhasil kamu laporkan",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+            onClose();
+        } catch (error) {
+            console.log(error);
+            toast({
+                position: "top",
+                title: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            onClose();
+        }
+        setReason("");
     };
 
     return (
@@ -295,6 +328,8 @@ export default function User({ userData }) {
                                 mt="20px"
                                 fontSize="p3"
                                 placeholder="Tulis alasanmu di sini"
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
                             />
                         </Flex>
                     </ModalBody>
@@ -304,7 +339,11 @@ export default function User({ userData }) {
                         justifyContent="center"
                         gap="8px"
                     >
-                        <Button variant="primary" size="full">
+                        <Button
+                            variant="primary"
+                            size="full"
+                            onClick={() => reportuser(userData, reason)}
+                        >
                             Laporkan
                         </Button>
                         <Button variant="secondary" size="full" onClick={onClose}>
