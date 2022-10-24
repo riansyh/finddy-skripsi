@@ -48,7 +48,9 @@ export default function Home() {
         setIsPasswordShowed(!isPasswordShowed);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         if (
             formValues.nama !== "" &&
             formValues.email !== "" &&
@@ -56,7 +58,6 @@ export default function Home() {
             (formValues.passwordConfirmation !== "" && formValues.password) ==
                 formValues.passwordConfirmation
         ) {
-            console.log(formValues);
             setLoading(true);
 
             try {
@@ -143,52 +144,17 @@ export default function Home() {
                             Bergabung dan temukan teman belajar yang sesuai dengan preferensimu
                         </Text>
                     </Box>
-
-                    <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column">
-                        <FormControl>
-                            <FormLabel fontWeight="bold" color="neutral.60">
-                                Nama Lengkap
-                            </FormLabel>
-                            <Input
-                                placeholder="Rian Febriansyah"
-                                type="text"
-                                id="nama"
-                                value={formValues.nama}
-                                onChange={(e) =>
-                                    setFormValues((prev) => ({
-                                        ...prev,
-                                        [e.target.id]: e.target.value,
-                                    }))
-                                }
-                            ></Input>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel fontWeight="bold" color="neutral.60">
-                                Email
-                            </FormLabel>
-                            <Input
-                                placeholder="finddy@gmail.com"
-                                type="email"
-                                id="email"
-                                value={formValues.email}
-                                onChange={(e) =>
-                                    setFormValues((prev) => ({
-                                        ...prev,
-                                        [e.target.id]: e.target.value,
-                                    }))
-                                }
-                            ></Input>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel fontWeight="bold" color="neutral.60">
-                                Password
-                            </FormLabel>
-                            <InputGroup>
+                    <form onSubmit={handleSubmit}>
+                        <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column">
+                            <FormControl>
+                                <FormLabel fontWeight="bold" color="neutral.60">
+                                    Nama Lengkap
+                                </FormLabel>
                                 <Input
-                                    placeholder="******"
-                                    type={isPasswordShowed ? "text" : "password"}
-                                    id="password"
-                                    value={formValues.password}
+                                    placeholder="Rian Febriansyah"
+                                    type="text"
+                                    id="nama"
+                                    value={formValues.nama}
                                     onChange={(e) =>
                                         setFormValues((prev) => ({
                                             ...prev,
@@ -196,27 +162,16 @@ export default function Home() {
                                         }))
                                     }
                                 ></Input>
-                                <InputRightElement>
-                                    <Box cursor="pointer">
-                                        {isPasswordShowed ? (
-                                            <FiEye color="#333333" onClick={showPassword} />
-                                        ) : (
-                                            <FiEyeOff color="#333333" onClick={showPassword} />
-                                        )}
-                                    </Box>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel fontWeight="bold" color="neutral.60">
-                                Konfirmasi Password
-                            </FormLabel>
-                            <InputGroup>
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel fontWeight="bold" color="neutral.60">
+                                    Email
+                                </FormLabel>
                                 <Input
-                                    placeholder="******"
-                                    type={isPasswordShowed ? "text" : "password"}
-                                    id="passwordConfirmation"
-                                    value={formValues.passwordConfirmation}
+                                    placeholder="finddy@gmail.com"
+                                    type="email"
+                                    id="email"
+                                    value={formValues.email}
                                     onChange={(e) =>
                                         setFormValues((prev) => ({
                                             ...prev,
@@ -224,36 +179,83 @@ export default function Home() {
                                         }))
                                     }
                                 ></Input>
-                                <InputRightElement>
-                                    <Box cursor="pointer">
-                                        {isPasswordShowed ? (
-                                            <FiEye color="#333333" onClick={showPassword} />
-                                        ) : (
-                                            <FiEyeOff color="#333333" onClick={showPassword} />
-                                        )}
-                                    </Box>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
-                    </Flex>
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel fontWeight="bold" color="neutral.60">
+                                    Password
+                                </FormLabel>
+                                <InputGroup>
+                                    <Input
+                                        placeholder="******"
+                                        type={isPasswordShowed ? "text" : "password"}
+                                        id="password"
+                                        value={formValues.password}
+                                        onChange={(e) =>
+                                            setFormValues((prev) => ({
+                                                ...prev,
+                                                [e.target.id]: e.target.value,
+                                            }))
+                                        }
+                                    ></Input>
+                                    <InputRightElement>
+                                        <Box cursor="pointer">
+                                            {isPasswordShowed ? (
+                                                <FiEye color="#333333" onClick={showPassword} />
+                                            ) : (
+                                                <FiEyeOff color="#333333" onClick={showPassword} />
+                                            )}
+                                        </Box>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel fontWeight="bold" color="neutral.60">
+                                    Konfirmasi Password
+                                </FormLabel>
+                                <InputGroup>
+                                    <Input
+                                        placeholder="******"
+                                        type={isPasswordShowed ? "text" : "password"}
+                                        id="passwordConfirmation"
+                                        value={formValues.passwordConfirmation}
+                                        onChange={(e) =>
+                                            setFormValues((prev) => ({
+                                                ...prev,
+                                                [e.target.id]: e.target.value,
+                                            }))
+                                        }
+                                    ></Input>
+                                    <InputRightElement>
+                                        <Box cursor="pointer">
+                                            {isPasswordShowed ? (
+                                                <FiEye color="#333333" onClick={showPassword} />
+                                            ) : (
+                                                <FiEyeOff color="#333333" onClick={showPassword} />
+                                            )}
+                                        </Box>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
+                        </Flex>
 
-                    <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                        <Button
-                            variant="primary"
-                            size="full"
-                            onClick={() => handleSubmit()}
-                            isLoading={loading}
-                            isDisabled={
-                                formValues.nama == "" ||
-                                formValues.email == "" ||
-                                formValues.password == "" ||
-                                (formValues.passwordConfirmation == "" || formValues.password) !=
-                                    formValues.passwordConfirmation
-                            }
-                        >
-                            Registrasi
-                        </Button>
-                    </Flex>
+                        <Flex gap="16px" flexDir="column" mt="40px" w="100%">
+                            <Button
+                                variant="primary"
+                                size="full"
+                                type="submit"
+                                isLoading={loading}
+                                isDisabled={
+                                    formValues.nama == "" ||
+                                    formValues.email == "" ||
+                                    formValues.password == "" ||
+                                    (formValues.passwordConfirmation == "" ||
+                                        formValues.password) != formValues.passwordConfirmation
+                                }
+                            >
+                                Registrasi
+                            </Button>
+                        </Flex>
+                    </form>
                     <Flex gap="8px" flexDir="column" mt="60px" w="100%">
                         <Text fontSize="p3" color="neutral.60" textAlign="center">
                             Sudah memiliki akun?

@@ -44,7 +44,9 @@ export default function Home() {
         setIsPasswordShowed(!isPasswordShowed);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         if (formValues.email !== "" && formValues.password !== "") {
             setLoading(true);
 
@@ -120,35 +122,18 @@ export default function Home() {
                             Mulai temukan teman belajarmu di sini!
                         </Text>
                     </Box>
-
-                    <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column">
-                        <FormControl>
-                            <FormLabel fontWeight="bold" color="neutral.60">
-                                Email
-                            </FormLabel>
-                            <Input
-                                placeholder="finddy@gmail.com"
-                                type="email"
-                                id="email"
-                                value={formValues.email}
-                                onChange={(e) =>
-                                    setFormValues((prev) => ({
-                                        ...prev,
-                                        [e.target.id]: e.target.value,
-                                    }))
-                                }
-                            ></Input>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel fontWeight="bold" color="neutral.60">
-                                Password
-                            </FormLabel>
-                            <InputGroup>
+                    <form onSubmit={handleSubmit}>
+                        <Flex alignItems="stretch" gap="20px" mt="40px" flexDir="column">
+                            <FormControl>
+                                <FormLabel fontWeight="bold" color="neutral.60">
+                                    Email
+                                </FormLabel>
                                 <Input
-                                    placeholder="******"
-                                    type={isPasswordShowed ? "text" : "password"}
-                                    id="password"
-                                    value={formValues.password}
+                                    required
+                                    placeholder="finddy@gmail.com"
+                                    type="email"
+                                    id="email"
+                                    value={formValues.email}
                                     onChange={(e) =>
                                         setFormValues((prev) => ({
                                             ...prev,
@@ -156,29 +141,44 @@ export default function Home() {
                                         }))
                                     }
                                 ></Input>
-                                <InputRightElement>
-                                    <Box cursor="pointer">
-                                        {isPasswordShowed ? (
-                                            <FiEye color="#333333" onClick={showPassword} />
-                                        ) : (
-                                            <FiEyeOff color="#333333" onClick={showPassword} />
-                                        )}
-                                    </Box>
-                                </InputRightElement>
-                            </InputGroup>
-                        </FormControl>
-                    </Flex>
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel fontWeight="bold" color="neutral.60">
+                                    Password
+                                </FormLabel>
+                                <InputGroup>
+                                    <Input
+                                        required
+                                        placeholder="******"
+                                        type={isPasswordShowed ? "text" : "password"}
+                                        id="password"
+                                        value={formValues.password}
+                                        onChange={(e) =>
+                                            setFormValues((prev) => ({
+                                                ...prev,
+                                                [e.target.id]: e.target.value,
+                                            }))
+                                        }
+                                    ></Input>
+                                    <InputRightElement>
+                                        <Box cursor="pointer">
+                                            {isPasswordShowed ? (
+                                                <FiEye color="#333333" onClick={showPassword} />
+                                            ) : (
+                                                <FiEyeOff color="#333333" onClick={showPassword} />
+                                            )}
+                                        </Box>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
+                        </Flex>
 
-                    <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                        <Button
-                            variant="primary"
-                            size="full"
-                            onClick={handleSubmit}
-                            isLoading={loading}
-                        >
-                            Login
-                        </Button>
-                    </Flex>
+                        <Flex gap="16px" flexDir="column" mt="40px" w="100%">
+                            <Button type="submit" variant="primary" size="full" isLoading={loading}>
+                                Login
+                            </Button>
+                        </Flex>
+                    </form>
                     <Flex gap="8px" flexDir="column" mt="60px" w="100%">
                         <Text fontSize="p3" color="neutral.60" textAlign="center">
                             Belum memiliki akun?

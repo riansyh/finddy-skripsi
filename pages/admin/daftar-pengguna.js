@@ -35,7 +35,6 @@ export default function Pengguna() {
         };
 
         showUser();
-        console.log(users);
     }, []);
 
     return (
