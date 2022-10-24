@@ -13,7 +13,6 @@ import {
     Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { EmptyStates } from "../components/EmptyStates";
 import { Menubar } from "../components/Menubar";
@@ -64,33 +63,20 @@ export default function Search() {
 
         if (authUser?.isComplete) {
             showUser();
-            setFilters((val) => ({ ...val, bidang: authUser.data?.bidangMinat[0].name }));
         }
     }, [authUser]);
 
     useEffect(() => {
+        setFilteredUsers(users);
         setHeroHeight(ref.current.clientHeight);
     }, []);
 
     useEffect(() => {
-        setFilteredUsers(
-            users
-                .filter((user) => {
-                    return user.bidangMinat.some((bidang) => bidang.name == filters.bidang);
-                })
-                .filter((user) => {
-                    return user.bidangMinat.some((bidang) =>
-                        filters.kemampuan != "" ? bidang.skill == filters.kemampuan : true
-                    );
-                })
-                .filter((user) =>
-                    user.lokasi == "lokasiku" ? user.kabupaten == authUser.kabupaten : true
-                )
-        );
-    }, [filters.bidang, filters.kemampuan, filters.lokasi]);
+        setFilteredUsers(users);
+    }, [users]);
 
     useEffect(() => {
-        if (searchKey != "")
+        if (filters.bidang != "") {
             setFilteredUsers(
                 users
                     .filter((user) => {
@@ -102,10 +88,60 @@ export default function Search() {
                         );
                     })
                     .filter((user) =>
-                        user.lokasi == "lokasiku" ? user.kabupaten == authUser.kabupaten : true
+                        filters.lokasi == "lokasiku"
+                            ? user.kabupaten == authUser.data.kabupaten
+                            : true
                     )
-                    .filter((user) => user.name.toLowerCase().includes(searchKey.toLowerCase()))
             );
+        } else {
+            setFilteredUsers(
+                users
+                    .filter((user) => {
+                        return user.bidangMinat.some((bidang) =>
+                            filters.kemampuan != "" ? bidang.skill == filters.kemampuan : true
+                        );
+                    })
+                    .filter((user) =>
+                        filters.lokasi == "lokasiku"
+                            ? user.kabupaten == authUser.data.kabupaten
+                            : true
+                    )
+            );
+        }
+    }, [filters.bidang, filters.kemampuan, filters.lokasi]);
+
+    useEffect(() => {
+        if (searchKey != "")
+            if (filters.bidang != "") {
+                setFilteredUsers(
+                    users
+                        .filter((user) => {
+                            return user.bidangMinat.some((bidang) => bidang.name == filters.bidang);
+                        })
+                        .filter((user) => {
+                            return user.bidangMinat.some((bidang) =>
+                                filters.kemampuan != "" ? bidang.skill == filters.kemampuan : true
+                            );
+                        })
+                        .filter((user) =>
+                            user.lokasi == "lokasiku" ? user.kabupaten == authUser.kabupaten : true
+                        )
+                        .filter((user) => user.name.toLowerCase().includes(searchKey.toLowerCase()))
+                );
+            } else {
+                setFilteredUsers(
+                    users
+                        .filter((user) => {
+                            return user.bidangMinat.some((bidang) =>
+                                filters.kemampuan != "" ? bidang.skill == filters.kemampuan : true
+                            );
+                        })
+                        .filter((user) =>
+                            user.lokasi == "lokasiku" ? user.kabupaten == authUser.kabupaten : true
+                        )
+                        .filter((user) => user.name.toLowerCase().includes(searchKey.toLowerCase()))
+                );
+            }
     }, [searchKey]);
 
     return (
@@ -190,6 +226,17 @@ export default function Search() {
                                     overflowX="auto"
                                     className="no-scroll"
                                 >
+                                    <BidangOption
+                                        isActive={filters.bidang == ""}
+                                        onClick={() => {
+                                            setFilters((val) => ({
+                                                ...val,
+                                                bidang: "",
+                                            }));
+                                        }}
+                                    >
+                                        Semua
+                                    </BidangOption>
                                     {authUser.data?.bidangMinat?.map((bidang, index) => (
                                         <BidangOption
                                             key={`bidang-${index}`}

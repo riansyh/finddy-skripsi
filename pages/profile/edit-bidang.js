@@ -9,6 +9,16 @@ import {
     InputGroup,
     InputRightElement,
     useToast,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    List,
+    ListItem,
+    OrderedList,
 } from "@chakra-ui/react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +37,9 @@ export default function User() {
     const [searchKey, setSearchKey] = useState("");
     const [bidangMinat, setBidangMinat] = useState([]);
     const [loading, setLoading] = useState(false);
-    const toast = useToast();
 
+    const toast = useToast();
+    const { isOpen, onClose, onOpen } = useDisclosure();
     const form = useSelector((state) => state.register);
     const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
@@ -207,6 +218,7 @@ export default function User() {
                                             <FiSearch color="#333333" />
                                         </InputRightElement>
                                     </InputGroup>
+
                                     {searchKey !== "" && (
                                         <Flex
                                             py="12px"
@@ -240,6 +252,22 @@ export default function User() {
                                                 <Text>Masukkan kata kunci lain</Text>
                                             )}
                                         </Flex>
+                                    )}
+
+                                    {form.bidangMinat.length > 0 && (
+                                        <Text fontSize="14" color="neutral.60">
+                                            Bingung saat memilih tingkat kemampuan? Baca panduannya{" "}
+                                            <Box
+                                                display="inline"
+                                                fontWeight="bold"
+                                                textDecoration="underline"
+                                                onClick={onOpen}
+                                                cursor="pointer"
+                                                color="primary.calmblue"
+                                            >
+                                                di sini
+                                            </Box>
+                                        </Text>
                                     )}
                                 </Flex>
                             </Box>
@@ -297,6 +325,55 @@ export default function User() {
                     </Box>
                 </Flex>
             </Flex>
+
+            <Modal onClose={onClose} isOpen={isOpen} isCentered scrollBehavior="inside">
+                <ModalOverlay />
+                <ModalContent mx="24px">
+                    <ModalHeader>Kriteria tingkat kemampuan</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Flex flexDir="column" gap="12px" mb="24px">
+                            <Box>
+                                <Heading fontSize="h6">Pemula</Heading>
+                                <OrderedList fontSize="p3">
+                                    <ListItem>
+                                        Belum memiliki pengalaman profesional seperti magang,
+                                        freelance, atau bekerja
+                                    </ListItem>
+                                    <ListItem>
+                                        Baru mempelajari selama kurang dari <b>3 bulan</b>
+                                    </ListItem>
+                                </OrderedList>
+                            </Box>
+                            <Box>
+                                <Heading fontSize="h6">Menengah</Heading>
+                                <OrderedList fontSize="p3">
+                                    <ListItem>
+                                        Memiliki pengalaman profesional seperti magang, freelance,
+                                        atau bekerja &lt; <b>3 kali</b>.
+                                    </ListItem>
+                                    <ListItem>
+                                        Sudah mempelajari selama <b>3 - 12 bulan</b>
+                                    </ListItem>
+                                </OrderedList>
+                            </Box>
+                            <Box>
+                                <Heading fontSize="h6">Ahli</Heading>
+                                <OrderedList fontSize="p3">
+                                    <ListItem>
+                                        Memiliki pengalaman profesional seperti magang, freelance,
+                                        atau bekerja &gt; <b>3 kali</b>.
+                                    </ListItem>
+                                    <ListItem>
+                                        Sudah mempelajari lebih dari <b>1 tahun</b>
+                                    </ListItem>
+                                    <ListItem>Bisa menjadi mentor bagi pengguna lain</ListItem>
+                                </OrderedList>
+                            </Box>
+                        </Flex>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     );
 }
