@@ -80,7 +80,7 @@ export const FriendList = ({ onClose, isOpen }) => {
 
                 router.push(`/chat/${combineId}/${user.uid}`);
             } else {
-                router.push("/chat/detail");
+                router.push(`/chat/${combineId}/${user.uid}`);
             }
         } catch (error) {
             toast({

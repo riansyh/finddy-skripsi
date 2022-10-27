@@ -141,6 +141,53 @@ export default function User({ userData }) {
         setReason("");
     };
 
+    const handleSendMessage = async (user) => {
+        console.log(user);
+        const combineId =
+            authUser.uid > user.uid ? authUser.uid + user.uid : user.uid + authUser.uid;
+        try {
+            const res = await getDoc(doc(db, "chats", combineId));
+
+            if (!res.exists()) {
+                await setDoc(doc(db, "chats", combineId), { messages: [] });
+
+                await updateDoc(doc(db, "userChats", authUser.uid), {
+                    [combineId + ".userInfo"]: {
+                        uid: user.uid,
+                        name: user.name,
+                        imgUrl: user.imgUrl,
+                        bidang: user.bidangMinat,
+                    },
+                    [combineId + ".date"]: serverTimestamp(),
+                });
+
+                await updateDoc(doc(db, "userChats", user.uid), {
+                    [combineId + ".userInfo"]: {
+                        uid: authUser.uid,
+                        name: authUser.name,
+                        imgUrl: authUser.data.imgUrl,
+                        bidang: authUser.data.bidangMinat,
+                    },
+                    [combineId + ".date"]: serverTimestamp(),
+                });
+
+                router.push(`/chat/${combineId}/${user.uid}`);
+            } else {
+                router.push(`/chat/${combineId}/${user.uid}`);
+            }
+        } catch (error) {
+            toast({
+                variant: "subtle",
+                position: "top",
+                title: "Terjadi kesalahan",
+                description: "Silahkan coba lagi",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
     return (
         <>
             <Head>
@@ -214,7 +261,11 @@ export default function User({ userData }) {
                                 <Text ml="6px">{isSaved ? "Teman disimpan" : "Simpan Teman"}</Text>
                             </Button>
                             {isSaved && (
-                                <Button variant="primary" flexShrink="0">
+                                <Button
+                                    variant="primary"
+                                    flexShrink="0"
+                                    onClick={() => handleSendMessage(userData)}
+                                >
                                     <FiMessageCircle />
                                     <Text display={{ base: "none", md: "block" }} ml="6px">
                                         Kirim pesan
