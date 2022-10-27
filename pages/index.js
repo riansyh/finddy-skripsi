@@ -29,7 +29,7 @@ export default function Index() {
                     alignItems="center"
                     justifyContent="center"
                     bg="primary.calmblue"
-                    py="80px"
+                    py={{ base: "50px", md: "80px" }}
                     ref={ref}
                 >
                     <Flex
@@ -59,7 +59,7 @@ export default function Index() {
                             kamu pelajari
                         </Text>
                         <NextLink href="/login" passHref>
-                            <Link>
+                            <Link w={{ base: "100%" }} _hover={{ textDecoration: "none" }}>
                                 <Button
                                     mt="40px"
                                     variant="secondary"
@@ -92,7 +92,12 @@ export default function Index() {
                     </Box>
                 )}
 
-                <Flex w="100%" alignItems="center" justifyContent="center" mt="120px">
+                <Flex
+                    w="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                    mt={{ base: "50px", md: "80px" }}
+                >
                     <Flex
                         maxW="1320px"
                         color="neutral.90"
@@ -228,7 +233,10 @@ export default function Index() {
                         </Text>
 
                         <NextLink href="/login" passHref>
-                            <Link>
+                            <Link
+                                w={{ base: "100%", md: "fit-content" }}
+                                _hover={{ textDecoration: "none" }}
+                            >
                                 <Button variant="primary" mt="24px">
                                     Registrasi Sekarang
                                 </Button>
