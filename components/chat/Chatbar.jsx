@@ -80,7 +80,6 @@ export const Chatbar = ({ authUser, chatId, userId }) => {
         <form onSubmit={handleSend}>
             <Flex
                 position="fixed"
-                h="60px"
                 bg="white"
                 zIndex="100"
                 boxShadow="nav"
@@ -94,14 +93,15 @@ export const Chatbar = ({ authUser, chatId, userId }) => {
             >
                 <Input
                     borderRadius="40px"
-                    fontSize="12px"
-                    py="10px"
+                    fontSize="14px"
+                    py="12px"
+                    mb={{ base: "12px", md: "0" }}
                     h="max-content"
                     placeholder="Masukkan pesan"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                 ></Input>
-                <Button type="submit" variant="primary" borderRadius="80px" height="auto">
+                <Button type="submit" variant="primary" borderRadius="80px" height="auto" mb={{ base: "12px", md: "0" }}>
                     <FiSend />
                 </Button>
             </Flex>

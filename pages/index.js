@@ -58,9 +58,17 @@ export default function Index() {
                             Temukan teman belajar di sekitarmu berdasarkan bidang/minat yang sedang
                             kamu pelajari
                         </Text>
-                        <Button mt="40px" variant="secondary" size={{ base: "full", md: "" }}>
-                            Mulai Perjalananku
-                        </Button>
+                        <NextLink href="/login" passHref>
+                            <Link>
+                                <Button
+                                    mt="40px"
+                                    variant="secondary"
+                                    size={{ base: "full", md: "" }}
+                                >
+                                    Mulai Perjalananku
+                                </Button>
+                            </Link>
+                        </NextLink>
                     </Flex>
                 </Flex>
 
@@ -219,9 +227,13 @@ export default function Index() {
                             Tunggu apa lagi, mulai daftar dan temukan teman belajarmu di sini
                         </Text>
 
-                        <Button variant="primary" mt="24px">
-                            Registrasi Sekarang
-                        </Button>
+                        <NextLink href="/login" passHref>
+                            <Link>
+                                <Button variant="primary" mt="24px">
+                                    Registrasi Sekarang
+                                </Button>
+                            </Link>
+                        </NextLink>
                     </Flex>
                 </Flex>
 

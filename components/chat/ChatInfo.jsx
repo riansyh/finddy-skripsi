@@ -6,6 +6,7 @@ import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useSelector } from "react-redux";
 import { sendMessage } from "../../feature/sendMessage";
+import { MdOutlineContactPhone } from "react-icons/md";
 
 export const ChatInfo = ({ user, chatId, userId }) => {
     const authUser = useSelector((state) => state.authUser);
@@ -80,14 +81,14 @@ export const ChatInfo = ({ user, chatId, userId }) => {
 
                         <Menu>
                             <MenuButton>
-                                <FiMoreVertical />
+                                <MdOutlineContactPhone size="24" color="" />
                             </MenuButton>
                             <MenuList>
-                                <MenuItem _focus={{ bg: "transparent" }}>
+                                {/* <MenuItem _focus={{ bg: "transparent" }}>
                                     <NextLink href={`/user/${user.uid}`} passHref>
                                         <Link>Lihat profil</Link>
                                     </NextLink>
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem
                                     _focus={{ bg: "transparent" }}
                                     onClick={handleRequestContact}

@@ -32,10 +32,9 @@ import {
     ModalBody,
     useToast,
 } from "@chakra-ui/react";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../app/firebase";
-import { FiCheck, FiMapPin, FiTrash } from "react-icons/fi";
-import { AiOutlineWarning } from "react-icons/ai";
+import { FiCheck, FiMapPin, FiTrash, FiUserX } from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { BidangCard } from "../../components/profile/BidangCard";
 
@@ -48,9 +47,9 @@ const StatusPill = ({ status }) => {
             color="white"
             fontSize="p2"
             w="fit-content"
-            bg={status == "active" ? "state.success" : "neutral.60"}
+            bg={status == "Aktif" ? "state.success" : "neutral.60"}
         >
-            {status == "active" ? "Aktif" : "Selesai"}
+            {status == "Aktif" ? "Aktif" : "Selesai"}
         </Box>
     );
 };
@@ -58,23 +57,27 @@ const StatusPill = ({ status }) => {
 export default function Pengguna() {
     const router = useRouter();
     const [reports, setReports] = useState(null);
+    const [reportsId, setReportsId] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [user, setUser] = useState(null);
     const toast = useToast();
 
+    const showUser = async () => {
+        const querySnapshot = await getDocs(collection(db, "reports"));
+
+        const reports = [];
+        const reportsId = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            reports.push(data);
+            reportsId.push(doc.id);
+        });
+
+        setReports(reports);
+        setReportsId(reportsId);
+    };
+
     useEffect(() => {
-        const showUser = async () => {
-            const querySnapshot = await getDocs(collection(db, "reports"));
-
-            const reports = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                reports.push(data);
-            });
-
-            setReports(reports);
-        };
-
         showUser();
     }, []);
 
@@ -92,6 +95,62 @@ export default function Pengguna() {
             duration: 3000,
             isClosable: true,
         });
+    };
+
+    const setFinish = async (id) => {
+        try {
+            await updateDoc(doc(db, "reports", id), {
+                status: "Selesai",
+            });
+
+            toast({
+                position: "top",
+                title: "Berhasil",
+                description: "Laporan telah ditandai selesai",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+
+            await showUser();
+        } catch (error) {
+            console.log(error);
+            toast({
+                position: "top",
+                title: "Ups!",
+                description: "Sepertinya ada kesalahan, silakan coba lagi",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
+    const deleteReports = async (id) => {
+        try {
+            await deleteDoc(doc(db, "reports", id));
+
+            toast({
+                position: "top",
+                title: "Berhasil",
+                description: "Laporan telah berhasil dihapus",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+
+            await showUser();
+        } catch (error) {
+            console.log(error);
+            toast({
+                position: "top",
+                title: "Ups!",
+                description: "Sepertinya ada kesalahan, silakan coba lagi",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
     };
 
     return (
@@ -231,13 +290,31 @@ export default function Pengguna() {
                                                             p="1px"
                                                             color="white"
                                                             bg="state.success"
+                                                            onClick={() =>
+                                                                setFinish(reportsId[index])
+                                                            }
+                                                            isDisabled={report.status == "Selesai"}
                                                         >
                                                             <FiCheck />
                                                         </Button>
                                                         <Button
                                                             p="1px"
                                                             color="white"
+                                                            bg="state.warning"
+                                                            onClick={() => {
+                                                                setUser(report.reportedUser);
+                                                                onOpen();
+                                                            }}
+                                                        >
+                                                            <FiUserX />
+                                                        </Button>
+                                                        <Button
+                                                            p="1px"
+                                                            color="white"
                                                             bg="state.error"
+                                                            onClick={() =>
+                                                                deleteReports(reportsId[index])
+                                                            }
                                                         >
                                                             <FiTrash />
                                                         </Button>

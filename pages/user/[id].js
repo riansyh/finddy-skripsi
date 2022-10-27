@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 
 import Head from "next/head";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menubar } from "../../components/Menubar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -32,7 +32,7 @@ import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { v4 as uuid } from "uuid";
 
 export default function User({ userData }) {
-    const [isSaved, setIsSaved] = useState(authUser?.data?.friends.includes(userData.uid));
+    const [isSaved, setIsSaved] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [reason, setReason] = useState("");
 
@@ -42,6 +42,10 @@ export default function User({ userData }) {
     const router = useRouter();
     const toast = useToast();
     useFirebaseAuth();
+
+    useEffect(() => {
+        setIsSaved(authUser?.data?.friends.includes(userData.uid));
+    }, [authUser, userData.uid]);
 
     const saveFriend = async () => {
         setIsLoading(true);
@@ -108,10 +112,10 @@ export default function User({ userData }) {
     const reportuser = async (user, reason) => {
         try {
             await addDoc(collection(db, "reports"), {
-                uid: uuid(),
                 user: authUser,
                 reportedUser: user,
                 reason: reason,
+                status: "Aktif",
             });
 
             toast({
@@ -197,12 +201,11 @@ export default function User({ userData }) {
                         </Flex>
                         <Flex gap="8px" alignItems="center" mt="32px" w="100%">
                             <Button
-                                variant="primary"
+                                variant={isSaved ? "secondary" : "primary"}
                                 px="24px"
                                 size="full"
                                 isLoading={isLoading}
                                 onClick={isSaved ? onOpenUnsave : saveFriend}
-                                opacity={isSaved ? "0.4" : "1"}
                             >
                                 <Box display={{ base: "none", sm: "block" }}>
                                     {isSaved ? <FiCheck /> : <FiPlus />}
@@ -342,6 +345,7 @@ export default function User({ userData }) {
                         <Button
                             variant="primary"
                             size="full"
+                            isDisabled={reason.length < 5}
                             onClick={() => reportuser(userData, reason)}
                         >
                             Laporkan

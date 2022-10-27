@@ -22,7 +22,7 @@ export const BubbleChat = ({ isMyChat, children, time, user, chatId, userId }) =
             <Box
                 color="#333"
                 bg={isMyChat ? "accent.grass" : "#E5EBEE"}
-                fontSize="12px"
+                fontSize="14px"
                 minW="100px"
                 borderRadius="4px"
                 px="10px"
@@ -31,7 +31,7 @@ export const BubbleChat = ({ isMyChat, children, time, user, chatId, userId }) =
                 maxW="90%"
             >
                 {children}
-                {children == "Halo, boleh minta kontaknya ga?" && (
+                {children == "Halo, boleh minta kontaknya ga?" && !isMyChat && (
                     <>
                         <Divider borderColor="neutral.40" my="4px" />
                         <Box
@@ -54,7 +54,7 @@ export const BubbleChat = ({ isMyChat, children, time, user, chatId, userId }) =
                     </>
                 )}
             </Box>
-            <Text color="#7E7E7E" mt="2px" fontSize="8px">
+            <Text color="#7E7E7E" mt="2px" fontSize="10px">
                 {showMessageTime(time, true)}
             </Text>
         </Flex>
