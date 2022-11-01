@@ -25,6 +25,7 @@
     "react-icons": "^4.4.0",
     "react-redux": "^8.0.4",
     "react-responsive-carousel": "^3.2.23",
+    "swiper": "^8.4.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

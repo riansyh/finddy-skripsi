@@ -92,6 +92,7 @@ export default function User() {
             >
                 <Flex
                     minH={{ base: "100vh", md: "600px" }}
+                    maxW="600px"
                     w="100%"
                     bg="white"
                     px="24px"

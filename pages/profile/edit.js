@@ -99,8 +99,8 @@ export default function User() {
             toast({
                 variant: "subtle",
                 position: "top",
-                title: "Akun berhasil diupdate!",
-                description: "Data kamu saat ini sudah lengkap",
+                title: "Berhasil!",
+                description: "Perubahan berhasil disimpan.",
                 status: "success",
                 duration: 3000,
                 isClosable: true,
