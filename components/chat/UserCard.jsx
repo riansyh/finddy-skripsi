@@ -25,7 +25,7 @@ export const UserCard = ({ chat, href = "#" }) => {
                     transitionProperty="all"
                     cursor="pointer"
                 >
-                    <Avatar showBorder borderColor="primary.calmblue" src={userInfo.imgUrl} />
+                    <Avatar showBorder borderColor="primary.calmblue" src={userInfo?.imgUrl} />
                     <Flex flexDir="column" alignItems="left" w="100%">
                         <Flex justifyContent="space-between" alignItems="center">
                             <Text fontWeight="bold" fontSize="h7" textAlign="left">
