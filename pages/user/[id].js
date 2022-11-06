@@ -180,7 +180,7 @@ export default function User({ userData }) {
                 variant: "subtle",
                 position: "top",
                 title: "Terjadi kesalahan",
-                description: "Silahkan coba lagi",
+                description: error.message,
                 status: "error",
                 duration: 3000,
                 isClosable: true,

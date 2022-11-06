@@ -240,7 +240,7 @@ export default function Pengguna() {
                     >
                         <Flex w="100%" justifyContent="space-between" flexDir="column" gap="48px">
                             <Heading fontSize="h4" textAlign="center">
-                                Daftar Pengguna
+                                Daftar Laporan Pengguna
                             </Heading>
                             <TableContainer w="100%">
                                 <Table variant="simple">
