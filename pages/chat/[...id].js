@@ -57,6 +57,7 @@ export default function Detail({ chats, userData, chatId, userId }) {
                                 user={userData}
                                 chatId={chatId}
                                 userId={userId}
+                                file={message.file ? message.file : false}
                             >
                                 {message.text}
                             </BubbleChat>
