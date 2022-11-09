@@ -49,7 +49,7 @@ export const FriendList = ({ onClose, isOpen }) => {
         showUser();
     }, [authUser]);
 
-    const handleUserSelect = async (user) => {
+    const handleUserSelect = async (user) => { 
         const combineId =
             authUser.uid > user.uid ? authUser.uid + user.uid : user.uid + authUser.uid;
         try {

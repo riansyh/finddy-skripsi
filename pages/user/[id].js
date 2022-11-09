@@ -25,7 +25,16 @@ import { useRouter } from "next/router";
 import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus, FiCheck } from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
-import { addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+    addDoc,
+    arrayUnion,
+    collection,
+    doc,
+    getDoc,
+    serverTimestamp,
+    setDoc,
+    updateDoc,
+} from "firebase/firestore";
 import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
