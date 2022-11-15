@@ -10,6 +10,7 @@ import {
     InputGroup,
     InputRightElement,
     useToast,
+    Text,
 } from "@chakra-ui/react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -231,6 +232,11 @@ export default function User() {
                                             </Box>
                                         </InputRightElement>
                                     </InputGroup>
+                                    {form.new !== form.newConfirm && form.newConfirm.length > 0 && (
+                                        <Text color="state.error" fontSize="p3" mt="4px">
+                                            Password baru dan konfirmasi password baru tidak sama
+                                        </Text>
+                                    )}
                                 </FormControl>
                             </Flex>
 
