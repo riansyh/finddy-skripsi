@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Button,
@@ -25,13 +25,14 @@ import {
     PopoverAnchor,
 } from "@chakra-ui/react";
 
-import { AiFillCamera, AiFillInfoCircle } from "react-icons/ai";
+import { AiFillCamera, AiFillInfoCircle, AiFillQuestionCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
 import { storage } from "../../app/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export const Data = ({ nextFunction }) => {
+    const [isGuideShow, setIsGuideShow] = useState(false);
     const form = useSelector((state) => state.register);
     const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
@@ -164,7 +165,7 @@ export const Data = ({ nextFunction }) => {
                             <Popover>
                                 <PopoverTrigger>
                                     <button>
-                                        <AiFillInfoCircle color="#FE922F" />
+                                        <AiFillQuestionCircle size="20px" color="#107cc7" />
                                     </button>
                                 </PopoverTrigger>
                                 <PopoverContent>
@@ -185,7 +186,15 @@ export const Data = ({ nextFunction }) => {
                         onChange={(e) =>
                             dispatch(change({ name: "kontak", value: e.target.value }))
                         }
+                        onFocus={() => setIsGuideShow(true)}
+                        onBlur={() => setIsGuideShow(false)}
                     ></Input>
+                    {isGuideShow && (
+                        <Text fontSize="p3" color="neutral.40" mt="4px">
+                            Kontak kamu hanya ditampilkan kepada teman belajar yang kamu izinkan
+                            saja
+                        </Text>
+                    )}
                 </FormControl>
             </Flex>
 

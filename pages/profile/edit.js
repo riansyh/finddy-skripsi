@@ -22,7 +22,7 @@ import {
     PopoverBody,
 } from "@chakra-ui/react";
 
-import { AiFillCamera, AiFillInfoCircle } from "react-icons/ai";
+import { AiFillCamera, AiFillQuestionCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
 import { db, storage } from "../../app/firebase";
@@ -276,7 +276,10 @@ export default function User() {
                                         <Popover>
                                             <PopoverTrigger>
                                                 <button>
-                                                    <AiFillInfoCircle color="#FE922F" />
+                                                    <AiFillQuestionCircle
+                                                        size="20px"
+                                                        color="#107cc7"
+                                                    />
                                                 </button>
                                             </PopoverTrigger>
                                             <PopoverContent>
