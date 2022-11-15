@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -11,6 +11,7 @@ import {
     Avatar,
     AvatarBadge,
     useToast,
+    Select,
 } from "@chakra-ui/react";
 
 import {
@@ -24,7 +25,7 @@ import {
     PopoverCloseButton,
     PopoverAnchor,
 } from "@chakra-ui/react";
-
+import axios from "axios";
 import { AiFillCamera, AiFillInfoCircle, AiFillQuestionCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
@@ -37,6 +38,26 @@ export const Data = ({ nextFunction }) => {
     const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
     const toast = useToast();
+
+    const [dataProvinsi, setDataProvinsi] = useState(null);
+    const [dataKabupaten, setDataKabupaten] = useState(null);
+    const [selectedProvinsi, setSelectedProvinsi] = useState(0);
+
+    useEffect(() => {
+        axios.get("http://dev.farizdotid.com/api/daerahindonesia/provinsi").then((response) => {
+            setDataProvinsi(response.data.provinsi);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios
+            .get(
+                `https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${selectedProvinsi}`
+            )
+            .then((response) => {
+                setDataKabupaten(response.data.kota_kabupaten);
+            });
+    }, [selectedProvinsi]);
 
     const handleUploadImage = async (e) => {
         try {
@@ -136,25 +157,38 @@ export const Data = ({ nextFunction }) => {
                         <FormLabel fontWeight="bold" color="neutral.60">
                             Domisili tempat tinggal
                         </FormLabel>
-                        <Input
-                            placeholder="Kabupaten/kota"
-                            type="text"
-                            value={form.kabupaten}
+                        <Select
+                            placeholder="Pilih Provinsi"
+                            onChange={(e) => {
+                                dispatch(change({ name: "provinsi", value: e.target.value }));
+                                setSelectedProvinsi(
+                                    e.target[e.target.selectedIndex].getAttribute("data-id")
+                                );
+                                console.log(
+                                    e.target[e.target.selectedIndex].getAttribute("data-id")
+                                );
+                            }}
+                        >
+                            {dataProvinsi?.map((data, idx) => (
+                                <option value={data.nama} data-id={data.id} key={`prov-${idx}`}>
+                                    {data.nama}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl>
+                        <Select
+                            placeholder="Pilih Kabupaten"
                             onChange={(e) =>
                                 dispatch(change({ name: "kabupaten", value: e.target.value }))
                             }
-                        ></Input>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel fontWeight="bold" color="neutral.60"></FormLabel>
-                        <Input
-                            placeholder="Provinsi"
-                            type="text"
-                            value={form.provinsi}
-                            onChange={(e) =>
-                                dispatch(change({ name: "provinsi", value: e.target.value }))
-                            }
-                        ></Input>
+                        >
+                            {dataKabupaten?.map((data, idx) => (
+                                <option value={data.nama} data-id={data.id} key={`prov-${idx}`}>
+                                    {data.nama}
+                                </option>
+                            ))}
+                        </Select>
                     </FormControl>
                 </Flex>
 
