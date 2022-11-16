@@ -48,7 +48,7 @@ export default function User() {
     const [selectedProvinsi, setSelectedProvinsi] = useState(0);
 
     useEffect(() => {
-        axios.get("http://dev.farizdotid.com/api/daerahindonesia/provinsi").then((response) => {
+        axios.get("https://dev.farizdotid.com/api/daerahindonesia/provinsi").then((response) => {
             setDataProvinsi(response.data.provinsi);
         });
     }, []);
