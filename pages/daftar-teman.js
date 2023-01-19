@@ -155,6 +155,17 @@ export default function Search() {
                                     overflowX="auto"
                                     className="no-scroll"
                                 >
+                                    <BidangOption
+                                        isActive={filters.bidang == ""}
+                                        onClick={() => {
+                                            setFilters((val) => ({
+                                                ...val,
+                                                bidang: "",
+                                            }));
+                                        }}
+                                    >
+                                        Semua
+                                    </BidangOption>
                                     {authUser.data?.bidangMinat?.map((bidang, index) => (
                                         <BidangOption
                                             key={`bidang-${index}`}

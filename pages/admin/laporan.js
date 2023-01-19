@@ -10,6 +10,7 @@ import {
     Text,
     Textarea,
     useDisclosure,
+    Tooltip,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
@@ -286,38 +287,56 @@ export default function Pengguna() {
                                                 <Td>{report.reason}</Td>
                                                 <Td>
                                                     <Flex gap="8px">
-                                                        <Button
-                                                            p="1px"
-                                                            color="white"
-                                                            bg="state.success"
-                                                            onClick={() =>
-                                                                setFinish(reportsId[index])
-                                                            }
-                                                            isDisabled={report.status == "Selesai"}
+                                                        <Tooltip
+                                                            label="Nonaktifkan akun terlapor"
+                                                            fontSize="sm"
                                                         >
-                                                            <FiCheck />
-                                                        </Button>
-                                                        <Button
-                                                            p="1px"
-                                                            color="white"
-                                                            bg="state.warning"
-                                                            onClick={() => {
-                                                                setUser(report.reportedUser);
-                                                                onOpen();
-                                                            }}
+                                                            <Button
+                                                                p="1px"
+                                                                mr="12px"
+                                                                color="white"
+                                                                bg="state.warning"
+                                                                onClick={() => {
+                                                                    setUser(report.reportedUser);
+                                                                    onOpen();
+                                                                }}
+                                                            >
+                                                                <FiUserX />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            label="Ubah laporan menjadi selesai"
+                                                            fontSize="sm"
                                                         >
-                                                            <FiUserX />
-                                                        </Button>
-                                                        <Button
-                                                            p="1px"
-                                                            color="white"
-                                                            bg="state.error"
-                                                            onClick={() =>
-                                                                deleteReports(reportsId[index])
-                                                            }
+                                                            <Button
+                                                                p="1px"
+                                                                color="white"
+                                                                bg="state.success"
+                                                                onClick={() =>
+                                                                    setFinish(reportsId[index])
+                                                                }
+                                                                isDisabled={
+                                                                    report.status == "Selesai"
+                                                                }
+                                                            >
+                                                                <FiCheck />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            label="Hapus laporan"
+                                                            fontSize="sm"
                                                         >
-                                                            <FiTrash />
-                                                        </Button>
+                                                            <Button
+                                                                p="1px"
+                                                                color="white"
+                                                                bg="state.error"
+                                                                onClick={() =>
+                                                                    deleteReports(reportsId[index])
+                                                                }
+                                                            >
+                                                                <FiTrash />
+                                                            </Button>
+                                                        </Tooltip>
                                                     </Flex>
                                                 </Td>
                                             </Tr>

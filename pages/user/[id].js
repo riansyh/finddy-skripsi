@@ -15,6 +15,19 @@ import {
     ModalFooter,
     ModalBody,
     useToast,
+    IconButton,
+    Select,
+} from "@chakra-ui/react";
+
+import {
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuItemOption,
+    MenuGroup,
+    MenuOptionGroup,
+    MenuDivider,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
@@ -22,7 +35,14 @@ import React, { useEffect, useState } from "react";
 import { Menubar } from "../../components/Menubar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { FiMessageCircle, FiChevronLeft, FiMapPin, FiPlus, FiCheck } from "react-icons/fi";
+import {
+    FiMessageCircle,
+    FiChevronLeft,
+    FiMapPin,
+    FiPlus,
+    FiCheck,
+    FiMoreVertical,
+} from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
 import {
@@ -38,7 +58,6 @@ import {
 import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
-import { v4 as uuid } from "uuid";
 
 export default function User({ userData }) {
     const [isSaved, setIsSaved] = useState(null);
@@ -117,6 +136,8 @@ export default function User({ userData }) {
             setIsLoading(false);
         }
     };
+
+    const emptyFunct = () => {};
 
     const reportuser = async (user, reason) => {
         try {
@@ -213,8 +234,7 @@ export default function User({ userData }) {
                         px={{ base: "24px", md: "80px", lg: "120px" }}
                         w="100%"
                         textAlign={{ base: "left", md: "center" }}
-                        flexDir="column"
-                        justifyContent="center"
+                        justifyContent="space-between"
                     >
                         <Flex alignItems="center" onClick={() => router.back()} cursor="pointer">
                             <FiChevronLeft />
@@ -222,6 +242,19 @@ export default function User({ userData }) {
                                 Kembali
                             </Text>
                         </Flex>
+                        <Menu>
+                            <MenuButton
+                                as={IconButton}
+                                aria-label="Options"
+                                icon={<FiMoreVertical />}
+                                bg="transparent"
+                            ></MenuButton>
+                            <MenuList>
+                                {isSaved && <MenuItem onClick={onOpenUnsave}>Hapus Teman</MenuItem>}
+                                {!isSaved && <MenuItem onClick={saveFriend}>Simpan Teman</MenuItem>}
+                                <MenuItem onClick={onOpen}>Laporkan Pengguna</MenuItem>
+                            </MenuList>
+                        </Menu>
                     </Flex>
                 </Flex>
 
@@ -263,7 +296,7 @@ export default function User({ userData }) {
                                 isLoading={isLoading}
                                 onClick={isSaved ? onOpenUnsave : saveFriend}
                             >
-                                <Box display={{ base: "none", sm: "block" }}>
+                                <Box display={{ base: "block", sm: "block" }}>
                                     {isSaved ? <FiCheck /> : <FiPlus />}
                                 </Box>
 
@@ -387,10 +420,16 @@ export default function User({ userData }) {
                                 Kamu akan melaporkan pengguna ini kepada admin, silakan isi alasan
                                 kenapa kamu melaporkannya di bawah
                             </Text>
+                            <Select mt="20px" placeholder="Pilih alasan" fontSize="p3">
+                                <option value="Spam">Spam</option>
+                                <option value="Penipuan">Penipuan</option>
+                                <option value="Mengganggu">Mengganggu</option>
+                                <option value="Akun palsu">Akun palsu</option>
+                            </Select>
                             <Textarea
-                                mt="20px"
+                                mt="12px"
                                 fontSize="p3"
-                                placeholder="Tulis alasanmu di sini"
+                                placeholder="Jelaskan alasanmu lebih lengkap di sini"
                                 value={reason}
                                 onChange={(e) => setReason(e.target.value)}
                             />

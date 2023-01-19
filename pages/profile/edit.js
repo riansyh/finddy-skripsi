@@ -12,8 +12,9 @@ import {
     AvatarBadge,
     Link,
     useToast,
+    Select,
 } from "@chakra-ui/react";
-
+import axios from "axios";
 import {
     Popover,
     PopoverTrigger,
@@ -22,7 +23,7 @@ import {
     PopoverBody,
 } from "@chakra-ui/react";
 
-import { AiFillCamera, AiFillInfoCircle } from "react-icons/ai";
+import { AiFillCamera, AiFillQuestionCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { change } from "./../../feature/register/registerSlice";
 import { db, storage } from "../../app/firebase";
@@ -41,6 +42,26 @@ export default function User() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
+
+    const [dataProvinsi, setDataProvinsi] = useState(null);
+    const [dataKabupaten, setDataKabupaten] = useState(null);
+    const [selectedProvinsi, setSelectedProvinsi] = useState(0);
+
+    useEffect(() => {
+        axios.get("https://dev.farizdotid.com/api/daerahindonesia/provinsi").then((response) => {
+            setDataProvinsi(response.data.provinsi);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios
+            .get(
+                `https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${selectedProvinsi}`
+            )
+            .then((response) => {
+                setDataKabupaten(response.data.kota_kabupaten);
+            });
+    }, [selectedProvinsi]);
 
     useFirebaseAuth();
 
@@ -241,31 +262,58 @@ export default function User() {
                             <Flex gap="8px" w="100%" alignItems="end">
                                 <FormControl>
                                     <FormLabel fontWeight="bold" color="neutral.60">
-                                        Lokasi
+                                        Domisili tempat tinggal
                                     </FormLabel>
-                                    <Input
-                                        placeholder="Kabupaten/kota"
-                                        type="text"
+                                    <Select
+                                        value={form.provinsi}
+                                        placeholder="Pilih Provinsi"
+                                        onChange={(e) => {
+                                            dispatch(
+                                                change({ name: "provinsi", value: e.target.value })
+                                            );
+                                            setSelectedProvinsi(
+                                                e.target[e.target.selectedIndex].getAttribute(
+                                                    "data-id"
+                                                )
+                                            );
+                                            console.log(
+                                                e.target[e.target.selectedIndex].getAttribute(
+                                                    "data-id"
+                                                )
+                                            );
+                                        }}
+                                    >
+                                        {dataProvinsi?.map((data, idx) => (
+                                            <option
+                                                value={data.nama}
+                                                data-id={data.id}
+                                                key={`prov-${idx}`}
+                                            >
+                                                {data.nama}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <FormControl>
+                                    <Select
+                                        placeholder="Pilih Kabupaten"
                                         value={form.kabupaten}
                                         onChange={(e) =>
                                             dispatch(
                                                 change({ name: "kabupaten", value: e.target.value })
                                             )
                                         }
-                                    ></Input>
-                                </FormControl>
-                                <FormControl>
-                                    <FormLabel fontWeight="bold" color="neutral.60"></FormLabel>
-                                    <Input
-                                        placeholder="Provinsi"
-                                        type="text"
-                                        value={form.provinsi}
-                                        onChange={(e) =>
-                                            dispatch(
-                                                change({ name: "provinsi", value: e.target.value })
-                                            )
-                                        }
-                                    ></Input>
+                                    >
+                                        {dataKabupaten?.map((data, idx) => (
+                                            <option
+                                                value={data.nama}
+                                                data-id={data.id}
+                                                key={`prov-${idx}`}
+                                            >
+                                                {data.nama}
+                                            </option>
+                                        ))}
+                                    </Select>
                                 </FormControl>
                             </Flex>
 
@@ -276,7 +324,10 @@ export default function User() {
                                         <Popover>
                                             <PopoverTrigger>
                                                 <button>
-                                                    <AiFillInfoCircle color="#FE922F" />
+                                                    <AiFillQuestionCircle
+                                                        size="20px"
+                                                        color="#107cc7"
+                                                    />
                                                 </button>
                                             </PopoverTrigger>
                                             <PopoverContent>

@@ -71,7 +71,17 @@ export default function Home() {
                 router.push("/home");
             } catch (error) {
                 const errorCode = error.code;
-                const errorMessage = error.message;
+                let errorMessage = "Terjadi kesalahan silahkan coba lagi...";
+
+                switch (errorCode) {
+                    case "auth/wrong-password":
+                        errorMessage = "Email atau password salah, coba lagi!";
+                        break;
+                    case "auth/user-not-found":
+                        errorMessage = "Akun dengan email tersebut tidak ditemukan";
+                        break;
+                }
+
                 toast({
                     variant: "subtle",
                     position: "top",
