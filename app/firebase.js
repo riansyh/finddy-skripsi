@@ -19,14 +19,27 @@ import { getFirestore } from "firebase/firestore";
 //     appId: "1:886741090394:web:9689aae7e0e91dc76dd863",
 //     measurementId: "G-LXHPTCM55B",
 // };
+
+/**
+ * VERSI 2
+ */
+// const firebaseConfig = {
+//     apiKey: "AIzaSyAgcIxh0XURh-nhSnhxl2UCbCgjWPS6kfM",
+//     authDomain: "finddy-2.firebaseapp.com",
+//     projectId: "finddy-2",
+//     storageBucket: "finddy-2.appspot.com",
+//     messagingSenderId: "122116687225",
+//     appId: "1:122116687225:web:a6507c7526abe9edee1ba8"
+//   };
+
 const firebaseConfig = {
-    apiKey: "AIzaSyAgcIxh0XURh-nhSnhxl2UCbCgjWPS6kfM",
-    authDomain: "finddy-2.firebaseapp.com",
-    projectId: "finddy-2",
-    storageBucket: "finddy-2.appspot.com",
-    messagingSenderId: "122116687225",
-    appId: "1:122116687225:web:a6507c7526abe9edee1ba8"
-  };
+    apiKey: "AIzaSyBvQF2fTjC_V5mVfCumNoGLtAzirHwaVOE",
+    authDomain: "finddy-3.firebaseapp.com",
+    projectId: "finddy-3",
+    storageBucket: "finddy-3.appspot.com",
+    messagingSenderId: "509982419503",
+    appId: "1:509982419503:web:fca4340eb993cec8b674da",
+};
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
