@@ -30,6 +30,7 @@ export default function useFirebaseAuth() {
                     name: authState.displayName,
                     email: authState.email,
                     isComplete: userData.isComplete,
+                    verified: authState.emailVerified,
                     data: userData,
                 })
             );

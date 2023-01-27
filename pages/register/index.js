@@ -17,7 +17,11 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+    updateProfile,
+} from "firebase/auth";
 import { auth, db } from "../../app/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
@@ -66,6 +70,9 @@ export default function Home() {
                     formValues.email,
                     formValues.password
                 );
+
+                await sendEmailVerification(res.user);
+
                 await updateProfile(res.user, {
                     displayName: formValues.nama,
                 });
@@ -83,7 +90,7 @@ export default function Home() {
                     variant: "subtle",
                     position: "top",
                     title: "Akun berhasil dibuat!",
-                    description: "Silahkan lengkapi datamu terlebih dahulu",
+                    description: "Silahkan cek email untuk diverifikasi terlebih dahulu",
                     status: "success",
                     duration: 3000,
                     isClosable: true,

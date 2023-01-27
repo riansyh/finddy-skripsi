@@ -214,7 +214,7 @@ export const Data = ({ nextFunction }) => {
                     </FormLabel>
                     <Input
                         placeholder="0851xxxxxxxx"
-                        type="tel"
+                        type="number"
                         id="kontak"
                         value={form.kontak}
                         onChange={(e) =>
@@ -242,7 +242,9 @@ export const Data = ({ nextFunction }) => {
                         form.perguruanTinggi === "" ||
                         form.kabupaten === "" ||
                         form.provinsi === "" ||
-                        form.kontak === ""
+                        form.kontak === "" ||
+                        !/\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g.test(form.kontak) ||
+                        form.kontak.length < 6
                     }
                 >
                     Lanjutkan

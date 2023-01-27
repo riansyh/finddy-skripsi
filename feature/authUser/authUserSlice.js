@@ -14,6 +14,7 @@ const authUserSlice = createSlice({
             state.uid = action.payload.uid;
             state.email = action.payload.email;
             state.name = action.payload.name;
+            state.verified = action.payload.verified;
             state.isComplete = action.payload.data.isComplete;
             state.data = action.payload.data;
         },

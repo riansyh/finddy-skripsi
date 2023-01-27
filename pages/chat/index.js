@@ -1,34 +1,15 @@
-import {
-    Box,
-    Button,
-    Flex,
-    Grid,
-    GridItem,
-    Heading,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Link,
-    Select,
-    Text,
-    useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import { EmptyStates } from "../../components/EmptyStates";
 import { Menubar } from "../../components/Menubar";
 import { Navbar } from "../../components/Navbar";
-import { FriendCard } from "../../components/friend/FriendCard";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
-import { BidangOption } from "../../components/BidangOption";
 import { UserCard } from "../../components/chat/UserCard";
 import { FaPlus } from "react-icons/fa";
-import NextLink from "next/link";
 import { FriendList } from "../../components/chat/FriendList";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../../app/firebase";
 
 export default function Chat() {
     const [heroHeight, setHeroHeight] = useState(0);
