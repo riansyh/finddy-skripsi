@@ -195,6 +195,7 @@ export default function User() {
                                     size="full"
                                     onClick={handleSubmit}
                                     isLoading={loading}
+                                    disabled={!form.pref.includes(true)}
                                 >
                                     Simpan perubahan
                                 </Button>

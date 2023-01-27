@@ -178,7 +178,7 @@ export const Data = ({ nextFunction }) => {
                     </FormControl>
                     <FormControl>
                         <Select
-                            placeholder="Pilih Kabupaten"
+                            placeholder="Pilih Kabupaten/Kota"
                             onChange={(e) =>
                                 dispatch(change({ name: "kabupaten", value: e.target.value }))
                             }

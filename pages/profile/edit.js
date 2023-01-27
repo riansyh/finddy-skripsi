@@ -296,7 +296,7 @@ export default function User() {
                                 </FormControl>
                                 <FormControl>
                                     <Select
-                                        placeholder="Pilih Kabupaten"
+                                        placeholder="Pilih Kabupaten/kota"
                                         value={form.kabupaten}
                                         onChange={(e) =>
                                             dispatch(

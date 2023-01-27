@@ -41,7 +41,12 @@ export default function Chat() {
     useEffect(() => {
         const getChats = () => {
             const unsub = onSnapshot(doc(db, "userChats", authUser.uid), (doc) => {
-                setChats(doc.data());
+                const unfiltered = Object.entries(doc.data());
+                const filtered = unfiltered.filter((chat) => {
+                    return authUser.data.friends.includes(chat[1].userInfo.uid);
+                });
+
+                setChats(filtered);
             });
 
             return () => {
@@ -51,8 +56,6 @@ export default function Chat() {
 
         authUser.uid && getChats();
     }, [authUser.uid]);
-
-    // Object.entries(chats)
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
@@ -132,7 +135,7 @@ export default function Chat() {
                             rowGap="12px"
                             columnGap="16px"
                         >
-                            {Object.entries(chats)
+                            {chats
                                 .sort((a, b) => b[1].date - a[1].date)
                                 ?.map((chat) => (
                                     <GridItem w="100%" key={chat[0]}>

@@ -122,7 +122,7 @@ export const PreferensiBelajar = ({ saveFunction, prevFunction }) => {
             </Box>
 
             <Flex gap="16px" flexDir="column" mt="40px" w="100%">
-                <Button variant="primary" size="full" onClick={handleSubmit} isLoading={loading}>
+                <Button variant="primary" size="full" disabled={!form.pref.includes(true)} onClick={handleSubmit} isLoading={loading}>
                     Simpan Data
                 </Button>
                 <Button variant="secondary" size="full" onClick={prevFunction}>
