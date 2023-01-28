@@ -158,7 +158,7 @@ export default function Home() {
                                     Nama Lengkap
                                 </FormLabel>
                                 <Input
-                                    placeholder="Rian Febriansyah"
+                                    placeholder="Tuliskan namamu di sini"
                                     type="text"
                                     id="nama"
                                     value={formValues.nama}
@@ -175,7 +175,7 @@ export default function Home() {
                                     Email
                                 </FormLabel>
                                 <Input
-                                    placeholder="finddy@gmail.com"
+                                    placeholder="Tuliskan email aktifmu di sini"
                                     type="email"
                                     id="email"
                                     value={formValues.email}

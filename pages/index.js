@@ -72,12 +72,32 @@ export default function Index() {
                     </Flex>
                 </Flex>
 
-                {authUser.uid && !authUser.isComplete && (
+                {authUser.uid && !authUser.isComplete && authUser.verified && (
                     <Box mt="24px" px={{ base: "24px", md: "80px", lg: "120px" }} maxW="1320px">
                         <Alert status="warning" variant="left-accent">
                             <AlertIcon />
                             Kamu belum melengkapi data! Untuk bisa menikmati fitur aplikasi ini
                             silakan lengkapi{" "}
+                            <Box
+                                display="inline"
+                                ml="4px"
+                                fontWeight="bold"
+                                textDecoration="underline"
+                            >
+                                <NextLink href="/register/lengkapi-data" passHref>
+                                    <Link>di sini</Link>
+                                </NextLink>
+                            </Box>
+                        </Alert>
+                    </Box>
+                )}
+
+                {authUser.uid && !authUser.verified && (
+                    <Box mt="24px" px={{ base: "24px", md: "80px", lg: "120px" }} maxW="1320px">
+                        <Alert status="warning" variant="left-accent">
+                            <AlertIcon />
+                            Email yang kamu gunakan belum diverifikasi, silakan cek emailmu kembali,
+                            jika ingin mengirikan email lagi, bisa akses
                             <Box
                                 display="inline"
                                 ml="4px"

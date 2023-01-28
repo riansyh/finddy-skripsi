@@ -90,8 +90,8 @@ export default function Home() {
                             Silakan Cek Email Kamu!
                         </Heading>
                         <Text textAlign="center" fontSize="p3" color="neutral.60">
-                            Silakan Cek Email untuk melakukan verifikasi, lalu kembali lagi ke
-                            halaman ini untuk melanjutkan proses registrasi
+                            Silakan cek email untuk melakukan verifikasi, jika sudah kembali lagi ke
+                            halaman ini dan refresh untuk melanjutkan proses registrasi
                         </Text>
                         <Button
                             mt="32px"
