@@ -10,6 +10,7 @@ import { UserCard } from "../../components/chat/UserCard";
 import { FaPlus } from "react-icons/fa";
 import { FriendList } from "../../components/chat/FriendList";
 import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../app/firebase";
 
 export default function Chat() {
     const [heroHeight, setHeroHeight] = useState(0);
