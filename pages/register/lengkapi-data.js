@@ -75,7 +75,7 @@ export default function Home() {
                 {!authUser.verified ? (
                     <Flex
                         w="100%"
-                        maxW={{ md: "600px" }}
+                        maxW={{ base: "90vw", md: "600px" }}
                         bg="white"
                         px="24px"
                         flexDir="column"
@@ -86,7 +86,7 @@ export default function Home() {
                         borderRadius={12}
                     >
                         <LogoLink />
-                        <Heading as="h1" fontSize="h4" mb="8px" mt="20px">
+                        <Heading as="h1" fontSize="h4" mb="8px" mt="20px" textAlign="center">
                             Silakan Cek Email Kamu!
                         </Heading>
                         <Text textAlign="center" fontSize="p3" color="neutral.60">
