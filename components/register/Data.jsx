@@ -244,7 +244,8 @@ export const Data = ({ nextFunction }) => {
                         form.provinsi === "" ||
                         form.kontak === "" ||
                         !/\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/g.test(form.kontak) ||
-                        form.kontak.length < 6
+                        form.kontak.length < 6 ||
+                        form.kontak.length > 14
                     }
                 >
                     Lanjutkan
