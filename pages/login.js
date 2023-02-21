@@ -8,7 +8,6 @@ import {
     Text,
     Heading,
     FormControl,
-    Image,
     FormLabel,
     useToast,
 } from "@chakra-ui/react";
@@ -17,13 +16,12 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db, storage } from "../app/firebase";
-import useFirebaseAuth from "../feature/hook/useFirebaseAuth";
-import { useSelector } from "react-redux";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../app/firebase";
 import { LogoLink } from "../components/LogoLink";
+import { withPublic } from "../utils/authRoute";
 
-export default function Home() {
+function Login() {
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
@@ -31,14 +29,8 @@ export default function Home() {
         password: "",
     });
 
-    useFirebaseAuth();
     const router = useRouter();
     const toast = useToast();
-    const authUser = useSelector((state) => state.authUser);
-
-    useEffect(() => {
-        if (authUser.uid) router.push("/home");
-    }, [authUser]);
 
     const showPassword = () => {
         setIsPasswordShowed(!isPasswordShowed);
@@ -206,3 +198,5 @@ export default function Home() {
         </div>
     );
 }
+
+export default withPublic(Login)

@@ -8,27 +8,18 @@ import { Motivations } from "../components/Motivations";
 import { Navbar } from "../components/Navbar";
 import { FriendCard } from "../components/friend/FriendCard";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import useGetFriend from "../feature/hook/useGetFriends";
+import { withProtected } from "../utils/authRoute";
 
-export default function Index() {
+function Beranda() {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
     const authUser = useSelector((state) => state.authUser);
-    const router = useRouter();
     const friends = useGetFriend();
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
     }, []);
-
-    useEffect(() => {
-        if (!authUser) {
-            router.push("/login");
-        } else {
-            if (!authUser?.isComplete) router.push("/register/lengkapi-data");
-        }
-    }, [authUser]);
 
     return (
         <>
@@ -144,3 +135,5 @@ export default function Index() {
         </>
     );
 }
+
+export default withProtected(Beranda)
