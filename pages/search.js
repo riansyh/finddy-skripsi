@@ -1,14 +1,11 @@
 import {
     Box,
-    filter,
     Flex,
     Grid,
-    GridItem,
     Heading,
     Input,
     InputGroup,
     InputRightElement,
-    Link,
     Select,
     Text,
 } from "@chakra-ui/react";
@@ -18,14 +15,13 @@ import { EmptyStates } from "../components/EmptyStates";
 import { Menubar } from "../components/Menubar";
 import { Navbar } from "../components/Navbar";
 import { FriendCard } from "../components/friend/FriendCard";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import { FiBook, FiMapPin, FiSearch, FiSliders } from "react-icons/fi";
 import { BidangOption } from "../components/BidangOption";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../app/firebase";
+import { withProtected } from "../utils/authRoute";
 
-export default function Search() {
+function Search({ authUser }) {
     const [heroHeight, setHeroHeight] = useState(0);
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -37,16 +33,6 @@ export default function Search() {
     });
 
     const ref = useRef(null);
-    const authUser = useSelector((state) => state.authUser);
-    const router = useRouter();
-
-    useEffect(() => {
-        if (!authUser?.data) {
-            router.push("/login");
-        } else {
-            if (!authUser.isComplete) router.push("/register/lengkapi-data");
-        }
-    }, [authUser]);
 
     useEffect(() => {
         const showUser = async () => {
@@ -382,3 +368,5 @@ export default function Search() {
         </>
     );
 }
+
+export default withProtected(Search)

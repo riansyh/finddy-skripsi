@@ -24,16 +24,11 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
-    MenuItemOption,
-    MenuGroup,
-    MenuOptionGroup,
-    MenuDivider,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { Menubar } from "../../components/Menubar";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import {
     FiMessageCircle,
@@ -58,18 +53,18 @@ import {
 import { db } from "../../app/firebase";
 import { BidangCard } from "../../components/profile/BidangCard";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { withProtected } from "../../utils/authRoute";
 
-export default function User({ userData }) {
+function UserDetail({ userData, authUser }) {
     const [isSaved, setIsSaved] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [reason, setReason] = useState("");
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenUnsave, onOpen: onOpenUnsave, onClose: onCloseUnsave } = useDisclosure();
-    const authUser = useSelector((state) => state.authUser);
+
     const router = useRouter();
     const toast = useToast();
-    useFirebaseAuth();
 
     useEffect(() => {
         setIsSaved(authUser?.data?.friends.includes(userData.uid));
@@ -137,7 +132,7 @@ export default function User({ userData }) {
         }
     };
 
-    const emptyFunct = () => {};
+    const emptyFunct = () => { };
 
     const reportuser = async (user, reason) => {
         try {
@@ -502,3 +497,5 @@ export async function getServerSideProps(context) {
         },
     };
 }
+
+export default withProtected(UserDetail)

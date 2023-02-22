@@ -8,14 +8,13 @@ import {
     Text,
     Heading,
     FormControl,
-    Image,
     FormLabel,
     useToast,
 } from "@chakra-ui/react";
 
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import {
     createUserWithEmailAndPassword,
@@ -24,11 +23,10 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../../app/firebase";
 import { setDoc, doc } from "firebase/firestore";
-import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
-import { useSelector } from "react-redux";
 import { LogoLink } from "../../components/LogoLink";
+import { withPublic } from "../../utils/authRoute";
 
-export default function Home() {
+function RegisterPage({ authUser }) {
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
@@ -38,15 +36,9 @@ export default function Home() {
         passwordConfirmation: "",
     });
 
-    useFirebaseAuth();
+
     const toast = useToast();
     const router = useRouter();
-
-    const authUser = useSelector((state) => state.authUser);
-
-    useEffect(() => {
-        if (authUser.uid && formValues.nama === "") router.push("/home");
-    }, [authUser]);
 
     const showPassword = () => {
         setIsPasswordShowed(!isPasswordShowed);
@@ -60,7 +52,7 @@ export default function Home() {
             formValues.email !== "" &&
             formValues.password !== "" &&
             (formValues.passwordConfirmation !== "" && formValues.password) ==
-                formValues.passwordConfirmation
+            formValues.passwordConfirmation
         ) {
             setLoading(true);
 
@@ -280,3 +272,5 @@ export default function Home() {
         </div>
     );
 }
+
+export default withPublic(RegisterPage)

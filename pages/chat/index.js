@@ -4,18 +4,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { EmptyStates } from "../../components/EmptyStates";
 import { Menubar } from "../../components/Menubar";
 import { Navbar } from "../../components/Navbar";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { UserCard } from "../../components/chat/UserCard";
 import { FaPlus } from "react-icons/fa";
 import { FriendList } from "../../components/chat/FriendList";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../app/firebase";
+import { withProtected } from "../../utils/authRoute";
 
-export default function Chat() {
+function Chat({ authUser }) {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
-    const authUser = useSelector((state) => state.authUser);
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [chats, setChats] = useState([]);
@@ -149,3 +148,5 @@ export default function Chat() {
         </>
     );
 }
+
+export default withProtected(Chat)

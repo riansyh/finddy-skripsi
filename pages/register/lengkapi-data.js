@@ -9,22 +9,14 @@ import { useRouter } from "next/router";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { LogoLink } from "../../components/LogoLink";
 import { getAuth, sendEmailVerification } from "firebase/auth";
+import { withCompleteData } from "../../utils/authRoute";
 
-export default function Home() {
+function LengkapiData({ authUser }) {
     const [slider, setSlider] = useState(0);
     const [isTransiting, setIsTransiting] = useState(false);
     const [isSendingMail, setisSendingMail] = useState(false);
 
-    const router = useRouter();
     const toast = useToast();
-    useFirebaseAuth();
-
-    const authUser = useSelector((state) => state.authUser);
-
-    useEffect(() => {
-        if (authUser.uid == null) router.push("/login");
-        if (authUser.isComplete) router.push("/home");
-    }, [authUser]);
 
     const handleSlide = (number) => {
         setTimeout(() => {
@@ -150,3 +142,5 @@ export default function Home() {
         </div>
     );
 }
+
+export default withCompleteData(LengkapiData)

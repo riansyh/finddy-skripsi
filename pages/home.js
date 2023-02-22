@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Link, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 import React, { useEffect, useRef, useState } from "react";
@@ -7,14 +7,12 @@ import { Menubar } from "../components/Menubar";
 import { Motivations } from "../components/Motivations";
 import { Navbar } from "../components/Navbar";
 import { FriendCard } from "../components/friend/FriendCard";
-import { useSelector } from "react-redux";
 import useGetFriend from "../feature/hook/useGetFriends";
 import { withProtected } from "../utils/authRoute";
 
-function Beranda() {
+function Beranda({ authUser }) {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
-    const authUser = useSelector((state) => state.authUser);
     const friends = useGetFriend();
 
     useEffect(() => {

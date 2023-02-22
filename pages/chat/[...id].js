@@ -1,19 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Chatbar } from "../../components/chat/Chatbar";
 import { ChatInfo } from "../../components/chat/ChatInfo";
 import { BubbleChat } from "../../components/chat/BubbleChat";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../app/firebase";
-import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
+import { withProtected } from "../../utils/authRoute";
 
-export default function Detail({ chats, userData, chatId, userId }) {
-    const authUser = useSelector((state) => state.authUser);
+function DetailChat({ authUser, userData, chatId, userId }) {
     const [messages, setMessages] = useState([]);
-
-    useFirebaseAuth();
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "chats", chatId), (doc) => {
@@ -94,3 +90,5 @@ export async function getServerSideProps(context) {
         },
     };
 }
+
+export default withProtected(DetailChat)

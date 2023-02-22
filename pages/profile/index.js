@@ -22,20 +22,16 @@ import Head from "next/head";
 import NextLink from "next/link";
 import React from "react";
 import { Menubar } from "../../components/Menubar";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { FiChevronLeft, FiMapPin, FiEdit2, FiEdit, FiLogOut } from "react-icons/fi";
 import { IoMdSchool } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
 import { BidangCard } from "../../components/profile/BidangCard";
-import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { auth } from "../../app/firebase";
-import { signOut } from "firebase/auth";
+import { withProtected } from "../../utils/authRoute";
 
-export default function Profile() {
-    useFirebaseAuth();
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const authUser = useSelector((state) => state.authUser);
+function Profile({ authUser }) {
+    const { isOpen, onClose } = useDisclosure();
     const router = useRouter();
     const toast = useToast();
 
@@ -268,3 +264,5 @@ export default function Profile() {
         </>
     );
 }
+
+export default withProtected(Profile)

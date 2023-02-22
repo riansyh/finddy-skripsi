@@ -34,10 +34,10 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { doc, updateDoc } from "firebase/firestore";
+import { withProtected } from "../../utils/authRoute";
 
-export default function User() {
+function EditProfile({ authUser }) {
     const form = useSelector((state) => state.register);
-    const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -102,7 +102,7 @@ export default function User() {
                     });
                 }
             );
-        } catch (error) {}
+        } catch (error) { }
     };
 
     const handleSubmit = async () => {
@@ -388,3 +388,5 @@ export default function User() {
         </>
     );
 }
+
+export default withProtected(EditProfile)

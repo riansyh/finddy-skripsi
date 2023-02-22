@@ -13,30 +13,24 @@ import {
     Text,
 } from "@chakra-ui/react";
 
-import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import { FiChevronLeft, FiEye, FiEyeOff } from "react-icons/fi";
 import { useRouter } from "next/router";
-import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { auth } from "../../app/firebase";
 import {
-    EmailAuthCredential,
     EmailAuthProvider,
     reauthenticateWithCredential,
-    signOut,
     updatePassword,
 } from "firebase/auth";
+import { withProtected } from "../../utils/authRoute";
 
-export default function User() {
-    const authUser = useSelector((state) => state.authUser);
+function UbahPassword({ authUser }) {
     const router = useRouter();
     const toast = useToast();
 
     const [form, setForm] = useState({ current: "", new: "", newConfirm: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
-    useFirebaseAuth();
 
     const handleChangePassword = (e) => {
         e.preventDefault();
@@ -269,3 +263,5 @@ export default function User() {
         </>
     );
 }
+
+export default withProtected(UbahPassword)

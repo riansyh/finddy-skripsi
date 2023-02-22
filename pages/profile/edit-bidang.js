@@ -16,7 +16,6 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    List,
     ListItem,
     OrderedList,
 } from "@chakra-ui/react";
@@ -32,8 +31,9 @@ import { BidangCard } from "../../components/register/BidangCard";
 import { SelectBidang } from "../../components/register/SelectBidang";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/firebase";
+import { withProtected } from "../../utils/authRoute";
 
-export default function User() {
+function EditBidang({ authUser }) {
     const [searchKey, setSearchKey] = useState("");
     const [bidangMinat, setBidangMinat] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -41,13 +41,10 @@ export default function User() {
     const toast = useToast();
     const { isOpen, onClose, onOpen } = useDisclosure();
     const form = useSelector((state) => state.register);
-    const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
     const router = useRouter();
 
     const wrapperRef = useRef(null);
-
-    useFirebaseAuth();
 
     useEffect(() => {
         authUser.data?.bidangMinat.forEach((bidang) => {
@@ -377,3 +374,5 @@ export default function User() {
         </>
     );
 }
+
+export default withProtected(EditBidang)

@@ -10,17 +10,15 @@ import { useRouter } from "next/router";
 import useFirebaseAuth from "../../feature/hook/useFirebaseAuth";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/firebase";
+import { withProtected } from "../../utils/authRoute";
 
-export default function User() {
+function EditPreferensi({ authUser }) {
     const [loading, setLoading] = useState(false);
 
     const form = useSelector((state) => state.register);
-    const authUser = useSelector((state) => state.authUser);
     const dispatch = useDispatch();
     const toast = useToast();
     const router = useRouter();
-
-    useFirebaseAuth();
 
     useEffect(() => {
         dispatch(changePref({ index: 0, value: authUser.data?.pref[0] }));
@@ -214,3 +212,5 @@ export default function User() {
         </>
     );
 }
+
+export default withProtected(EditPreferensi)
