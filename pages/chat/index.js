@@ -15,7 +15,6 @@ import { withProtected } from "../../utils/authRoute";
 function Chat({ authUser }) {
     const [heroHeight, setHeroHeight] = useState(0);
     const ref = useRef(null);
-    const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [chats, setChats] = useState([]);
 
@@ -37,18 +36,6 @@ function Chat({ authUser }) {
 
         authUser.uid && getChats();
     }, [authUser.uid]);
-
-    useEffect(() => {
-        setHeroHeight(ref.current.clientHeight);
-    }, []);
-
-    useEffect(() => {
-        if (!authUser) {
-            router.push("/login");
-        } else {
-            if (!authUser.isComplete) router.push("/register/lengkapi-data");
-        }
-    }, [authUser]);
 
     useEffect(() => {
         setHeroHeight(ref.current.clientHeight);
